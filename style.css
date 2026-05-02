@@ -409,6 +409,190 @@ body {
   line-height: 1.75;
 }
 
+/* ---- Section: Nasze Usługi — Bento Grid (6.4) ---- */
+.services-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-blue);
+  margin-bottom: 1rem;
+}
+.services-h2 {
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 0 auto 1rem;
+}
+.services-sub {
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 16px;
+}
+.bento-tile-1 { grid-column: 1; grid-row: 1 / 3; }
+.bento-tile-2 { grid-column: 2; grid-row: 1; }
+.bento-tile-3 { grid-column: 3; grid-row: 1; }
+.bento-tile-4 { grid-column: 2; grid-row: 2; }
+.bento-tile-5 { grid-column: 3; grid-row: 2; }
+.bento-tile-6 { grid-column: 1 / 4; grid-row: 3; }
+
+.bento-tile {
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bento-tile:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+}
+
+.bento-preview {
+  flex: 1;
+  min-height: 150px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.bento-preview--sm {
+  min-height: 80px;
+}
+
+.bento-browser {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.bento-browser-bar {
+  background: rgba(255,255,255,0.05);
+  padding: 9px 13px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.bdot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+.bento-browser-body {
+  padding: 14px;
+}
+
+.bento-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.bento-copy {
+  display: flex;
+  flex-direction: column;
+}
+.bento-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.bento-desc {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+.bento-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.15s ease;
+}
+.bento-link:hover { gap: 8px; }
+
+.bento-tile6-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+.bento-tile6-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.tile6-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #fff;
+  border-radius: 9999px;
+  padding: 9px 18px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0F172A;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 767px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-tile-1,
+  .bento-tile-2,
+  .bento-tile-3,
+  .bento-tile-4,
+  .bento-tile-5,
+  .bento-tile-6 {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .bento-tile6-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bento-tile-1 { grid-column: 1 / 3; grid-row: 1; }
+  .bento-tile-2 { grid-column: 1; grid-row: 2; }
+  .bento-tile-3 { grid-column: 2; grid-row: 2; }
+  .bento-tile-4 { grid-column: 1; grid-row: 3; }
+  .bento-tile-5 { grid-column: 2; grid-row: 3; }
+  .bento-tile-6 { grid-column: 1 / 3; grid-row: 4; }
+}
+
 /* ---- Scroll animations (IntersectionObserver) ---- */
 .fade-up {
   opacity: 0;
