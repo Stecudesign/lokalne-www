@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>Strony WWW dla lokalnych firm | lokalnewww.pl</title>
+  <meta name="description" content="Tworzę profesjonalne strony internetowe dla małych lokalnych firm. Szybko, przystępnie, z pozycjonowaniem. Bezpłatna konsultacja!">
+  <meta name="keywords" content="strony www dla firm, tworzenie stron internetowych, strona www cena, web developer">
+  <link rel="canonical" href="https://lokalnewww.pl/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Strony WWW dla lokalnych firm | lokalnewww.pl">
+  <meta property="og:description" content="Tworzę profesjonalne strony internetowe dla małych lokalnych firm. Szybko, przystępnie, z pozycjonowaniem. Bezpłatna konsultacja!">
+  <meta property="og:image" content="https://lokalnewww.pl/assets/images/og-image.jpg">
+  <meta property="og:url" content="https://lokalnewww.pl">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#1A2540',
+            'navy-mid': '#243155',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          maxWidth: {
+            container: '1200px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "lokalnewww.pl",
+    "description": "Tworzenie stron WWW dla małych lokalnych firm",
+    "url": "https://lokalnewww.pl",
+    "email": "kontakt@lokalnewww.pl",
+    "areaServed": "PL",
+    "serviceType": ["Web Design", "SEO", "E-commerce"]
+  }
+  </script>
+</head>
+<body>
+
+<!-- ============================================================
+     NAWIGACJA
+     ============================================================ -->
+<nav id="nav" class="py-4 px-6">
+  <div class="max-w-container mx-auto flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-1 no-underline" style="text-decoration:none;">
+      <img
+        src="img/logopin3Dv1.png"
+        alt="lokalnewww.pl — pin logo"
+        style="width:64px;height:64px;flex-shrink:0;"
+      >
+      <span style="color:#0F172A;letter-spacing:-0.03em;font-size:1.6rem;line-height:1;">
+        <span style="font-weight:800;">lokalne</span><span style="font-weight:400;">www.pl</span>
+      </span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex nav-links-pill">
+      <a href="#uslugi">Oferta</a>
+      <a href="#o-mnie">O mnie</a>
+      <a href="#blog">Blog</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+
+    <!-- Nav CTA + hamburger -->
+    <div class="flex items-center gap-3">
+      <a href="#kontakt" class="hidden md:inline-flex btn-nav-brand">
+        Bezpłatna konsultacja
+      </a>
+      <button data-menu-toggle
+              class="md:hidden flex flex-col gap-1.5 p-2 bg-transparent border-none cursor-pointer"
+              aria-label="Otwórz menu">
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu nawigacyjne">
+  <button data-menu-close class="close-btn" aria-label="Zamknij menu">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </svg>
+  </button>
+  <a href="#uslugi"  data-menu-link>Oferta</a>
+  <a href="#o-mnie"  data-menu-link>O mnie</a>
+  <a href="#blog"    data-menu-link>Blog</a>
+  <a href="#kontakt" data-menu-link>Kontakt</a>
+  <a href="#kontakt" data-menu-link class="btn-primary mt-2">Bezpłatna konsultacja</a>
+</div>
+
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero" class="relative bg-white overflow-hidden">
+
+  <div class="relative max-w-container mx-auto px-6 text-center">
+
+    <!-- H1 -->
+    <h1 class="anim-init anim-delay-1 font-extrabold text-slate-900 mb-8"
+        style="font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.08; letter-spacing: -0.04em;">
+      Twoja firma zasługuje na<br>
+      <span class="hero-highlight-wrap">
+        <span>lepszą stronę.</span>
+      </span>
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="anim-init anim-delay-2 text-lg text-slate-400 mb-10 mx-auto"
+       style="max-width: 520px; line-height: 1.75;">
+      Projektuję i wdrażam strony, które przyciągają klientów&nbsp;—
+      szybkie, nowoczesne i dopasowane do&nbsp;Twojego biznesu.
+    </p>
+
+    <!-- CTA row -->
+    <div class="anim-init anim-delay-3 flex flex-wrap items-center justify-center gap-5">
+      <a href="#uslugi" class="btn-hero-brand">Sprawdź ofertę</a>
+      <a href="#realizacje" class="btn-hero-ghost">Nasze realizacje</a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CO ZYSKASZ — sekcja 6.3
+     ============================================================ -->
+<section id="co-zyskasz" style="background:#0F172A;padding:7rem 0;">
+  <div class="max-w-container mx-auto px-6">
+
+    <!-- Nagłówek -->
+    <div class="text-center mb-20 fade-up">
+      <span class="benefit-label">Dlaczego warto?</span>
+      <h2 class="benefit-h2">
+        Strona WWW to najtańszy handlowiec,<br>jakiego możesz mieć.
+      </h2>
+      <p class="benefit-sub">
+        Działa 24 godziny na dobę, nie bierze urlopu i nigdy nie choruje.
+      </p>
+    </div>
+
+    <!-- Karty -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="benefit-card fade-up" style="transition-delay:100ms;">
+        <div class="benefit-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <span class="benefit-number">01</span>
+        <h3 class="benefit-title">Działasz 24/7</h3>
+        <p class="benefit-desc">Twoja strona pracuje nawet gdy Ty śpisz — klienci znajdą Cię o każdej porze, bez Twojego udziału.</p>
+      </div>
+
+      <div class="benefit-card fade-up" style="transition-delay:200ms;">
+        <div class="benefit-icon benefit-icon--yellow">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="10" r="3"/>
+            <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z"/>
+          </svg>
+        </div>
+        <span class="benefit-number">02</span>
+        <h3 class="benefit-title">Lokalne SEO</h3>
+        <p class="benefit-desc">Pojawiasz się gdy ktoś szuka Twojej usługi w okolicy — to klienci z konkretnym zamiarem zakupu.</p>
+      </div>
+
+      <div class="benefit-card fade-up" style="transition-delay:300ms;">
+        <div class="benefit-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
+        <span class="benefit-number">03</span>
+        <h3 class="benefit-title">Profesjonalny wizerunek</h3>
+        <p class="benefit-desc">Klienci oceniają Cię zanim zadzwonią. Dobra strona robi pierwsze wrażenie zamiast Ciebie.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     JS: nawigacja, animacje, smooth scroll
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Navigation — sticky po scrollu 80px
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 80);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // 2. Hamburger menu
+  const mobileMenu   = document.getElementById('mobile-menu');
+  const toggle       = document.querySelector('[data-menu-toggle]');
+  const closeBtn     = document.querySelector('[data-menu-close]');
+  const menuLinks    = document.querySelectorAll('[data-menu-link]');
+
+  const openMenu  = () => { mobileMenu.classList.add('open');    document.body.style.overflow = 'hidden'; };
+  const closeMenu = () => { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; };
+
+  toggle?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  menuLinks.forEach(l => l.addEventListener('click', closeMenu));
+
+  // 3. IntersectionObserver — animacje scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // 4. Hero — reveal natychmiast przy załadowaniu strony
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      document.querySelectorAll('#hero .anim-init').forEach(el => el.classList.add('visible'));
+    }, 60);
+  });
+
+  // Nav fade-in
+  nav.style.opacity = '0';
+  nav.style.transition = 'opacity 0.3s ease';
+  requestAnimationFrame(() => { nav.style.opacity = '1'; });
+
+  // 5. Smooth scroll dla anchor linków
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+});
+</script>
+</body>
+</html>
