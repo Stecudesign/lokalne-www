@@ -468,12 +468,19 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 60%;
   z-index: 0;
 }
 .bento-tile1-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(26,37,64,0.1) 0%, rgba(26,37,64,0.65) 55%, #1A2540 90%);
+  background: linear-gradient(
+    to bottom,
+    rgba(26,37,64,0.55) 0%,
+    rgba(26,37,64,0.2) 30%,
+    rgba(26,37,64,0.55) 60%,
+    #1A2540 92%
+  );
   z-index: 1;
 }
 .bento-tile1-copy {
