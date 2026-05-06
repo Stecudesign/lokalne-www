@@ -5,7 +5,17 @@
       "PowerShell(winget install --id GitHub.cli --silent 2>&1)",
       "PowerShell(winget install --id GitHub.cli --accept-source-agreements --accept-package-agreements 2>&1)",
       "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; gh auth login --web -h github.com 2>&1)",
-      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; gh repo create \"lokalne-www\" --public --description \"Lokalne WWW project\" --source \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\" --remote origin --push 2>&1)"
+      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; gh repo create \"lokalne-www\" --public --description \"Lokalne WWW project\" --source \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\" --remote origin --push 2>&1)",
+      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; gh repo create \"lokalne-www\" --public --description \"Lokalne WWW project\" --source . --remote origin --push 2>&1)",
+      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; gh api repos/Stecudesign/lokalne-www/pages --method POST --field source='{\"branch\":\"master\",\"path\":\"/\"}' 2>&1)",
+      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; $body = '{\"source\":{\"branch\":\"master\",\"path\":\"/\"}}'; $body | & \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" api repos/Stecudesign/lokalne-www/pages --method POST --input - 2>&1)",
+      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; & \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" api repos/Stecudesign/lokalne-www/pages --method POST -f \"source[branch]=master\" -f \"source[path]=/\" 2>&1)",
+      "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html style.css; git commit -m \"Add section 6.4: Nasze Uslugi bento grid\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
+      "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html; git commit -m \"Update bento grid: new services content, descriptions and photos\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
+      "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html style.css; git commit -m \"Tile 1: full-height photo fill with gradient overlay\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
+      "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html style.css; git commit -m \"Tile 1: darker photo with code screen, fixed overlay gradient\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
+      "Bash(git add *)",
+      "Bash(git restore *)"
     ]
   }
 }
