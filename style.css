@@ -602,6 +602,20 @@ body {
   user-select: none;
 }
 
+/* Tile 3 — SEO decoration */
+.bento-tile-3 .bento-copy {
+  padding-right: 200px;
+}
+.bento-tile3-deco {
+  position: absolute;
+  bottom: -60px;
+  right: -70px;
+  width: 354px;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: multiply;
+}
+
 /* CTA na dużym kaflu */
 .bento-cta {
   display: inline-flex;
@@ -657,6 +671,8 @@ body {
   .bento-tile-5 { grid-column: 2;     grid-row: auto; }
   .bento-tile-6 { grid-column: 1 / 3; grid-row: auto; }
   .bento-tile-1 .bento-title { font-size: 1.5rem; }
+  .bento-tile-3 .bento-copy { padding-right: 130px; }
+  .bento-tile3-deco { width: 258px; bottom: -40px; right: -28px; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
