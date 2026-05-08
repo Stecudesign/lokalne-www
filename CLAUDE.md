@@ -3,6 +3,12 @@
 Strona landing page freelancera web-developera. Cel: pozyskiwanie klientów — małe lokalne firmy. Stack: czysty HTML + własny CSS (`style.css`) + Tailwind CDN (utility classes) + Vanilla JS. Jeden plik `index.html`, jeden plik `style.css`. Brak buildu, brak frameworka.
 
 Pełne wymagania produktowe: `PRD_lokalnewww.md`.
+Design system marki: `.claude/skills/design.md` — czytaj przed każdą pracą nad UI.
+
+**Skille dostępne w projekcie** (`.claude/skills/`):
+- `frontend-design` — używaj przy budowaniu nowych sekcji/komponentów
+- `webdesign` — używaj przy audycie UI/UX/dostępności
+- `simplify` — używaj przy przeglądaniu CSS/HTML pod kątem redundancji (globalny skill, nie w folderze)
 
 ---
 
