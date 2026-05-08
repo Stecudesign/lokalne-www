@@ -163,6 +163,18 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
+  background-image: url('img/herosectionv2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
 }
 
 .btn-hero-brand {
