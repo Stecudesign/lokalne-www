@@ -11,7 +11,7 @@ Pełne wymagania produktowe: `PRD_lokalnewww.md`.
 ```
 index.html      ← cała strona
 style.css       ← wszystkie custom style (bez Tailwinda)
-img/            ← logopin3Dv1.png (logo), logolokalnewww.png
+img/            ← logopin3Dv1.png (logo), logolokalnewww.png, herosectionv2.png (tło hero)
 examples/       ← screenshoty referencyjne (heronaviagation.png, services.png)
 PRD_lokalnewww.md
 ```
@@ -23,7 +23,7 @@ PRD_lokalnewww.md
 | ID | Klasa/styl sekcji | Status |
 |---|---|---|
 | `#nav` | sticky, transparent → white po scrollu | ✅ gotowe |
-| `#hero` | `bg-white`, pełna wysokość (`min-height: 100svh`) | ✅ gotowe |
+| `#hero` | tło `img/herosectionv2.png` + overlay `rgba(255,255,255,0.2)`, treść wyrównana do lewej | ✅ gotowe |
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC` | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient | ✅ gotowe |
 
@@ -93,6 +93,33 @@ Foto — źródła Unsplash:
 
 ---
 
+## Sekcja 6.2 — HERO (`#hero`)
+
+Tło: `img/herosectionv2.png` (`background-size: cover`, `background-position: center`).
+Overlay: `#hero::before` z `rgba(255,255,255,0.2)` — delikatna biała zasłona nad zdjęciem.
+
+Treść wyrównana do lewej. Kontener: `w-full max-w-container mx-auto px-6` (bez wewnętrznego max-width wrappera — heading musi mieć miejsce na jedną linię).
+
+Struktura:
+```html
+<section id="hero" class="relative bg-white overflow-hidden">
+  <div class="relative w-full max-w-container mx-auto px-6">
+    <h1 ...>Twoja firma zasługuje na<br>
+      <span class="hero-highlight-wrap"><span>lepszą stronę.</span></span>
+    </h1>
+    <p ... style="max-width: 520px;">...</p>
+    <div class="flex flex-wrap items-center justify-start gap-5">
+      <a class="btn-hero-brand">Sprawdź ofertę</a>
+      <a class="btn-hero-ghost">Nasze realizacje</a>
+    </div>
+  </div>
+</section>
+```
+
+`.hero-highlight-wrap` — czarne tło (`--color-navy`) ze skosem `skewX(-6deg)`, animacja `highlight-in` odkrywa tło od lewej. Tekst wewnątrz: żółty (`--color-yellow`), pojawia się przez `text-in` po 1s.
+
+---
+
 ## Animacje scroll
 
 Klasa `.fade-up`: `opacity: 0; transform: translateY(30px)` → po dodaniu `.in-view` przechodzi do widocznego stanu. JS w `<script>` na dole index.html używa `IntersectionObserver`. Delay przez `style="transition-delay: Xms"`.
@@ -111,6 +138,8 @@ Klasa `.fade-up`: `opacity: 0; transform: translateY(30px)` → po dodaniu `.in-
 
 ## Ważne decyzje projektowe
 
+- Hero: treść wyrównana do lewej (nie `text-center`) — kontener musi mieć `w-full`, żeby `mx-auto` nie zwężało go do szerokości treści przy `display:flex` w sekcji
+- Hero: żółty highlight (`lepszą stronę.`) musi być w jednej linii — nie używać `max-width` na kontenerze h1
 - Sekcja 6.3 zmieniła styl z ciemnego (navy) na jasny — karty na białym tle z okrągłymi przyciskami strzałki
 - Sekcja 6.4 zmieniła styl z ciemnych kafelków na białe kafelki na niebieskim gradiencie (inspiracja: dental clinic bento grid reference)
 - Zdjęcia w bento gridzie mają efekt lekkiego obrotu (rotate ±3.5°) i box-shadow dla złudzenia unoszenia
