@@ -593,6 +593,14 @@ body {
   font-size: 1rem;
   max-width: 36ch;
 }
+.bento-tile1-deco {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 468px;
+  pointer-events: none;
+  user-select: none;
+}
 
 /* CTA na dużym kaflu */
 .bento-cta {
