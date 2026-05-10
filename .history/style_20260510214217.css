@@ -163,7 +163,7 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background-image: url('img/herosectionv3.png');
+  background-image: url('img/herosectionv2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -592,7 +592,7 @@ body {
 }
 .bento-desc {
   font-size: 0.875rem;
-  color: #272525;
+  color: #000000;
   line-height: 1.72;
 }
 
@@ -658,7 +658,7 @@ body {
 .bento-tile4-deco {
   width: 280px;
     right: -40px;
-  bottom: -70px;
+  bottom: -85px;
   opacity: 0.4;
 }
 .bento-tile4-deco::after {

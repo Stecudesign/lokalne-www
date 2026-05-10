@@ -163,7 +163,7 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background-image: url('img/herosectionv3.png');
+  background-image: url('img/herosectionv2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -592,7 +592,7 @@ body {
 }
 .bento-desc {
   font-size: 0.875rem;
-  color: #272525;
+  color: #64748B;
   line-height: 1.72;
 }
 
@@ -623,9 +623,7 @@ body {
 
 /* Tile 4 — Opieka decoration */
 .bento-tile-4 .bento-copy {
-  padding-right: 0;
-  position: relative;
-  z-index: 1;
+  padding-right: 160px;
 }
 
 /* Shared deco wrapper (overlay via ::after) */
@@ -650,19 +648,13 @@ body {
   width: 280px;
   right: -40px;
   bottom: -85px;
-  opacity: 0.4;
+  opacity: 0.85;
 }
 .bento-tile3-deco::after {
   content: none;
 }
 .bento-tile4-deco {
   width: 280px;
-    right: -40px;
-  bottom: -70px;
-  opacity: 0.4;
-}
-.bento-tile4-deco::after {
-  content: none;
 }
 
 /* Bottom row height */
@@ -729,7 +721,7 @@ body {
   .bento-tile-1 .bento-title { font-size: 1.5rem; }
   .bento-tile-3 .bento-copy { padding-right: 0; }
   .bento-tile3-deco { width: 200px; right: -100px; bottom: -10px; }
-  .bento-tile-4 .bento-copy { padding-right: 0; }
+  .bento-tile-4 .bento-copy { padding-right: 110px; }
   .bento-tile4-deco { width: 200px; }
 }
 
