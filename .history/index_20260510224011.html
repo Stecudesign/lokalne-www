@@ -68,23 +68,23 @@
 <!-- ============================================================
      NAWIGACJA
      ============================================================ -->
-<nav id="nav">
-  <div class="nav-island">
+<nav id="nav" class="py-4 px-6">
+  <div class="max-w-container mx-auto flex items-center justify-between">
 
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-1 no-underline">
+    <a href="/" class="flex items-center gap-1 no-underline" style="text-decoration:none;">
       <img
         src="img/logopin3Dv1.png"
         alt="lokalnewww.pl — pin logo"
-        class="logo-img"
+        style="width:64px;height:64px;flex-shrink:0;"
       >
-      <span class="logo-text">
-        <span>lokalne</span><span>www.pl</span>
+      <span style="color:#0F172A;letter-spacing:-0.03em;font-size:1.6rem;line-height:1;">
+        <span style="font-weight:800;">lokalne</span><span style="font-weight:400;">www.pl</span>
       </span>
     </a>
 
     <!-- Desktop links -->
-    <div class="nav-links-pill">
+    <div class="hidden md:flex nav-links-pill">
       <a href="#uslugi">Oferta</a>
       <a href="#o-mnie">O mnie</a>
       <a href="#blog">Blog</a>
@@ -93,10 +93,12 @@
 
     <!-- Nav CTA + hamburger -->
     <div class="flex items-center gap-3">
-      <a href="#kontakt" class="btn-nav-brand">
+      <a href="#kontakt" class="hidden md:inline-flex btn-nav-brand">
         Bezpłatna konsultacja
       </a>
-      <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu">
+      <button data-menu-toggle
+              class="md:hidden flex flex-col gap-1.5 p-2 bg-transparent border-none cursor-pointer"
+              aria-label="Otwórz menu">
         <span class="ham-line"></span>
         <span class="ham-line"></span>
         <span class="ham-line"></span>
@@ -128,11 +130,9 @@
   <div class="relative w-full max-w-container mx-auto px-6">
     <div class="hero-text">
 
-      <!-- Zdjęcie (tylko mobile) -->
-      <div class="hero-heading-block"></div>
-
       <!-- H1 -->
-      <h1 class="anim-init anim-delay-1 hero-h1 font-extrabold text-slate-900 mb-8">
+      <h1 class="anim-init anim-delay-1 font-extrabold text-slate-900 mb-8"
+          style="font-size: clamp(2rem, 4.5vw, 3.8rem); line-height: 1.08; letter-spacing: -0.04em;">
         Profesjonalne strony<br>
         <span class="hero-highlight-wrap">
           <span>dla lokalnych biznesów</span>
@@ -140,7 +140,8 @@
       </h1>
 
       <!-- Subheadline -->
-      <p class="anim-init anim-delay-2 hero-sub text-lg text-slate-400 mb-10">
+      <p class="anim-init anim-delay-2 text-lg text-slate-400 mb-10"
+         style="max-width: 520px; line-height: 1.75;">
         Projektuję i wdrażam strony, które przyciągają klientów&nbsp;—
         szybkie, nowoczesne i dopasowane do&nbsp;Twojego biznesu.
       </p>
@@ -286,224 +287,6 @@
     </div>
   </div>
 </section>
-
-
-<!-- ============================================================
-     JAK WSPÓŁPRACUJEMY — sekcja 6.5
-     ============================================================ -->
-<section id="proces" class="process-section">
-  <div class="max-w-container mx-auto px-6">
-
-    <!-- Nagłówek -->
-    <div class="text-center mb-20 fade-up">
-      <span class="process-label">Proces</span>
-      <h2 class="process-h2">Prosta droga od pomysłu<br>do gotowej strony.</h2>
-    </div>
-
-    <!-- Kroki -->
-    <div class="process-steps">
-
-      <div class="process-step fade-up" style="transition-delay:80ms">
-        <div class="process-top">
-          <div class="process-badge">01</div>
-        </div>
-        <div class="process-ghost" aria-hidden="true">01</div>
-        <div class="process-body">
-          <h3 class="process-title">Bezpłatna konsultacja</h3>
-          <p class="process-desc">Rozmawiamy o Twoim biznesie, celach i potrzebach. Bez zobowiązań, bez żargonu.</p>
-        </div>
-      </div>
-
-      <div class="process-step fade-up" style="transition-delay:180ms">
-        <div class="process-top">
-          <div class="process-badge">02</div>
-        </div>
-        <div class="process-ghost" aria-hidden="true">02</div>
-        <div class="process-body">
-          <h3 class="process-title">Projekt i wycena</h3>
-          <p class="process-desc">Przygotowuję projekt dopasowany do Twojej branży i budżetu — w ciągu 48h.</p>
-        </div>
-      </div>
-
-      <div class="process-step fade-up" style="transition-delay:280ms">
-        <div class="process-top">
-          <div class="process-badge">03</div>
-        </div>
-        <div class="process-ghost" aria-hidden="true">03</div>
-        <div class="process-body">
-          <h3 class="process-title">Realizacja</h3>
-          <p class="process-desc">Tworzę stronę szybko i terminowo. Na bieżąco informuję o postępach.</p>
-        </div>
-      </div>
-
-      <div class="process-step fade-up" style="transition-delay:380ms">
-        <div class="process-top">
-          <div class="process-badge process-badge--final">04</div>
-        </div>
-        <div class="process-ghost" aria-hidden="true">04</div>
-        <div class="process-body">
-          <h3 class="process-title">Wdrożenie i wsparcie</h3>
-          <p class="process-desc">Uruchamiam stronę i uczę jak z niej korzystać. Jestem dostępny po wdrożeniu.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     CO MNIE WYRÓŻNIA — sekcja 6.6
-     ============================================================ -->
-<section id="wyrozniam-sie" class="usp-section">
-  <div class="max-w-container mx-auto px-6">
-
-    <!-- Nagłówek -->
-    <div class="text-center mb-16 fade-up">
-      <span class="usp-label">Dlaczego ja?</span>
-      <h2 class="usp-h2">Nie jestem kolejną agencją.</h2>
-      <p class="usp-sub">Pracujesz bezpośrednio z osobą, która tworzy Twoją stronę.</p>
-    </div>
-
-    <!-- 2×2 Grid -->
-    <div class="usp-grid">
-
-      <div class="usp-card fade-up" style="transition-delay:80ms">
-        <div class="usp-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        </div>
-        <h3 class="usp-title">Szybka realizacja</h3>
-        <p class="usp-desc">Pierwsza wersja w 7–14 dni roboczych, nie miesiącach. Działam sprawnie, bo Twój czas jest cenny.</p>
-      </div>
-
-      <div class="usp-card fade-up" style="transition-delay:180ms">
-        <div class="usp-icon-box usp-icon-box--amber">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <h3 class="usp-title">Bezpośredni kontakt</h3>
-        <p class="usp-desc">Żadnych pośredników. Piszesz do mnie, nie do call-center. Wiesz z kim rozmawiasz na każdym etapie.</p>
-      </div>
-
-      <div class="usp-card fade-up" style="transition-delay:280ms">
-        <div class="usp-icon-box usp-icon-box--navy">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <h3 class="usp-title">Znam lokalny rynek</h3>
-        <p class="usp-desc">Specjalizuję się w małych firmach z Twojego regionu. Rozumiem potrzeby lokalnego biznesu lepiej niż duże agencje.</p>
-      </div>
-
-      <div class="usp-card fade-up" style="transition-delay:380ms">
-        <div class="usp-icon-box usp-icon-box--green">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
-        <h3 class="usp-title">Ceny bez niespodzianek</h3>
-        <p class="usp-desc">Stała wycena z góry. Nie płacisz za "dodatkowe godziny". Wiesz ile zapłacisz zanim zaczniesz.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     O MNIE — sekcja 6.7
-     ============================================================ -->
-<section id="o-mnie" class="about-section">
-  <div class="max-w-container mx-auto px-6">
-    <div class="about-inner">
-
-      <!-- Zdjęcie (lewa kolumna) -->
-      <div class="about-photo-col fade-up">
-        <div class="about-photo-frame">
-          <img src="img/lenovoomniev2.png" alt="Paweł — twórca lokalnewww.pl" class="about-photo-img">
-        </div>
-      </div>
-
-      <!-- Tekst (prawa kolumna) -->
-      <div class="about-content">
-
-        <div class="fade-up">
-          <span class="about-label">O mnie</span>
-          <h2 class="about-h2">
-            Cześć, jestem Paweł&nbsp;—<br>
-            buduję strony dla lokalnych&nbsp;biznesów.
-          </h2>
-        </div>
-
-        <p class="about-p fade-up" style="transition-delay:120ms">
-          Pomagam małym firmom zaistnieć w internecie. Wiem, że nie każdy przedsiębiorca potrzebuje rozbudowanej agencji — potrzebuje kogoś, kto rozumie jego biznes i&nbsp;po prostu to zrobi.
-        </p>
-
-        <p class="about-p fade-up" style="transition-delay:220ms">
-          Pracuję samodzielnie, więc masz pewność, że rozmawiasz z&nbsp;osobą, która rzeczywiście zajmie się Twoją stroną — od projektu aż po wdrożenie.
-        </p>
-
-        <div class="fade-up" style="transition-delay:320ms">
-          <a href="#kontakt" class="btn-about-cta">
-            Porozmawiajmy
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     FOOTER — sekcja 6.9
-     ============================================================ -->
-<footer id="footer" class="footer-section">
-  <div class="max-w-container mx-auto px-6">
-
-    <!-- Rząd 1: logo+tagline | nav | social+CTA -->
-    <div class="footer-top">
-
-      <!-- Logo + tagline -->
-      <div class="footer-brand">
-        <a href="/" class="footer-logo" aria-label="lokalnewww.pl — strona główna">
-          <img src="img/logopin3Dv1.png" alt="" class="footer-logo-img" width="40" height="40">
-          <span class="footer-logo-text">
-            <span>lokalne</span><span>www.pl</span>
-          </span>
-        </a>
-        <p class="footer-brand-tagline">Strony WWW dla małych firm&nbsp;—<br>szybko, profesjonalnie, z pasją.</p>
-        <a href="#kontakt" class="btn-footer-cta">Bezpłatna konsultacja</a>
-      </div>
-
-      <!-- Nav -->
-      <nav class="footer-nav" aria-label="Nawigacja stopki">
-        <a href="#uslugi">Oferta</a>
-        <a href="#o-mnie">O mnie</a>
-        <a href="#blog">Blog</a>
-        <a href="#kontakt">Kontakt</a>
-      </nav>
-
-      <!-- Social -->
-      <div class="footer-social">
-        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        </a>
-        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-      </div>
-
-    </div>
-
-    <!-- Copyright -->
-    <div class="footer-bottom">
-      <span>© 2026 lokalnewww.pl</span>
-      <div class="footer-bottom-links">
-        <a href="#">Polityka prywatności</a>
-        <span class="footer-dot" aria-hidden="true">·</span>
-        <a href="#">Realizacja: lokalnewww.pl</a>
-      </div>
-    </div>
-
-  </div>
-</footer>
 
 
 <!-- ============================================================
