@@ -1084,8 +1084,6 @@ body {
 /* Photo column */
 .about-photo-col {
   position: relative;
-  display: flex;
-  justify-content: flex-end;
 }
 
 .about-photo-frame {
@@ -1097,10 +1095,9 @@ body {
   flex-shrink: 0;
   background-image: url('../img/omniefotelgaming.png');
   background-size: 260%;
-  background-position: 72% 6%;
+  background-position: 72% 5%;
   background-repeat: no-repeat;
   opacity: 0.60;
-  box-shadow: 0 0 0 3px var(--color-blue);
 }
 .about-photo-frame::before {
   content: '';
@@ -1287,131 +1284,6 @@ body {
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .usp-grid { max-width: none; }
-}
-
-/* ---- Section: O mnie — Wariant B / A/B test (6.7b) ---- */
-.about2-section {
-  position: relative;
-  min-height: 90svh;
-  background-image: url('img/omniefotelgaming.png');
-  background-size: cover;
-  background-position: center 15%;
-  background-repeat: no-repeat;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-}
-
-.about2-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(15,23,42,0.10) 0%,
-    rgba(15,23,42,0.55) 45%,
-    rgba(15,23,42,0.93) 100%
-  );
-  pointer-events: none;
-}
-
-.about2-content {
-  position: relative;
-  z-index: 1;
-  padding: 5rem 6vw;
-  width: 100%;
-  max-width: 940px;
-}
-
-.about2-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.45);
-  margin-bottom: 1.5rem;
-}
-
-.about2-h2 {
-  font-size: clamp(3rem, 6vw, 6rem);
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.04em;
-  line-height: 1.04;
-  margin: 0 0 1.75rem;
-}
-
-.about2-h2-last {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.about2-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  height: 58px;
-  border-radius: 9999px;
-  background: rgba(255,255,255,0.90);
-  color: #0F172A;
-  text-decoration: none;
-  flex-shrink: 0;
-  vertical-align: middle;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-}
-.about2-pill:hover {
-  background: #FACC15;
-  transform: scale(1.1) rotate(-15deg);
-  box-shadow: 0 8px 28px rgba(250,204,21,0.45);
-}
-
-.about2-sub {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.62);
-  max-width: 50ch;
-  line-height: 1.82;
-  margin: 0 0 2.5rem;
-}
-
-.about2-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: #FACC15;
-  color: #0F172A;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 14px 28px 14px 14px;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-}
-.about2-cta:hover {
-  background: #EAB308;
-  transform: scale(1.02);
-  box-shadow: 0 8px 28px rgba(250,204,21,0.4);
-}
-
-.about2-cta-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(15,23,42,0.12);
-  flex-shrink: 0;
-}
-
-@media (max-width: 767px) {
-  .about2-section { min-height: 80svh; }
-  .about2-content { padding: 3rem 1.5rem; }
-  .about2-h2 { font-size: clamp(2.2rem, 8vw, 3.5rem); }
-  .about2-pill { width: 46px; height: 46px; }
 }
 
 /* ---- Scroll animations (IntersectionObserver) ---- */
