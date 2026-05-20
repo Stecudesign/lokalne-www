@@ -168,7 +168,7 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background-image: url('img/herov8.png');
+  background-image: url('img/herov13a.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -462,7 +462,7 @@ body {
     display: none;
   }
   .hero-heading-block {
-    background-image: url('img/herov8mobile.png');
+    background-image: url('img/herov13mobile.png');
     background-size: cover;
     background-position: center;
     margin-left: -1.5rem;
@@ -1181,6 +1181,19 @@ body {
   padding: 7rem 0;
 }
 
+.usp-layout {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.usp-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
 .usp-label {
   display: inline-block;
   font-size: 0.75rem;
@@ -1197,76 +1210,39 @@ body {
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
   line-height: 1.12;
-  max-width: 560px;
-  margin: 0 auto 1.25rem;
+  margin: 0 0 1.25rem;
 }
 
 .usp-sub {
   color: #64748B;
   font-size: 1.125rem;
-  max-width: 480px;
-  margin: 0 auto;
   line-height: 1.75;
+  margin: 0;
 }
 
 .usp-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 900px;
-  margin: 0 auto;
+  gap: 2.5rem 3rem;
 }
 
-.usp-card {
-  background: #F8FAFC;
-  border: 1px solid var(--color-border);
-  border-radius: 20px;
-  padding: 2.5rem;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-}
-.usp-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: transparent;
-  background: #fff;
-}
-
-.usp-icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: rgba(37, 99, 235, 0.08);
-  color: var(--color-blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  transition: transform 0.22s ease;
-}
-.usp-card:hover .usp-icon-box {
-  transform: scale(1.08);
-}
-
-.usp-icon-box--amber {
-  background: rgba(250, 204, 21, 0.14);
-  color: #B45309;
-}
-.usp-icon-box--navy {
-  background: rgba(26, 37, 64, 0.07);
-  color: var(--color-navy);
-}
-.usp-icon-box--green {
-  background: rgba(16, 185, 129, 0.09);
-  color: #059669;
+.usp-num {
+  display: block;
+  font-size: clamp(2.5rem, 4vw, 3.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 0.875rem;
 }
 
 .usp-title {
-  font-size: 1.1875rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
   line-height: 1.3;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .usp-desc {
@@ -1276,26 +1252,42 @@ body {
   margin: 0;
 }
 
+.usp-photo {
+  border-radius: 20px;
+  overflow: hidden;
+  align-self: stretch;
+}
+
+.usp-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px;
+}
+
 @media (max-width: 767px) {
   .usp-section { padding: 4rem 0; }
-  .usp-grid {
+  .usp-layout {
     grid-template-columns: 1fr;
-    max-width: none;
+    gap: 3rem;
   }
-  .usp-card { padding: 2rem; }
+  .usp-photo { aspect-ratio: 4 / 3; }
+  .usp-grid { gap: 2rem; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .usp-grid { max-width: none; }
+  .usp-layout { gap: 3rem; }
+  .usp-grid { gap: 2rem 2.5rem; }
 }
 
 /* ---- Section: O mnie — Wariant B / A/B test (6.7b) ---- */
 .about2-section {
   position: relative;
   min-height: 90svh;
-  background-image: url('img/omniefotelgaming.png');
+  background-image: url('img/gamingomniev2.jpg');
   background-size: cover;
-  background-position: center 15%;
+  background-position: center top;
   background-repeat: no-repeat;
   overflow: hidden;
   display: flex;
