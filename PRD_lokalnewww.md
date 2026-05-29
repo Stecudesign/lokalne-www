@@ -329,7 +329,71 @@ Subtext: "Kompleksowa obsługa od projektu po pozycjonowanie."
 
 ---
 
-### 6.5 SEKCJA: JAK WSPÓŁPRACUJEMY (ciemne tło)
+### 6.5 SEKCJA: PORTFOLIO / REALIZACJE (bardzo ciemne tło)
+
+**Tło:** `#0A0F1A` (prawie czarne, ciemniejsze niż navy) lub `#080C14`
+**Layout:** nagłówek (lewo) + slider poziomy z nawigacją (prawo) + karty projektów
+
+**Nagłówek (2 kolumny):**
+```
+Lewa strona:
+  Label (mały, muted): "Nasze realizacje"
+  H2 (duży, biały):
+    "Portfolio:
+    Showcasing Our Creativity"
+    — lub wersja PL: "Projekty, z których
+    jesteśmy dumni."
+  Styl: font-bold, tracking-tight, text-white, max-width 440px
+
+Prawa strona (górny prawy róg bloku nagłówka):
+  Przyciski prev/next — okrągłe, border: 1px solid rgba(255,255,255,0.2)
+  Ikony strzałek (chevron-left / chevron-right), kolor biały
+  Rozmiar: 44×44px, border-radius: full
+  Hover: bg-white/10
+```
+
+**Karty projektów (slider poziomy):**
+
+Każda karta `.portfolio-card`:
+
+- Rozmiar: ok. 300–360px szerokości, proporcje 4:3 lub 3:4
+- Zdjęcie/mockup strony — `object-fit: cover`, `border-radius: 16px`
+- Dolny pasek (overlay gradient `linear-gradient(transparent, rgba(0,0,0,0.7))`):
+  - Nazwa projektu: `font-600, text-white, text-lg`
+  - Typ/rok: `text-sm, text-slate-400`
+- Hover:
+  - Ikona strzałki `↗` w kółku (40×40px, bg-white, kolor czarny) pojawia się w lewym dolnym rogu karty
+  - `opacity 0→1`, `scale 0.8→1`, transition 200ms
+  - Lekkie `scale(1.02)` na zdjęciu
+
+**Slider:**
+
+- Przewijanie poziome — `overflow-x: scroll` lub JS drag-scroll
+- Snap: `scroll-snap-type: x mandatory`, każda karta `scroll-snap-align: start`
+- Gap między kartami: 20px
+- Padding lewy = wyrównanie do kontenera
+
+**Przykładowe projekty (placeholdery do czasu dostarczenia screenshotów):**
+
+| # | Nazwa projektu | Typ | Rok |
+| --- | --- | --- | --- |
+| 1 | Salon Fryzjerski Kowalska | Strona WWW | 2025 |
+| 2 | Pizzeria Da Vinci | Strona + Menu online | 2025 |
+| 3 | Sklep Budowlany Nowak | Sklep WooCommerce | 2025 |
+| 4 | Gabinet Fizjoterapii | Landing page | 2026 |
+| 5 | Szkoła Pływania Aqua | Strona + rezerwacje | 2026 |
+
+**Obrazy kart:** docelowo screenshoty/mockupy z `img/portfolio/` — na start placeholder z `img/barbermockup.png`, `img/szkolaplywaniamockup.png`
+
+**Subline pod sliderem (opcjonalnie):**
+```
+"Wszystkie realizacje tworzone z troską o szczegóły i wyniki."
+— text-sm, text-slate-500, text-center, margin-top 2rem
+```
+
+---
+
+### 6.6 SEKCJA: JAK WSPÓŁPRACUJEMY (ciemne tło)
 
 **Tło:** `bg-slate-900`
 **Layout:** nagłówek + timeline/numerowane kroki (1 kolumna lub 2 kolumny desktop)

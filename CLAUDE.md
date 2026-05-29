@@ -39,6 +39,7 @@ PRD_lokalnewww.md
 | `#hero` | tło `img/herov8.png` + overlay `rgba(255,255,255,0.2)`, treść do lewej | ✅ gotowe |
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC`, 3 karty w gridzie | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient, 6 kafli | ✅ gotowe |
+| `#realizacje` | `.portfolio-section` — tło `#080C14`, slider poziomy 5 kart, prev/next + drag-scroll | ✅ gotowe |
 | `#proces` | `.process-section` — tło `#0F172A`, 4 kroki z numerami | ✅ gotowe |
 | `#wyrozniam-sie` | `.usp-section` — tło `#fff`, 2×2 grid kart | ✅ gotowe |
 | `#o-mnie` | `.about-section` — tło `#1A2540`, 2 kolumny foto+tekst | ✅ gotowe |
