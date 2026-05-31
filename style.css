@@ -230,7 +230,7 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background-image: url('img/hero14.webp');
+  background-image: url('img/heronewv2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -516,7 +516,7 @@ body {
 
   /* Hero: pełny ekran z obrazkiem, treść na obrazku */
   #hero {
-    background-image: url('img/hero14.webp');
+    background-image: url('img/heronewv2.png');
     display: flex;
     align-items: flex-end;
     min-height: 85svh;
@@ -1349,7 +1349,7 @@ body {
 .about2-section {
   position: relative;
   min-height: 90svh;
-  background-image: url('img/gamingomniev2.jpg');
+  background-image: url('img/omniev2.webp');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -1363,9 +1363,9 @@ body {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(15,23,42,0.10) 0%,
-    rgba(15,23,42,0.55) 45%,
-    rgba(15,23,42,0.93) 100%
+    rgba(15,23,42,0.38) 0%,
+    rgba(15,23,42,0.68) 50%,
+    rgba(15,23,42,0.92) 100%
   );
   pointer-events: none;
 }
