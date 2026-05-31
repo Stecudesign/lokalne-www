@@ -40,7 +40,7 @@
             sans: ['Inter', 'sans-serif'],
           },
           maxWidth: {
-            container: '1200px',
+            container: '1440px',
           }
         }
       }
@@ -238,73 +238,151 @@
       <span class="services-label">Nasze Usługi</span>
       <h2 class="services-h2">Wszystko, czego potrzebuje Twoja firma.</h2>
       <p class="services-sub">Od projektu po wdrożenie - kompleksowa obsługa w jednym miejscu.</p>
+      <div class="bento-ab-toggle">
+        <button class="ab-btn ab-btn--active" data-bento="a">Wersja A</button>
+        <button class="ab-btn" data-bento="b">Wersja B ✦</button>
+      </div>
     </div>
 
-    <!-- Bento Grid -->
-    <div class="bento-grid fade-up" style="transition-delay:120ms;">
+    <!-- Bento Grid — Wersja A -->
+    <div id="bento-variant-a">
+      <div class="bento-grid fade-up" style="transition-delay:120ms;">
 
-      <!-- Tile 1 -->
-      <div class="bento-tile bento-tile-1">
-        <div class="bento-copy">
-          <h3 class="bento-title">Strony internetowe</h3>
-          <p class="bento-desc">Nowoczesne strony firmowe, landing page i wizytówki online.</p>
+        <!-- Tile 1 -->
+        <div class="bento-tile bento-tile-1">
+          <div class="bento-copy">
+            <h3 class="bento-title">Strony internetowe</h3>
+            <p class="bento-desc">Nowoczesne strony firmowe, landing page i wizytówki online.</p>
+          </div>
+          <a href="#kontakt" class="bento-cta">
+            <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+            Porozmawiajmy
+          </a>
+          <img src="img/bento-stronyinternetowe.png" alt="" class="bento-tile1-deco" loading="lazy">
         </div>
-        <a href="#kontakt" class="bento-cta">
-          <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </span>
-          Porozmawiajmy
-        </a>
-        <img src="img/bento-stronyinternetowe.png" alt="" class="bento-tile1-deco" loading="lazy">
+
+        <!-- Tile 2 -->
+        <div class="bento-tile bento-tile-2">
+          <div class="bento-copy">
+            <h3 class="bento-title">Responsywność</h3>
+            <p class="bento-desc">Strona wygląda dobrze na telefonie, tablecie i komputerze.</p>
+          </div>
+        </div>
+
+        <!-- Tile 3 -->
+        <div class="bento-tile bento-tile-3">
+          <div class="bento-copy">
+            <h3 class="bento-title">SEO</h3>
+            <p class="bento-desc">Podstawowa optymalizacja pod Google już na etapie budowy strony.</p>
+          </div>
+          <div class="bento-deco-wrap bento-tile3-deco">
+            <img src="img/bento-seo.png" alt="" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Tile 4 -->
+        <div class="bento-tile bento-tile-4">
+          <div class="bento-copy">
+            <h3 class="bento-title">Opieka nad stroną</h3>
+            <p class="bento-desc">Aktualizacje, poprawki i rozwój istniejących stron.</p>
+          </div>
+          <div class="bento-deco-wrap bento-tile4-deco">
+            <img src="img/obslugawww.png" alt="" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Tile 5 -->
+        <div class="bento-tile bento-tile-5">
+          <div class="bento-copy">
+            <h3 class="bento-title">Analityka Google</h3>
+            <p class="bento-desc">Podpięcie Google Analytics i mierzenie ruchu na stronie.</p>
+          </div>
+        </div>
+
+        <!-- Tile 6 -->
+        <div class="bento-tile bento-tile-6">
+          <div class="bento-copy">
+            <h3 class="bento-title">Indywidualny design</h3>
+            <p class="bento-desc">Projekt dopasowany do marki, a nie gotowy szablon „jak każdy".</p>
+          </div>
+        </div>
+
       </div>
-
-      <!-- Tile 2 -->
-      <div class="bento-tile bento-tile-2">
-        <div class="bento-copy">
-          <h3 class="bento-title">Responsywność</h3>
-          <p class="bento-desc">Strona wygląda dobrze na telefonie, tablecie i komputerze.</p>
-        </div>
-      </div>
-
-      <!-- Tile 3 -->
-      <div class="bento-tile bento-tile-3">
-        <div class="bento-copy">
-          <h3 class="bento-title">SEO</h3>
-          <p class="bento-desc">Podstawowa optymalizacja pod Google już na etapie budowy strony.</p>
-        </div>
-        <div class="bento-deco-wrap bento-tile3-deco">
-          <img src="img/bento-seo.png" alt="" loading="lazy">
-        </div>
-      </div>
-
-      <!-- Tile 4 -->
-      <div class="bento-tile bento-tile-4">
-        <div class="bento-copy">
-          <h3 class="bento-title">Opieka nad stroną</h3>
-          <p class="bento-desc">Aktualizacje, poprawki i rozwój istniejących stron.</p>
-        </div>
-        <div class="bento-deco-wrap bento-tile4-deco">
-          <img src="img/obslugawww.png" alt="" loading="lazy">
-        </div>
-      </div>
-
-      <!-- Tile 5 -->
-      <div class="bento-tile bento-tile-5">
-        <div class="bento-copy">
-          <h3 class="bento-title">Analityka Google</h3>
-          <p class="bento-desc">Podpięcie Google Analytics i mierzenie ruchu na stronie.</p>
-        </div>
-      </div>
-
-      <!-- Tile 6 -->
-      <div class="bento-tile bento-tile-6">
-        <div class="bento-copy">
-          <h3 class="bento-title">Indywidualny design</h3>
-          <p class="bento-desc">Projekt dopasowany do marki, a nie gotowy szablon „jak każdy".</p>
-        </div>
-      </div>
-
     </div>
+
+    <!-- Bento Grid — Wersja B -->
+    <div id="bento-variant-b" style="display:none;">
+      <div class="bento2-grid fade-up" style="transition-delay:120ms;">
+
+        <!-- B · Tile 1 — SEO: tekst góra / obraz dół -->
+        <div class="bento2-tile bento2-tile-1">
+          <div class="bento2-t1-text">
+            <h3 class="bento2-title">SEO</h3>
+            <p class="bento2-desc">Podstawowa optymalizacja pod Google już na etapie budowy strony.</p>
+          </div>
+          <div class="bento2-t1-visual">
+            <img src="img/bento-seo.png" alt="" loading="lazy">
+          </div>
+        </div>
+
+        <!-- B · Tile 2 — Strony internetowe: styl wersji A -->
+        <div class="bento2-tile bento2-tile-2">
+          <div class="bento2-copy">
+            <h3 class="bento2-title">Strony internetowe</h3>
+            <p class="bento2-desc">Nowoczesne strony firmowe, landing page i wizytówki online.</p>
+          </div>
+          <a href="#kontakt" class="bento2-cta">
+            <span class="bento2-cta-icon" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+            Porozmawiajmy
+          </a>
+          <img src="img/bento-stronyinternetowe.png" alt="" class="bento2-tile2-deco" loading="lazy">
+        </div>
+
+        <!-- B · Tile 3 — Indywidualny design -->
+        <div class="bento2-tile bento2-tile-3">
+          <div class="bento2-copy">
+            <h3 class="bento2-title">Indywidualny design</h3>
+            <p class="bento2-desc">Projekt dopasowany do marki, a nie gotowy szablon „jak każdy".</p>
+          </div>
+        </div>
+
+        <!-- B · Tile 4 — Responsywność -->
+        <div class="bento2-tile bento2-tile-4">
+          <div class="bento2-copy">
+            <h3 class="bento2-title">Responsywność</h3>
+            <p class="bento2-desc">Strona wygląda dobrze na telefonie, tablecie i komputerze.</p>
+          </div>
+        </div>
+
+        <!-- B · Tile 5 — Opieka nad stroną: tekst góra / obraz dół -->
+        <div class="bento2-tile bento2-tile-5">
+          <div class="bento2-copy">
+            <h3 class="bento2-title">Opieka nad stroną</h3>
+            <p class="bento2-desc">Aktualizacje, poprawki i rozwój istniejących stron.</p>
+          </div>
+          <div class="bento2-t5-visual">
+            <img src="img/opiekawww.png" alt="" loading="lazy">
+          </div>
+        </div>
+
+        <!-- B · Tile 6 — Analityka Google -->
+        <div class="bento2-tile bento2-tile-6">
+          <div class="bento2-copy">
+            <h3 class="bento2-title">Analityka Google</h3>
+            <p class="bento2-desc">Podpięcie Google Analytics i mierzenie ruchu na stronie.</p>
+          </div>
+          <div class="bento2-t6-visual">
+            <img src="img/googleanalytics.png" alt="" loading="lazy">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -721,7 +799,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. Smooth scroll dla anchor linków
+  // 6. Bento A/B toggle
+  document.querySelectorAll('.ab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const variant = btn.dataset.bento;
+      document.querySelectorAll('.ab-btn').forEach(b => b.classList.remove('ab-btn--active'));
+      btn.classList.add('ab-btn--active');
+      const vA = document.getElementById('bento-variant-a');
+      const vB = document.getElementById('bento-variant-b');
+      if (vA) vA.style.display = variant === 'a' ? '' : 'none';
+      if (vB) vB.style.display = variant === 'b' ? '' : 'none';
+    });
+  });
+
+  // 7. Smooth scroll dla anchor linków
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
       const target = document.querySelector(link.getAttribute('href'));
