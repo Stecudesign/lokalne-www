@@ -230,7 +230,7 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background-image: url('img/heronewv2.png');
+  background-image: url('img/heronewv3a.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -256,6 +256,11 @@ body {
 .hero-sub {
   max-width: 520px;
   line-height: 1.75;
+  color: #475569;
+}
+
+.hero-mobile-img {
+  display: none;
 }
 
 .btn-hero-brand {
@@ -514,20 +519,25 @@ body {
     font-size: 1.25rem;
   }
 
-  /* Hero: pełny ekran z obrazkiem, treść na obrazku */
+  /* Hero: tekst nad obrazkiem */
   #hero {
-    background-image: url('img/heronewv2.png');
-    display: flex;
-    align-items: flex-end;
-    min-height: 85svh;
+    background-image: none;
+    display: block;
+    min-height: unset;
     margin-top: 0;
+    overflow: hidden;
   }
   #hero::before {
-    display: block;
-    background: rgba(255, 255, 255, 0.45);
+    display: none;
   }
   .hero-heading-block {
     display: none;
+  }
+  .hero-mobile-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: -22%;
   }
   .hero-h1 {
     text-align: left;
@@ -540,8 +550,8 @@ body {
   }
   .hero-text {
     max-width: 100%;
-    padding-top: 6rem;
-    padding-bottom: 3rem;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
   }
   .benefit-grid {
     grid-template-columns: 1fr;
@@ -636,7 +646,7 @@ body {
   flex: 1;
 }
 .bento-title {
-  font-size: 1.125rem;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #0F172A;
@@ -644,18 +654,16 @@ body {
   margin-bottom: 8px;
 }
 .bento-desc {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
   line-height: 1.72;
 }
 
 /* Tile 1 — hero (big) */
 .bento-tile-1 .bento-title {
-  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
   margin-bottom: 12px;
 }
 .bento-tile-1 .bento-desc {
-  font-size: 1rem;
   max-width: 36ch;
 }
 .bento-tile1-deco {
