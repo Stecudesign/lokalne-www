@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System — lokalnewww.pl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] } } }
+    }
+  </script>
+  <style>
+    :root {
+      --color-navy:        #1A2540;
+      --color-navy-mid:    #243155;
+      --color-blue:        #2563EB;
+      --color-blue-light:  #60A5FA;
+      --color-yellow:      #FACC15;
+      --color-yellow-dark: #EAB308;
+      --color-text-primary:   #0F172A;
+      --color-text-secondary: #475569;
+      --color-text-muted:     #94A3B8;
+      --color-border:      #E2E8F0;
+      --color-bg-light:    #F8FAFC;
+      --color-bg-white:    #FFFFFF;
+      --shadow-sm:  0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+      --shadow-md:  0 4px 16px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.05);
+      --shadow-lg:  0 12px 40px rgba(15,23,42,0.12), 0 4px 12px rgba(15,23,42,0.07);
+      --shadow-blue: 0 8px 32px rgba(37,99,235,0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--color-bg-light);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────── */
+    .ds-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ─────────────────────────────────────── */
+    .ds-sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: #fff;
+      border-right: 1px solid var(--color-border);
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border) transparent;
+    }
+    .ds-sidebar::-webkit-scrollbar { width: 4px; }
+    .ds-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .ds-sidebar::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
+
+    .ds-sidebar-header {
+      padding: 24px 20px 16px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ds-sidebar-header img { width: 32px; height: 32px; }
+    .ds-sidebar-logo-text { font-size: 0.875rem; font-weight: 700; color: var(--color-text-primary); letter-spacing: -0.02em; }
+    .ds-sidebar-logo-text span { color: var(--color-text-muted); font-weight: 400; }
+    .ds-sidebar-badge {
+      margin-left: auto;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-blue);
+      background: rgba(37,99,235,0.08);
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+
+    .ds-nav { padding: 12px 0; }
+    .ds-nav-group { margin-bottom: 4px; }
+    .ds-nav-group-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-text-muted);
+      padding: 10px 20px 6px;
+      display: block;
+    }
+    .ds-nav-link {
+      display: block;
+      padding: 7px 20px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .ds-nav-link:hover { color: var(--color-text-primary); background: var(--color-bg-light); }
+    .ds-nav-link.active {
+      color: var(--color-blue);
+      border-left-color: var(--color-blue);
+      background: rgba(37,99,235,0.04);
+      font-weight: 600;
+    }
+
+    /* ─── MAIN ─────────────────────────────────────────── */
+    .ds-main {
+      padding: 48px 56px;
+      max-width: 960px;
+    }
+
+    /* ─── DS SECTION CARD ──────────────────────────────── */
+    .ds-section {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .ds-section.visible { opacity: 1; transform: translateY(0); }
+
+    .ds-section-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--color-blue);
+      margin-bottom: 8px;
+    }
+    .ds-section-title {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--color-text-primary);
+      margin: 0 0 8px;
+      line-height: 1.15;
+    }
+    .ds-section-desc {
+      color: var(--color-text-secondary);
+      font-size: 0.9375rem;
+      line-height: 1.75;
+      margin: 0 0 32px;
+      max-width: 600px;
+    }
+    .ds-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 28px 0;
+    }
+
+    /* ─── COLORS ────────────────────────────────────────── */
+    .ds-color-group { margin-bottom: 28px; }
+    .ds-color-group-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      margin-bottom: 14px;
+    }
+    .ds-color-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+    .ds-color-item { display: flex; flex-direction: column; gap: 10px; min-width: 120px; }
+    .ds-color-swatch {
+      width: 100%;
+      height: 80px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .ds-color-meta { display: flex; flex-direction: column; gap: 2px; }
+    .ds-color-hex { font-size: 0.8125rem; font-weight: 700; color: var(--color-text-primary); font-family: 'Fira Code', monospace; }
+    .ds-color-var { font-size: 0.6875rem; color: var(--color-text-muted); font-family: 'Fira Code', monospace; }
+    .ds-color-desc { font-size: 0.6875rem; color: var(--color-text-secondary); line-height: 1.5; }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────── */
+    .ds-type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .ds-type-row:last-child { border-bottom: none; }
+    .ds-type-example { flex: 1; }
+    .ds-type-meta {
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px 0;
+    }
+    .ds-type-tag { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-blue); }
+    .ds-type-specs { font-size: 0.6875rem; color: var(--color-text-muted); font-family: 'Fira Code', monospace; line-height: 1.7; }
+
+    /* ─── SPACING ───────────────────────────────────────── */
+    .ds-spacing-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(226,232,240,0.5);
+    }
+    .ds-spacing-row:last-child { border-bottom: none; }
+    .ds-spacing-label { min-width: 80px; font-family: 'Fira Code', monospace; font-size: 0.8125rem; color: var(--color-text-muted); }
+    .ds-spacing-bar-wrap { flex: 1; height: 20px; display: flex; align-items: center; }
+    .ds-spacing-bar { height: 8px; background: var(--color-blue); border-radius: 4px; opacity: 0.7; }
+    .ds-spacing-rem { min-width: 60px; font-size: 0.75rem; color: var(--color-text-secondary); font-family: 'Fira Code', monospace; }
+
+    /* ─── ICONS ─────────────────────────────────────────── */
+    .ds-icon-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+    .ds-icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .ds-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(37,99,235,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-blue);
+      transition: background 0.15s, transform 0.15s;
+    }
+    .ds-icon-box:hover { background: rgba(37,99,235,0.14); transform: scale(1.05); }
+    .ds-icon-name { font-size: 0.625rem; color: var(--color-text-muted); text-align: center; font-family: 'Fira Code', monospace; }
+
+    /* ─── SHADOWS ───────────────────────────────────────── */
+    .ds-shadow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .ds-shadow-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .ds-shadow-name { font-size: 0.75rem; font-weight: 700; color: var(--color-text-primary); }
+    .ds-shadow-var { font-size: 0.625rem; color: var(--color-text-muted); font-family: 'Fira Code', monospace; text-align: center; }
+
+    /* ─── DEMO AREA ─────────────────────────────────────── */
+    .ds-demo {
+      background: var(--color-bg-light);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .ds-demo--dark {
+      background: var(--color-navy);
+      border-color: rgba(255,255,255,0.1);
+    }
+    .ds-demo--center { justify-content: center; align-items: center; }
+
+    /* ─── COMPONENT VARIANTS GRID ───────────────────────── */
+    .ds-variants {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* ─── ANATOMY TABLE ─────────────────────────────────── */
+    .ds-anatomy {
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .ds-anatomy table { width: 100%; border-collapse: collapse; }
+    .ds-anatomy th {
+      background: var(--color-bg-light);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .ds-anatomy td {
+      font-size: 0.8125rem;
+      color: var(--color-text-secondary);
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(226,232,240,0.5);
+      vertical-align: top;
+    }
+    .ds-anatomy tr:last-child td { border-bottom: none; }
+    .ds-anatomy td:first-child { font-family: 'Fira Code', monospace; color: var(--color-blue); font-size: 0.75rem; }
+    .ds-anatomy td:nth-child(2) { font-weight: 600; color: var(--color-text-primary); }
+
+    /* ─── DO / DON'T ────────────────────────────────────── */
+    .ds-dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .ds-do, .ds-dont {
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .ds-do { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+    .ds-dont { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); }
+    .ds-do-label, .ds-dont-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .ds-do-label { color: #059669; }
+    .ds-dont-label { color: #DC2626; }
+    .ds-do ul, .ds-dont ul { margin: 0; padding: 0 0 0 16px; }
+    .ds-do li, .ds-dont li { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.7; }
+
+    /* ─── CODE BLOCK ────────────────────────────────────── */
+    .ds-code-wrap { position: relative; margin-bottom: 20px; }
+    .ds-code-wrap pre {
+      background: #0F172A;
+      color: #F1F5F9;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 0;
+      tab-size: 2;
+    }
+    .ds-copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(241,245,249,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ds-copy-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+    .ds-copy-btn.copied { background: rgba(16,185,129,0.25); color: #34D399; border-color: rgba(16,185,129,0.3); }
+
+    /* ─── BUTTONS (component demos) ─────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-yellow);
+      color: #0F172A;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 28px 10px 10px;
+      border-radius: 9999px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { background: var(--color-yellow-dark); transform: scale(1.02); box-shadow: 0 8px 24px rgba(250,204,21,0.4); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--color-text-primary);
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 14px 24px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--color-border);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-ghost:hover { border-color: var(--color-blue); color: var(--color-blue); }
+    .btn-ghost:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; }
+    .btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-yellow);
+      color: #0F172A;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      padding: 7px 18px 7px 7px;
+      border-radius: 9999px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+    }
+    .btn-nav-brand:hover { background: var(--color-yellow-dark); transform: scale(1.03); box-shadow: 0 4px 18px rgba(250,204,21,0.45); }
+
+    .btn-about-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-yellow);
+      color: #0F172A;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 12px 28px 12px 12px;
+      border-radius: 9999px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background 0.15s, gap 0.2s;
+    }
+    .btn-about-cta:hover { background: var(--color-yellow-dark); gap: 16px; }
+
+    .btn-cta-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(15,23,42,0.12);
+      flex-shrink: 0;
+    }
+    .btn-cta-icon--sm { width: 26px; height: 26px; }
+
+    /* ─── BENEFIT CARD (demo) ────────────────────────────── */
+    .benefit-card-demo {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 28px;
+      min-width: 200px;
+      max-width: 260px;
+      transition: background 0.22s;
+      cursor: default;
+    }
+    .benefit-card-demo:hover { background: var(--color-bg-light); }
+    .benefit-card-demo:hover .benefit-arrow-demo { background: #0F172A; border-color: #0F172A; color: #fff; }
+    .benefit-card-top-demo { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+    .benefit-title-demo { font-size: 1.1rem; font-weight: 700; color: var(--color-text-primary); letter-spacing: -0.02em; }
+    .benefit-arrow-demo {
+      flex-shrink: 0;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1.5px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      transition: background 0.22s, border-color 0.22s, color 0.22s;
+    }
+    .benefit-arrow-demo--featured { background: var(--color-blue); border-color: var(--color-blue); color: #fff; }
+    .benefit-desc-demo { color: var(--color-text-secondary); font-size: 0.875rem; line-height: 1.75; }
+
+    /* ─── BENTO TILE (demo) ──────────────────────────────── */
+    .bento-tile-demo {
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid var(--color-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .bento-tile-demo--blue { background: var(--color-blue); border-color: var(--color-blue); }
+    .bento-num-demo { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; color: #CBD5E1; text-transform: uppercase; margin-bottom: 12px; }
+    .bento-tile-demo--blue .bento-num-demo { color: rgba(255,255,255,0.3); }
+    .bento-title-demo { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; color: #0F172A; margin-bottom: 8px; }
+    .bento-tile-demo--blue .bento-title-demo { color: #fff; }
+    .bento-desc-demo { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.72; }
+    .bento-tile-demo--blue .bento-desc-demo { color: rgba(255,255,255,0.65); }
+    .bento-cta-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 7px 18px 7px 7px;
+      border-radius: 9999px;
+      background: var(--color-yellow);
+      color: #0F172A;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      align-self: flex-start;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .bento-cta-demo:hover { background: var(--color-yellow-dark); transform: scale(1.02); }
+
+    /* ─── BADGE / LABEL (demo) ───────────────────────────── */
+    .ds-section-badge {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--color-blue);
+      background: rgba(37,99,235,0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .process-badge-demo {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(37,99,235,0.45);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8125rem; font-weight: 700;
+      color: var(--color-blue-light);
+    }
+    .process-badge-demo--yellow {
+      border-color: rgba(250,204,21,0.5);
+      color: var(--color-yellow);
+    }
+
+    /* ─── NAV DEMO ───────────────────────────────────────── */
+    .nav-demo-wrap {
+      background: linear-gradient(135deg, #e0eaff 0%, #f0f4ff 100%);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+    }
+    .nav-island-demo {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(20px);
+      border-radius: 100px;
+      padding: 6px 20px;
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 4px 24px rgba(15,23,42,0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .nav-link-demo {
+      padding: 7px 16px;
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #1E293B;
+      text-decoration: none;
+      transition: background 0.18s;
+    }
+    .nav-link-demo:hover { background: rgba(15,23,42,0.07); }
+
+    /* ─── PROCESS STEP (demo) ───────────────────────────── */
+    .process-step-demo {
+      background: #0F172A;
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+    .process-ghost-demo {
+      font-size: 5rem;
+      font-weight: 800;
+      color: rgba(37,99,235,0.09);
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .process-title-demo { font-size: 1rem; font-weight: 700; color: #F1F5F9; }
+    .process-desc-demo { font-size: 0.875rem; color: #64748B; line-height: 1.7; }
+
+    /* ─── USP CARD (demo) ────────────────────────────────── */
+    .usp-card-demo {
+      background: var(--color-bg-light);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 24px;
+      min-width: 180px;
+      max-width: 220px;
+      transition: background 0.22s, box-shadow 0.22s, transform 0.22s;
+      cursor: default;
+    }
+    .usp-card-demo:hover { background: #fff; box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .usp-icon-box-demo {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .usp-icon-box-demo--blue { background: rgba(37,99,235,0.08); color: var(--color-blue); }
+    .usp-icon-box-demo--amber { background: rgba(250,204,21,0.14); color: #B45309; }
+    .usp-icon-box-demo--navy { background: rgba(26,37,64,0.07); color: var(--color-navy); }
+    .usp-icon-box-demo--green { background: rgba(16,185,129,0.09); color: #059669; }
+    .usp-title-demo { font-size: 0.9375rem; font-weight: 700; color: var(--color-text-primary); margin-bottom: 6px; }
+    .usp-desc-demo { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.65; }
+
+    /* ─── PORTFOLIO CARD (demo) ──────────────────────────── */
+    .portfolio-card-demo {
+      background: #1E293B;
+      border-radius: 16px;
+      overflow: hidden;
+      min-width: 260px;
+      max-width: 300px;
+    }
+    .portfolio-img-demo {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, #334155 0%, #1E293B 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .portfolio-body-demo { padding: 20px; }
+    .portfolio-tag-demo {
+      display: inline-block;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-blue-light);
+      background: rgba(96,165,250,0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .portfolio-title-demo { font-size: 1rem; font-weight: 700; color: #F1F5F9; margin-bottom: 6px; }
+    .portfolio-desc-demo { font-size: 0.8125rem; color: #64748B; line-height: 1.65; }
+
+    /* ─── A11Y ───────────────────────────────────────────── */
+    .a11y-table { width: 100%; border-collapse: collapse; }
+    .a11y-table th {
+      background: var(--color-bg-light);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .a11y-table td {
+      padding: 10px 16px;
+      font-size: 0.8125rem;
+      color: var(--color-text-secondary);
+      border-bottom: 1px solid rgba(226,232,240,0.5);
+    }
+    .a11y-table tr:last-child td { border-bottom: none; }
+    .a11y-pass { color: #059669; font-weight: 700; }
+    .a11y-warn { color: #D97706; font-weight: 700; }
+    .a11y-fail { color: #DC2626; font-weight: 700; }
+    .a11y-swatch-pair {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ─── FOCUS DEMO ────────────────────────────────────── */
+    .focus-demo-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1.5px solid var(--color-border);
+      background: #fff;
+      font-family: inherit;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .focus-demo-btn:focus-visible {
+      outline: 2px solid var(--color-blue);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ─── MOBILE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .ds-layout { grid-template-columns: 1fr; }
+      .ds-sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .ds-nav { display: flex; padding: 8px 12px; gap: 4px; }
+      .ds-nav-group { display: contents; }
+      .ds-nav-group-label { display: none; }
+      .ds-nav-link {
+        display: inline-block;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        padding: 8px 14px;
+      }
+      .ds-nav-link.active { border-bottom-color: var(--color-blue); background: none; }
+      .ds-main { padding: 24px 16px; }
+      .ds-shadow-grid { grid-template-columns: repeat(2, 1fr); }
+      .ds-dos-donts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="ds-layout">
+
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="ds-sidebar" id="ds-sidebar">
+    <div class="ds-sidebar-header">
+      <img src="img/logopin3Dv1.png" alt="logo">
+      <span class="ds-sidebar-logo-text">lokalne<span>www.pl</span></span>
+      <span class="ds-sidebar-badge">DS v1</span>
+    </div>
+    <nav class="ds-nav" aria-label="Design System Navigation">
+      <div class="ds-nav-group">
+        <span class="ds-nav-group-label">Start</span>
+        <a class="ds-nav-link" href="#intro">Wprowadzenie</a>
+      </div>
+      <div class="ds-nav-group">
+        <span class="ds-nav-group-label">Fundamenty</span>
+        <a class="ds-nav-link" href="#colors">Kolory</a>
+        <a class="ds-nav-link" href="#typography">Typografia</a>
+        <a class="ds-nav-link" href="#spacing">Spacing</a>
+        <a class="ds-nav-link" href="#icons">Ikony</a>
+        <a class="ds-nav-link" href="#shadows">Cienie</a>
+      </div>
+      <div class="ds-nav-group">
+        <span class="ds-nav-group-label">Komponenty</span>
+        <a class="ds-nav-link" href="#buttons">Przyciski</a>
+        <a class="ds-nav-link" href="#cards">Karty Benefit</a>
+        <a class="ds-nav-link" href="#bento">Bento Tile</a>
+        <a class="ds-nav-link" href="#badges">Badge / Label</a>
+        <a class="ds-nav-link" href="#navigation">Nawigacja</a>
+        <a class="ds-nav-link" href="#process">Process Step</a>
+        <a class="ds-nav-link" href="#usp">USP Card</a>
+        <a class="ds-nav-link" href="#portfolio">Portfolio Card</a>
+      </div>
+      <div class="ds-nav-group">
+        <span class="ds-nav-group-label">Standardy</span>
+        <a class="ds-nav-link" href="#accessibility">Dostępność</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ═══════════════════ MAIN ═══════════════════════ -->
+  <main class="ds-main">
+
+    <!-- ── INTRO ── -->
+    <section class="ds-section" id="intro">
+      <p class="ds-section-label">Design System</p>
+      <h1 class="ds-section-title">lokalnewww.pl</h1>
+      <p class="ds-section-desc">Oficjalny design system marki. Służy jako jedyne źródło prawdy (Single Source of Truth) dla spójności wizualnej i technicznej wszystkich produktów.</p>
+      <hr class="ds-divider">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+        <div style="background:var(--color-bg-light);border:1px solid var(--color-border);border-radius:12px;padding:20px">
+          <div style="font-size:0.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-blue);margin-bottom:10px">Wartości marki</div>
+          <ul style="margin:0;padding:0 0 0 16px;color:var(--color-text-secondary);font-size:0.875rem;line-height:2">
+            <li>Minimalistyczny i nowoczesny</li>
+            <li>Technologiczny, ale przyjazny</li>
+            <li>Lokalność + widoczność w Google</li>
+            <li>Szybka realizacja, konkretne efekty</li>
+          </ul>
+        </div>
+        <div style="background:var(--color-bg-light);border:1px solid var(--color-border);border-radius:12px;padding:20px">
+          <div style="font-size:0.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-blue);margin-bottom:10px">Zasady komunikacji</div>
+          <ul style="margin:0;padding:0 0 0 16px;color:var(--color-text-secondary);font-size:0.875rem;line-height:2">
+            <li>Prosto i konkretnie</li>
+            <li>Bez korporacyjnego żargonu</li>
+            <li>Zrozumiałe dla właściciela salonu</li>
+            <li>Mocne, jednoznaczne CTA</li>
+          </ul>
+        </div>
+        <div style="background:var(--color-navy);border-radius:12px;padding:20px;grid-column:1/-1">
+          <div style="font-size:0.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(96,165,250,0.8);margin-bottom:8px">Przykładowe copy</div>
+          <p style="color:#F1F5F9;font-size:1rem;font-weight:600;letter-spacing:-0.01em;margin:0;line-height:1.6">„Strony internetowe, które pomagają lokalnym firmom zdobywać klientów z Google."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COLORS ── -->
+    <section class="ds-section" id="colors">
+      <p class="ds-section-label">Fundamenty</p>
+      <h2 class="ds-section-title">Kolory</h2>
+      <p class="ds-section-desc">Paleta oparta na granatach i niebieskim akcencie. Żółty zarezerwowany wyłącznie dla CTA. Wszystkie wartości dostępne jako CSS custom properties.</p>
+
+      <div class="ds-color-group">
+        <div class="ds-color-group-title">Primary</div>
+        <div class="ds-color-grid">
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#1A2540"></div>
+            <div class="ds-color-meta">
+              <span class="ds-color-hex">#1A2540</span>
+              <span class="ds-color-var">--color-navy</span>
+              <span class="ds-color-desc">Primary dark, tła sekcji, tekst na ciemnym</span>
+            </div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#243155"></div>
+            <div class="ds-color-meta">
+              <span class="ds-color-hex">#243155</span>
+              <span class="ds-color-var">--color-navy-mid</span>
+              <span class="ds-color-desc">Granat mid, gradienty, warianty</span>
+            </div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#2563EB"></div>
+            <div class="ds-color-meta">
+              <span class="ds-color-hex">#2563EB</span>
+              <span class="ds-color-var">--color-blue</span>
+              <span class="ds-color-desc">Niebieski — CTA, akcenty, ikony, linki</span>
+            </div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#60A5FA"></div>
+            <div class="ds-color-meta">
+              <span class="ds-color-hex">#60A5FA</span>
+              <span class="ds-color-var">--color-blue-light</span>
+              <span class="ds-color-desc">Jasne akcenty, proces-badge na ciemnym tle</span>
+            </div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#FACC15;border:1px solid #E2E8F0"></div>
+            <div class="ds-color-meta">
+              <span class="ds-color-hex">#FACC15</span>
+              <span class="ds-color-var">--color-yellow</span>
+              <span class="ds-color-desc">Żółty — WYŁĄCZNIE przyciski CTA, highlight hero</span>
+            </div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#EAB308;border:1px solid #E2E8F0"></div>
+            <div class="ds-color-meta">
+              <span class="ds-color-hex">#EAB308</span>
+              <span class="ds-color-var">--color-yellow-dark</span>
+              <span class="ds-color-desc">Hover na żółtych przyciskach</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-color-group">
+        <div class="ds-color-group-title">Tekst</div>
+        <div class="ds-color-grid">
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#0F172A"></div>
+            <div class="ds-color-meta"><span class="ds-color-hex">#0F172A</span><span class="ds-color-var">--color-text-primary</span><span class="ds-color-desc">Nagłówki, ważny tekst</span></div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#475569"></div>
+            <div class="ds-color-meta"><span class="ds-color-hex">#475569</span><span class="ds-color-var">--color-text-secondary</span><span class="ds-color-desc">Opisy, akapity, subteksty</span></div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#94A3B8"></div>
+            <div class="ds-color-meta"><span class="ds-color-hex">#94A3B8</span><span class="ds-color-var">--color-text-muted</span><span class="ds-color-desc">Placeholdery, labels, muted info</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-color-group">
+        <div class="ds-color-group-title">Surface & Border</div>
+        <div class="ds-color-grid">
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#F8FAFC;border:1px solid #E2E8F0"></div>
+            <div class="ds-color-meta"><span class="ds-color-hex">#F8FAFC</span><span class="ds-color-var">--color-bg-light</span><span class="ds-color-desc">Tło sekcji jasnych, tło strony DS</span></div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#FFFFFF;border:1px solid #E2E8F0"></div>
+            <div class="ds-color-meta"><span class="ds-color-hex">#FFFFFF</span><span class="ds-color-var">--color-bg-white</span><span class="ds-color-desc">Karty, kafelki, modal backgrounds</span></div>
+          </div>
+          <div class="ds-color-item" style="flex:1;min-width:100px">
+            <div class="ds-color-swatch" style="background:#E2E8F0"></div>
+            <div class="ds-color-meta"><span class="ds-color-hex">#E2E8F0</span><span class="ds-color-var">--color-border</span><span class="ds-color-desc">Bordery kart, divider, inputy</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TYPOGRAPHY ── -->
+    <section class="ds-section" id="typography">
+      <p class="ds-section-label">Fundamenty</p>
+      <h2 class="ds-section-title">Typografia</h2>
+      <p class="ds-section-desc">Font: <strong>Inter</strong> (Google Fonts, weights 300–800). Nagłówki: letter-spacing -0.03em do -0.04em dla kompresji premium. Tekst: line-height 1.7–1.75.</p>
+
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:clamp(2rem,4.5vw,3.3rem);font-weight:800;letter-spacing:-0.04em;line-height:1.08;color:var(--color-text-primary);display:block">Display</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">Display</span>
+          <span class="ds-type-specs">size: clamp(2rem, 4.5vw, 3.3rem)<br>weight: 800<br>line-height: 1.08<br>letter-spacing: -0.04em</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:2.25rem;font-weight:800;letter-spacing:-0.035em;color:var(--color-text-primary);display:block">Nagłówek H1</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">H1</span>
+          <span class="ds-type-specs">size: 2.25rem (36px)<br>weight: 800<br>line-height: 1.12<br>letter-spacing: -0.035em</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:1.875rem;font-weight:800;letter-spacing:-0.03em;color:var(--color-text-primary);display:block">Nagłówek H2</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">H2</span>
+          <span class="ds-type-specs">size: 1.875rem (30px)<br>weight: 800<br>line-height: 1.15<br>letter-spacing: -0.03em</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:1.5rem;font-weight:700;letter-spacing:-0.025em;color:var(--color-text-primary);display:block">Nagłówek H3</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">H3</span>
+          <span class="ds-type-specs">size: 1.5rem (24px)<br>weight: 700<br>line-height: 1.25<br>letter-spacing: -0.025em</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:1.25rem;font-weight:700;letter-spacing:-0.02em;color:var(--color-text-primary);display:block">Nagłówek H4</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">H4</span>
+          <span class="ds-type-specs">size: 1.25rem (20px)<br>weight: 700<br>line-height: 1.3<br>letter-spacing: -0.02em</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:1.125rem;font-weight:400;line-height:1.75;color:var(--color-text-secondary);display:block">Tekst body-lg — opisy sekcji, podtytuły pod nagłówkami H2.</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">Body LG</span>
+          <span class="ds-type-specs">size: 1.125rem (18px)<br>weight: 400<br>line-height: 1.75</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:1rem;font-weight:400;line-height:1.7;color:var(--color-text-secondary);display:block">Tekst body — podstawowy akapit, opisy kart i kafelków. Czytelny na każdym tle.</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">Body</span>
+          <span class="ds-type-specs">size: 1rem (16px)<br>weight: 400<br>line-height: 1.7</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:0.875rem;font-weight:400;line-height:1.65;color:var(--color-text-secondary);display:block">Tekst body-sm — opisy pomocnicze, metadane, tekst w kartach portfolio.</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">Body SM</span>
+          <span class="ds-type-specs">size: 0.875rem (14px)<br>weight: 400<br>line-height: 1.65</span>
+        </div>
+      </div>
+      <div class="ds-type-row">
+        <div class="ds-type-example">
+          <span style="font-size:0.75rem;font-weight:400;line-height:1.6;color:var(--color-text-muted);display:block">Caption — stopka, podpisy zdjęć, drobne metadane.</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">Caption</span>
+          <span class="ds-type-specs">size: 0.75rem (12px)<br>weight: 400<br>line-height: 1.6</span>
+        </div>
+      </div>
+      <div class="ds-type-row" style="border-bottom:none">
+        <div class="ds-type-example">
+          <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:var(--color-blue);display:block">LABEL UPPERCASE</span>
+        </div>
+        <div class="ds-type-meta">
+          <span class="ds-type-tag">Label</span>
+          <span class="ds-type-specs">size: 0.75rem (12px)<br>weight: 700<br>text-transform: uppercase<br>letter-spacing: 0.14em</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SPACING ── -->
+    <section class="ds-section" id="spacing">
+      <p class="ds-section-label">Fundamenty</p>
+      <h2 class="ds-section-title">Spacing</h2>
+      <p class="ds-section-desc">System oparty na wielokrotnościach 4px. Padding sekcji: <code style="font-family:monospace;background:var(--color-bg-light);padding:2px 6px;border-radius:4px;font-size:0.8em">7rem 0</code> (desktop), <code style="font-family:monospace;background:var(--color-bg-light);padding:2px 6px;border-radius:4px;font-size:0.8em">4rem 0</code> (mobile). Max-width kontenera: 1200px.</p>
+      <div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">4px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:4px"></div></div><span class="ds-spacing-rem">0.25rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Gap drobnych elementów (ikon, liter)</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">8px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:8px"></div></div><span class="ds-spacing-rem">0.5rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Gap w przyciskach, między ikoną a tekstem</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">12px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:12px"></div></div><span class="ds-spacing-rem">0.75rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding mały, gap kart</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">16px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:16px"></div></div><span class="ds-spacing-rem">1rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Podstawowy padding inline</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">24px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:24px"></div></div><span class="ds-spacing-rem">1.5rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding kart, gap w nawigacji</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">32px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:32px"></div></div><span class="ds-spacing-rem">2rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Gap między komponentami, padding sekcji sub</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">40px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:40px"></div></div><span class="ds-spacing-rem">2.5rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding kart benefit</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">48px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:48px"></div></div><span class="ds-spacing-rem">3rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding sekcji mobile</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">64px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:64px"></div></div><span class="ds-spacing-rem">4rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding sekcji mobile (7rem → 4rem)</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">80px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:80px"></div></div><span class="ds-spacing-rem">5rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding sekcji benefit</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">96px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:96px"></div></div><span class="ds-spacing-rem">6rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding sekcji standard</span></div>
+        <div class="ds-spacing-row"><span class="ds-spacing-label">112px</span><div class="ds-spacing-bar-wrap"><div class="ds-spacing-bar" style="width:112px"></div></div><span class="ds-spacing-rem">7rem</span><span style="font-size:0.75rem;color:var(--color-text-muted)">Padding sekcji desktop (główny)</span></div>
+      </div>
+    </section>
+
+    <!-- ── ICONS ── -->
+    <section class="ds-section" id="icons">
+      <p class="ds-section-label">Fundamenty</p>
+      <h2 class="ds-section-title">Ikony</h2>
+      <p class="ds-section-desc">SVG inline, liniowe, zaokrąglone. Rozmiar stroke: 1.5–2px. Zawsze osadzone w box-ie z zaokrąglonym tłem. Dostępne warianty kolorystyczne box-a.</p>
+      <div class="ds-icon-grid">
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <span class="ds-icon-name">map-pin</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2a2.87 2.87 0 0 0-3-3z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></div>
+          <span class="ds-icon-name">rocket</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+          <span class="ds-icon-name">search</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
+          <span class="ds-icon-name">smartphone</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <span class="ds-icon-name">shield-check</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <span class="ds-icon-name">clock</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          <span class="ds-icon-name">arrow-right</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <span class="ds-icon-name">check-circle</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box" style="background:rgba(239,68,68,0.08);color:#DC2626"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></div>
+          <span class="ds-icon-name">x-circle</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box" style="background:rgba(250,204,21,0.14);color:#B45309"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <span class="ds-icon-name">star</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <span class="ds-icon-name">zap</span>
+        </div>
+        <div class="ds-icon-item">
+          <div class="ds-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <span class="ds-icon-name">eye</span>
+        </div>
+      </div>
+      <hr class="ds-divider">
+      <p style="font-size:0.875rem;color:var(--color-text-secondary);margin:0">Warianty box-a: <strong>blue</strong> (default), <strong>amber</strong> (żółte akcenty), <strong>navy</strong> (ciemne tło), <strong>green</strong> (potwierdzenia, sukces), <strong>red</strong> (błędy, ostrzeżenia).</p>
+    </section>
+
+    <!-- ── SHADOWS ── -->
+    <section class="ds-section" id="shadows">
+      <p class="ds-section-label">Fundamenty</p>
+      <h2 class="ds-section-title">Cienie</h2>
+      <p class="ds-section-desc">4-poziomowy system głębokości. Cienie zawsze na podstawie koloru <code style="font-family:monospace;background:var(--color-bg-light);padding:2px 6px;border-radius:4px;font-size:0.8em">rgba(15,23,42,...)</code> — spójne z ciemnym tekstem navy.</p>
+      <div class="ds-shadow-grid">
+        <div class="ds-shadow-card" style="border:1px solid var(--color-border)">
+          <span style="font-size:1.5rem">—</span>
+          <span class="ds-shadow-name">Brak cienia</span>
+          <span class="ds-shadow-var">box-shadow: none</span>
+        </div>
+        <div class="ds-shadow-card" style="box-shadow:var(--shadow-sm)">
+          <span style="font-size:1.5rem">◻</span>
+          <span class="ds-shadow-name">shadow-sm</span>
+          <span class="ds-shadow-var">--shadow-sm</span>
+        </div>
+        <div class="ds-shadow-card" style="box-shadow:var(--shadow-md)">
+          <span style="font-size:1.5rem">◼</span>
+          <span class="ds-shadow-name">shadow-md</span>
+          <span class="ds-shadow-var">--shadow-md</span>
+        </div>
+        <div class="ds-shadow-card" style="box-shadow:var(--shadow-lg)">
+          <span style="font-size:1.5rem">⬛</span>
+          <span class="ds-shadow-name">shadow-lg</span>
+          <span class="ds-shadow-var">--shadow-lg</span>
+        </div>
+      </div>
+      <hr class="ds-divider">
+      <div class="ds-shadow-card" style="box-shadow:var(--shadow-blue);border:1px solid rgba(37,99,235,0.1);background:rgba(37,99,235,0.03);margin-top:4px;flex-direction:row;display:flex;justify-content:space-between;align-items:center;padding:16px 24px">
+        <span class="ds-shadow-name">shadow-blue — dla CTA buttonów i kart wyróżnionych</span>
+        <span class="ds-shadow-var" style="color:var(--color-blue)">--shadow-blue</span>
+      </div>
+    </section>
+
+    <!-- ── BUTTONS ── -->
+    <section class="ds-section" id="buttons">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Przyciski</h2>
+      <p class="ds-section-desc">4 warianty przycisku. <strong>btn-primary</strong> i <strong>btn-nav-brand</strong> — żółty fill. <strong>btn-ghost</strong> — kontur, hover niebieski. Wszystkie przyciski: pill (border-radius: 9999px), font Inter, pełna obsługa stanów klawiatury.</p>
+
+      <div class="ds-demo">
+        <button class="btn-primary"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Bezpłatna konsultacja</button>
+        <button class="btn-ghost">Zobacz realizacje <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        <button class="btn-nav-brand"><span class="btn-cta-icon btn-cta-icon--sm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Napisz do mnie</button>
+      </div>
+
+      <div class="ds-demo ds-demo--dark">
+        <button class="btn-about-cta"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Skontaktuj się</button>
+      </div>
+
+      <p style="font-size:0.75rem;color:var(--color-text-muted);margin:0 0 20px">↑ btn-about-cta na tle --color-navy (animacja gap na hover)</p>
+
+      <h3 style="font-size:0.875rem;font-weight:700;color:var(--color-text-primary);margin:0 0 12px">Stany btn-primary</h3>
+      <div class="ds-demo" style="flex-direction:column;gap:12px;align-items:flex-start">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-primary"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Default</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— normalny stan</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-primary" style="background:var(--color-yellow-dark);transform:scale(1.02);box-shadow:0 8px 24px rgba(250,204,21,0.4)"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Hover</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— yellow-dark, scale(1.02), shadow</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-primary" style="outline:2px solid var(--color-blue);outline-offset:3px"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Focus</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— :focus-visible, outline 2px blue</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-primary" disabled><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Disabled</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— opacity: 0.4, cursor: not-allowed</span>
+        </div>
+      </div>
+
+      <div class="ds-anatomy">
+        <table>
+          <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
+          <tbody>
+            <tr><td>.btn-cta-icon</td><td>Ikona-kółko</td><td>Okrągły kontener ikony SVG, background rgba(15,23,42,0.12)</td></tr>
+            <tr><td>tekst</td><td>Etykieta</td><td>Font 700 (primary, nav-brand) lub 500 (ghost), white-space: nowrap</td></tr>
+            <tr><td>padding</td><td>Padding</td><td>10px 28px 10px 10px — lewy padding mniejszy dla ikony</td></tr>
+            <tr><td>border-radius</td><td>Kształt</td><td>9999px — pełny pill we wszystkich wariantach</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ds-dos-donts">
+        <div class="ds-do">
+          <div class="ds-do-label">✓ Tak</div>
+          <ul>
+            <li>Używaj btn-primary jako głównego CTA na sekcję</li>
+            <li>Ikona-kółko zawsze po lewej stronie tekstu</li>
+            <li>Żółty kolor tylko dla przycisków akcji</li>
+            <li>btn-ghost jako drugorzędne działanie obok primary</li>
+          </ul>
+        </div>
+        <div class="ds-dont">
+          <div class="ds-dont-label">✗ Nie</div>
+          <ul>
+            <li>Nie umieszczaj dwóch btn-primary obok siebie</li>
+            <li>Nie zmieniaj koloru tekstu przycisku (zawsze #0F172A)</li>
+            <li>Nie używaj żółtego poza przyciskami CTA</li>
+            <li>Nie modyfikuj border-radius — zawsze pill</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ds-code-wrap">
+        <button class="ds-copy-btn" onclick="copyCode(this)">Kopiuj</button>
+        <pre><code>&lt;!-- btn-primary --&gt;
+&lt;a href="#kontakt" class="btn-primary"&gt;
+  &lt;span class="btn-cta-icon"&gt;
+    &lt;svg width="16" height="16" ...&gt;...&lt;/svg&gt;
+  &lt;/span&gt;
+  Bezpłatna konsultacja
+&lt;/a&gt;
+
+&lt;!-- btn-ghost --&gt;
+&lt;a href="#realizacje" class="btn-ghost"&gt;
+  Zobacz realizacje
+  &lt;svg width="15" height="15" ...&gt;...&lt;/svg&gt;
+&lt;/a&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- ── CARDS ── -->
+    <section class="ds-section" id="cards">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Karty Benefit</h2>
+      <p class="ds-section-desc">Używane w sekcji #co-zyskasz. Grid 3 kolumn z borderem. Hover zmienia strzałkę na czarne wypełnienie. Pierwsza karta — strzałka wypełniona niebieskim.</p>
+
+      <div class="ds-demo" style="gap:12px;align-items:stretch">
+        <div class="benefit-card-demo">
+          <div class="benefit-card-top-demo">
+            <h3 class="benefit-title-demo">Więcej klientów z Google</h3>
+            <div class="benefit-arrow-demo benefit-arrow-demo--featured">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+          <p class="benefit-desc-demo">Strona zoptymalizowana pod wyszukiwarki pojawia się wyżej w Google — więcej odwiedzin bez płatnych reklam.</p>
+        </div>
+        <div class="benefit-card-demo">
+          <div class="benefit-card-top-demo">
+            <h3 class="benefit-title-demo">Gotowa w kilka dni</h3>
+            <div class="benefit-arrow-demo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+          <p class="benefit-desc-demo">Sprawny proces od briefu do publikacji. Bez zbędnych formalności i wielomiesięcznego oczekiwania.</p>
+        </div>
+      </div>
+
+      <div class="ds-anatomy">
+        <table>
+          <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
+          <tbody>
+            <tr><td>.benefit-card-top</td><td>Nagłówek</td><td>flex row: h3 + strzałka, justify-content: space-between</td></tr>
+            <tr><td>.benefit-title</td><td>Tytuł</td><td>1.25rem, 700, color: text-primary</td></tr>
+            <tr><td>.benefit-arrow</td><td>Strzałka</td><td>40px circle, border CBD5E1 — hover: czarny fill</td></tr>
+            <tr><td>.benefit-arrow--featured</td><td>Strzałka wyróżniona</td><td>Niebieskie wypełnienie (karta #1)</td></tr>
+            <tr><td>.benefit-desc</td><td>Opis</td><td>0.9375rem, color: #64748B, line-height: 1.75</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── BENTO ── -->
+    <section class="ds-section" id="bento">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Bento Tile</h2>
+      <p class="ds-section-desc">6-kafli bento grid w sekcji #uslugi. Tile-1 zajmuje 2×2 kolumn. Tile-5 — niebieski fill. Wszystkie: border-radius 20px, padding 28px, białe tło.</p>
+
+      <div class="ds-demo" style="gap:14px;align-items:stretch">
+        <div class="bento-tile-demo" style="flex:2;min-width:240px">
+          <div class="bento-num-demo">01 — Strony WWW</div>
+          <div class="bento-title-demo">Strona, która sprzedaje</div>
+          <div class="bento-desc-demo">Nowoczesna, szybka i responsywna strona dopasowana do Twojej branży.</div>
+          <button class="bento-cta-demo"><span class="btn-cta-icon btn-cta-icon--sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Dowiedz się więcej</button>
+        </div>
+        <div class="bento-tile-demo bento-tile-demo--blue" style="flex:1;min-width:180px">
+          <div class="bento-num-demo">05 — Analityka</div>
+          <div class="bento-title-demo">Google Analytics</div>
+          <div class="bento-desc-demo">Śledź ruch i konwersje na swojej stronie.</div>
+        </div>
+      </div>
+
+      <div class="ds-anatomy">
+        <table>
+          <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
+          <tbody>
+            <tr><td>.bento-num</td><td>Numer</td><td>0.68rem, uppercase, color: #CBD5E1</td></tr>
+            <tr><td>.bento-title</td><td>Tytuł</td><td>clamp(1.6rem,2.4vw,2.1rem), 700, -0.02em</td></tr>
+            <tr><td>.bento-desc</td><td>Opis</td><td>1rem, color: text-secondary, line-height 1.72</td></tr>
+            <tr><td>.bento-cta</td><td>CTA</td><td>Żółty pill — tylko w tile-1 (duży kafel)</td></tr>
+            <tr><td>.bento-tile-5</td><td>Kafel niebieski</td><td>background: --color-blue, tekst biały</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── BADGES ── -->
+    <section class="ds-section" id="badges">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Badge / Label</h2>
+      <p class="ds-section-desc">3 typy etykiet tekstowych używanych w nagłówkach sekcji, procesach i bento gridzie.</p>
+
+      <div class="ds-demo" style="align-items:center;gap:24px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <span class="ds-section-badge">NASZE USŁUGI</span>
+          <span style="font-size:0.625rem;color:var(--color-text-muted)">section-label</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div class="process-badge-demo">01</div>
+          <span style="font-size:0.625rem;color:var(--color-text-muted)">process-badge</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div class="process-badge-demo process-badge-demo--yellow">04</div>
+          <span style="font-size:0.625rem;color:var(--color-text-muted)">process-badge--final</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;color:#CBD5E1;text-transform:uppercase">03 — SEO</span>
+          <span style="font-size:0.625rem;color:var(--color-text-muted)">bento-num</span>
+        </div>
+      </div>
+
+      <div class="ds-anatomy">
+        <table>
+          <thead><tr><th>Klasa</th><th>Styl</th><th>Użycie</th></tr></thead>
+          <tbody>
+            <tr><td>.benefit-label / .services-label</td><td>0.75rem, 700, uppercase, blue, letter-spacing 0.14em</td><td>Nad nagłówkiem H2 w każdej sekcji</td></tr>
+            <tr><td>.process-badge</td><td>44px circle, border blue/45%, color blue-light</td><td>Numery kroków w sekcji Jak współpracujemy</td></tr>
+            <tr><td>.process-badge--final</td><td>Wariant żółty (krok 04)</td><td>Ostatni krok procesu — wyróżnienie</td></tr>
+            <tr><td>.bento-num</td><td>0.68rem, uppercase, color #CBD5E1</td><td>Numer i nazwa kafla w bento grid</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── NAVIGATION ── -->
+    <section class="ds-section" id="navigation">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Nawigacja</h2>
+      <p class="ds-section-desc">Floating island — nav-island wyśrodkowany, logo poza pillem. Glassmorphism: backdrop-filter blur(24px). Po scrollu: darker background, mniejszy shadow.</p>
+
+      <div class="nav-demo-wrap">
+        <div style="display:flex;align-items:center;margin-bottom:16px">
+          <a href="#" style="display:flex;align-items:center;gap:6px;text-decoration:none;margin-right:auto">
+            <img src="img/logopin3Dv1.png" alt="logo" style="width:40px;height:40px">
+            <span style="font-size:1.25rem;letter-spacing:-0.03em;color:#0F172A;font-weight:800;line-height:1">lokalne<span style="font-weight:400;color:#64748B">www.pl</span></span>
+          </a>
+          <div class="nav-island-demo">
+            <a href="#" class="nav-link-demo">Oferta</a>
+            <a href="#" class="nav-link-demo">Realizacje</a>
+            <a href="#" class="nav-link-demo">O mnie</a>
+          </div>
+          <div style="flex:1;display:flex;justify-content:flex-end">
+            <button class="btn-nav-brand"><span class="btn-cta-icon btn-cta-icon--sm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Konsultacja</button>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:#64748B;margin:0;text-align:center">Stan: domyślny (over jasnym tłem)</p>
+      </div>
+
+      <div class="ds-anatomy" style="margin-top:20px">
+        <table>
+          <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
+          <tbody>
+            <tr><td>#nav</td><td>Kontener nav</td><td>position: fixed, top: 20px, z-index: 50</td></tr>
+            <tr><td>.nav-logo</td><td>Logo</td><td>flex: 1, poza pillem, zawsze widoczne</td></tr>
+            <tr><td>.nav-island</td><td>Floating pill</td><td>Glassmorphism, backdrop-filter blur(24px)</td></tr>
+            <tr><td>.nav-links-pill</td><td>Linki</td><td>Gap 2px, hover: bg rgba(15,23,42,0.07)</td></tr>
+            <tr><td>.nav-actions</td><td>Akcje</td><td>flex: 1, justify-content: flex-end</td></tr>
+            <tr><td>#nav.nav--light</td><td>Tryb jasny</td><td>Linki białe — nad ciemnymi sekcjami</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── PROCESS ── -->
+    <section class="ds-section" id="process">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Process Step</h2>
+      <p class="ds-section-desc">4 kroki na ciemnym tle #0F172A. Dekoracyjny ghost-number za treścią. Przerywana linia łącząca kroki (::after pseudo-element).</p>
+
+      <div class="ds-demo ds-demo--dark" style="gap:20px;align-items:stretch">
+        <div class="process-step-demo">
+          <div class="process-ghost-demo">01</div>
+          <div class="process-badge-demo">01</div>
+          <div class="process-title-demo">Bezpłatna konsultacja</div>
+          <div class="process-desc-demo">Omawiamy Twoje potrzeby i cele. Wybieram optymalne rozwiązanie dla Twojej branży.</div>
+        </div>
+        <div class="process-step-demo">
+          <div class="process-ghost-demo">04</div>
+          <div class="process-badge-demo process-badge-demo--yellow">04</div>
+          <div class="process-title-demo">Publikacja i wsparcie</div>
+          <div class="process-desc-demo">Strona na żywo. Przekazuję dostępy, szkolę i zapewniam wsparcie techniczne.</div>
+        </div>
+      </div>
+
+      <div class="ds-anatomy" style="margin-top:20px">
+        <table>
+          <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
+          <tbody>
+            <tr><td>.process-badge</td><td>Numer kroku</td><td>44px circle, border blue/45%, color blue-light</td></tr>
+            <tr><td>.process-badge--final</td><td>Krok finałowy</td><td>Żółty — border i kolor kroku 04</td></tr>
+            <tr><td>.process-ghost</td><div></div><td>Ghost number</td><td>clamp(4.5rem,7vw,8.5rem), color rgba(37,99,235,0.09)</td></tr>
+            <tr><td>::after</td><td>Przerywana linia</td><td>border-top: 2px dashed rgba(37,99,235,0.25) — między krokami</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── USP CARD ── -->
+    <section class="ds-section" id="usp">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">USP Card</h2>
+      <p class="ds-section-desc">2×2 grid w sekcji #wyrozniam-sie. Białe tło, hover: shadow-lg + translateY(-4px). 4 warianty kolorystyczne icon-box.</p>
+
+      <div class="ds-demo" style="gap:14px;align-items:stretch;flex-wrap:wrap">
+        <div class="usp-card-demo">
+          <div class="usp-icon-box-demo usp-icon-box-demo--blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2a2.87 2.87 0 0 0-3-3z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+          </div>
+          <div class="usp-title-demo">Szybka realizacja</div>
+          <div class="usp-desc-demo">Strona gotowa w kilka dni, nie miesięcy.</div>
+        </div>
+        <div class="usp-card-demo">
+          <div class="usp-icon-box-demo usp-icon-box-demo--amber">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="usp-title-demo">Jakość premium</div>
+          <div class="usp-desc-demo">Projekty na poziomie agencji w cenie freelancera.</div>
+        </div>
+        <div class="usp-card-demo">
+          <div class="usp-icon-box-demo usp-icon-box-demo--navy">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="usp-title-demo">Bezpieczeństwo</div>
+          <div class="usp-desc-demo">SSL, backupy, monitoring 24/7.</div>
+        </div>
+        <div class="usp-card-demo">
+          <div class="usp-icon-box-demo usp-icon-box-demo--green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="usp-title-demo">SEO lokalne</div>
+          <div class="usp-desc-demo">Widoczność w Google dla Twojego miasta.</div>
+        </div>
+      </div>
+
+      <div class="ds-anatomy" style="margin-top:8px">
+        <table>
+          <thead><tr><th>Wariant icon-box</th><th>Tło</th><th>Kolor ikony</th></tr></thead>
+          <tbody>
+            <tr><td>domyślny (blue)</td><td>rgba(37,99,235,0.08)</td><td>--color-blue</td></tr>
+            <tr><td>--amber</td><td>rgba(250,204,21,0.14)</td><td>#B45309</td></tr>
+            <tr><td>--navy</td><td>rgba(26,37,64,0.07)</td><td>--color-navy</td></tr>
+            <tr><td>--green</td><td>rgba(16,185,129,0.09)</td><td>#059669</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── PORTFOLIO ── -->
+    <section class="ds-section" id="portfolio">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Portfolio Card</h2>
+      <p class="ds-section-desc">Karty w poziomym sliderze sekcji #realizacje. Ciemne tło, drag-scroll + prev/next. Placeholder obrazu zastępuje zrzut ekranu projektu.</p>
+
+      <div class="ds-demo ds-demo--dark" style="gap:16px">
+        <div class="portfolio-card-demo">
+          <div class="portfolio-img-demo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="portfolio-body-demo">
+            <span class="portfolio-tag-demo">Strona WWW</span>
+            <div class="portfolio-title-demo">Salon Urody Klaudia</div>
+            <div class="portfolio-desc-demo">Landing page z formularzem rezerwacji i galerią. +240% wizyt z Google w 3 miesiące.</div>
+          </div>
+        </div>
+        <div class="portfolio-card-demo">
+          <div class="portfolio-img-demo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="portfolio-body-demo">
+            <span class="portfolio-tag-demo">E-commerce</span>
+            <div class="portfolio-title-demo">Piekarnia Kowalski</div>
+            <div class="portfolio-desc-demo">Sklep online z systemem zamówień. Wdrożenie w 5 dni roboczych.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACCESSIBILITY ── -->
+    <section class="ds-section" id="accessibility">
+      <p class="ds-section-label">Standardy</p>
+      <h2 class="ds-section-title">Dostępność</h2>
+      <p class="ds-section-desc">Cel: WCAG 2.1 AA. Minimalny kontrast tekstu normalnego: 4.5:1. Wszystkie interaktywne elementy obsługiwane klawiaturą.</p>
+
+      <h3 style="font-size:1rem;font-weight:700;color:var(--color-text-primary);margin:0 0 14px">Kontrast kolorów</h3>
+      <div class="ds-anatomy" style="margin-bottom:24px">
+        <table class="a11y-table">
+          <thead><tr><th>Para kolory / tło</th><th>Przykład</th><th>Ratio</th><th>WCAG AA</th><th>WCAG AAA</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>#0F172A na #FFFFFF</td>
+              <td><span class="a11y-swatch-pair" style="background:#fff;color:#0F172A;border:1px solid #E2E8F0">Tekst podstawowy</span></td>
+              <td>19.6:1</td><td class="a11y-pass">✓ AA</td><td class="a11y-pass">✓ AAA</td>
+            </tr>
+            <tr>
+              <td>#475569 na #FFFFFF</td>
+              <td><span class="a11y-swatch-pair" style="background:#fff;color:#475569;border:1px solid #E2E8F0">Tekst secondary</span></td>
+              <td>7.0:1</td><td class="a11y-pass">✓ AA</td><td class="a11y-pass">✓ AAA</td>
+            </tr>
+            <tr>
+              <td>#0F172A na #FACC15</td>
+              <td><span class="a11y-swatch-pair" style="background:#FACC15;color:#0F172A">Tekst na żółtym</span></td>
+              <td>12.7:1</td><td class="a11y-pass">✓ AA</td><td class="a11y-pass">✓ AAA</td>
+            </tr>
+            <tr>
+              <td>#F1F5F9 na #1A2540</td>
+              <td><span class="a11y-swatch-pair" style="background:#1A2540;color:#F1F5F9">Tekst na navy</span></td>
+              <td>11.3:1</td><td class="a11y-pass">✓ AA</td><td class="a11y-pass">✓ AAA</td>
+            </tr>
+            <tr>
+              <td>#94A3B8 na #FFFFFF</td>
+              <td><span class="a11y-swatch-pair" style="background:#fff;color:#94A3B8;border:1px solid #E2E8F0">Tekst muted</span></td>
+              <td>3.0:1</td><td class="a11y-warn">⚠ Tylko duży tekst</td><td class="a11y-fail">✗ AAA</td>
+            </tr>
+            <tr>
+              <td>#60A5FA na #0F172A</td>
+              <td><span class="a11y-swatch-pair" style="background:#0F172A;color:#60A5FA">Blue-light na dark</span></td>
+              <td>5.9:1</td><td class="a11y-pass">✓ AA</td><td class="a11y-fail">✗ AAA</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:1rem;font-weight:700;color:var(--color-text-primary);margin:0 0 14px">Focus visible — demo</h3>
+      <div class="ds-demo" style="gap:12px;align-items:center">
+        <p style="font-size:0.875rem;color:var(--color-text-secondary);margin:0;flex:1">Naciśnij <kbd style="background:var(--color-bg-light);border:1px solid var(--color-border);border-radius:4px;padding:2px 6px;font-size:0.75rem;font-family:monospace">Tab</kbd> aby zobaczyć focus ring:</p>
+        <button class="focus-demo-btn">Przycisk 1</button>
+        <button class="focus-demo-btn">Przycisk 2</button>
+        <a href="#" class="focus-demo-btn" style="text-decoration:none;display:inline-block">Link</a>
+      </div>
+
+      <div class="ds-code-wrap" style="margin-top:20px">
+        <button class="ds-copy-btn" onclick="copyCode(this)">Kopiuj</button>
+        <pre><code>/* Focus visible — globalny styl w style.css */
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }</code></pre>
+      </div>
+
+      <h3 style="font-size:1rem;font-weight:700;color:var(--color-text-primary);margin:24px 0 14px">ARIA patterns</h3>
+      <div class="ds-anatomy">
+        <table>
+          <thead><tr><th>Komponent</th><th>Wymagane ARIA</th><th>Nawigacja klawiaturą</th></tr></thead>
+          <tbody>
+            <tr><td>Przycisk CTA</td><td>Semantyczny &lt;button&gt; lub &lt;a&gt; + role jeśli div</td><td>Enter / Space aktywuje</td></tr>
+            <tr><td>Nawigacja</td><td>&lt;nav aria-label="..."&gt;</td><td>Tab między linkami, Enter nawiguje</td></tr>
+            <tr><td>Mobile menu</td><td>aria-expanded, aria-controls, role="dialog"</td><td>Esc zamyka, focus trap wewnątrz</td></tr>
+            <tr><td>Slider portfolio</td><td>role="region" aria-label="Realizacje", aria-live</td><td>Tab do prev/next, strzałki opcjonalnie</td></tr>
+            <tr><td>Obrazy dekoracyjne</td><td>alt="" (puste) jeśli dekoracyjne</td><td>Pomijane przez screen reader</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // ─── Intersection Observer — fade-in sections ───
+  const sections = document.querySelectorAll('.ds-section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  sections.forEach(s => observer.observe(s));
+
+  // ─── Active nav link ───
+  const navLinks = document.querySelectorAll('.ds-nav-link');
+  const sectionEls = [...sections];
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-60px 0px -40% 0px' });
+  sectionEls.forEach(s => navObserver.observe(s));
+
+  // ─── Copy code ───
+  function copyCode(btn) {
+    const pre = btn.nextElementSibling;
+    navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+      btn.textContent = 'Skopiowano!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Kopiuj'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -598,18 +598,18 @@ Rząd 3:
 
 ## 10. Kolejność implementacji (milestones)
 
-| Etap | Zakres | Priorytet |
-|---|---|---|
-| **M1** | Setup projektu (HTML boilerplate, Tailwind CDN, Inter font, CSS vars, reset) | Krytyczny |
-| **M2** | Nawigacja + Hero | Krytyczny |
-| **M3** | Sekcja Usługi (bento) | Wysoki |
-| **M4** | Sekcja Co zyskasz + Jak współpracujemy | Wysoki |
-| **M5** | Sekcja O mnie + Co mnie wyróżnia | Średni |
-| **M6** | Sekcja Kontakt + Footer | Wysoki |
-| **M7** | Animacje scroll + micro-interactions | Średni |
-| **M8** | SEO meta, JSON-LD, og:image | Wysoki |
-| **M9** | Responsywność mobile/tablet | Krytyczny |
-| **M10** | Optymalizacja performance, finalne testy | Wysoki |
+| Etap | Zakres | Priorytet | Status |
+| --- | --- | --- | --- |
+| **M1** | Setup projektu (HTML boilerplate, Tailwind CDN, Inter font, CSS vars, reset) | Krytyczny | ✅ |
+| **M2** | Nawigacja + Hero | Krytyczny | ✅ |
+| **M3** | Sekcja Usługi (bento) | Wysoki | ✅ |
+| **M4** | Sekcja Co zyskasz + Jak współpracujemy | Wysoki | ✅ |
+| **M5** | Sekcja O mnie + Co mnie wyróżnia | Średni | ✅ |
+| **M6** | Sekcja Kontakt + Footer | Wysoki | ⏳ Kontakt brakuje |
+| **M7** | Animacje scroll + micro-interactions | Średni | ✅ |
+| **M8** | SEO meta, JSON-LD, og:image | Wysoki | ⏳ |
+| **M9** | Responsywność mobile/tablet | Krytyczny | ✅ |
+| **M10** | Optymalizacja performance, finalne testy | Wysoki | ⏳ |
 
 ---
 
@@ -656,3 +656,43 @@ Rząd 3:
 ---
 
 *Dokument żyje razem z projektem. Aktualizuj przy każdej istotnej zmianie scopu.*
+
+---
+
+## 13. Protokół aktualizacji dokumentacji
+
+### Jak używać tego pliku
+
+PRD jest źródłem prawdy dla wymagań. CLAUDE.md jest źródłem prawdy dla stanu implementacji i konwencji kodu. Przy konflikcie między nimi — CLAUDE.md wygrywa (odzwierciedla podjęte decyzje projektowe).
+
+### Zasady aktualizacji PRD
+
+**Claude aktualizuje PRD automatycznie gdy:**
+
+- Etap milestones zostaje ukończony → zmień status w tabeli sekcji 10 na ✅
+- Otwarta decyzja z sekcji 12 zostaje rozstrzygnięta → zmień status na ✅ i dopisz wynik
+- Właściciel zmienia wymagania dla danej sekcji → zaktualizuj odpowiednią sekcję 6.x
+
+**Claude NIE zmienia w PRD:**
+
+- Wizji i celów biznesowych (sekcje 1–2)
+- Design systemu (sekcja 4) bez wyraźnej decyzji właściciela
+- Wymagań SEO i a11y bez konsultacji
+
+### Zasady aktualizacji CLAUDE.md
+
+**Claude aktualizuje CLAUDE.md automatycznie po każdej sesji UI:**
+
+- Nowa sekcja ukończona → tabela sekcji + nowy wpis z opisem
+- Nowa decyzja projektowa odbiegająca od PRD → wpis w "Ważne decyzje projektowe"
+- Nowy plik graficzny → lista `img/`
+
+### Zasady aktualizacji design-system.html
+
+**Claude aktualizuje design-system.html po każdej sesji UI, która dodaje:**
+
+- Nowy komponent CSS → nowa `.ds-section` z live demo
+- Zmianę tokensów → aktualizacja wartości w sekcji Colors / Typography
+- Nową sekcję strony → wpis w sidebar + sekcja demo z badge `Live`
+
+Wszystkie trzy pliki powinny być spójne — jeśli coś jest w `style.css`, powinno być w `design-system.html`; jeśli sekcja jest w `index.html`, powinna być oznaczona ✅ w CLAUDE.md i PRD.

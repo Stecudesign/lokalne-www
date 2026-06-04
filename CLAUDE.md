@@ -191,5 +191,65 @@ Animacje page-load (hero): klasa `.anim-init` + `.visible` dodawana przez `reque
 - Bento: białe kafelki na niebieskim gradiencie (nie ciemne jak w PRD)
 - Co zyskasz: jasne tło (nie ciemne jak w PRD) — karty z okrągłymi strzałkami
 - Sekcja O mnie: zdjęcie z `opacity: 0.88` żeby miękko wtapiało się w navy tło
-- Footer: jasne tło (nie ciemne jak w PRD) — spójność z resztą strony
+- Footer: ciemne tło `var(--color-navy)` (#1A2540) — spójność z sekcją O mnie, tekst dostosowany do ciemnego tła
 - Logo: `img/logopin3Dv1.png` (64×64px nav, 40×40px footer) + tekst `lokalne` (800) + `www.pl` (400, muted)
+
+---
+
+## Protokół aktualizacji dokumentacji
+
+### Kiedy aktualizować CLAUDE.md
+
+**Po każdej zrealizowanej sekcji:**
+
+- Zmień status w tabeli sekcji: `❌ brakuje` → `✅ gotowe`
+- Dodaj wpis opisujący sekcję (tło, layout, klasy CSS) analogicznie do istniejących
+
+**Po każdej decyzji projektowej odbiegającej od PRD:**
+
+- Dodaj wpis w sekcji "Ważne decyzje projektowe" z uzasadnieniem
+
+**Po dodaniu nowego pliku graficznego:**
+
+- Dodaj pozycję w liście `img/` w sekcji "Struktura plików"
+
+**Po dodaniu nowej konwencji CSS/HTML:**
+
+- Zaktualizuj sekcję "Konwencje CSS"
+
+### Kiedy aktualizować PRD_lokalnewww.md
+
+- Po rozstrzygnięciu otwartej decyzji → zmień status w tabeli sekcji 12 na ✅ i wpisz wynik
+- Po zmianie zakresu lub wymagań → zaktualizuj odpowiednią sekcję 6.x
+- Po ukończeniu etapu milestones (sekcja 10) → oznacz etap jako zrealizowany
+
+### Kiedy i jak aktualizować design-system.html
+
+`design-system.html` to żywa dokumentacja wizualna — musi odzwierciedlać aktualny stan `style.css` i `index.html`.
+
+**Aktualizuj po każdej pracy UI, która wprowadza:**
+
+- Nowy komponent lub wariant (nowa klasa CSS np. `.contact-*`)
+- Zmianę w design tokensach (kolory, typography, shadows w `:root`)
+- Nowy wzorzec animacji lub micro-interaction
+- Nową sekcję strony (dodaj sekcję w sidebarsie + sekcję demo w main)
+
+**Zasady aktualizacji design-system.html:**
+
+- Każdy nowy komponent: osobna `.ds-section` z tytułem, opisem i live demo
+- Tokeny CSS zawsze zsynchronizowane z wartościami z `style.css :root`
+- Sidebar nawigacja: dodaj link do nowej sekcji w odpowiedniej grupie (`ds-nav-group`)
+- Status badge sekcji: `Live` (zaimplementowane w index.html) vs `Draft` (planowane)
+
+**Format nowej sekcji w design-system.html:**
+
+```html
+<section class="ds-section" id="contact">
+  <div class="ds-section-header">
+    <h2 class="ds-section-title">Kontakt</h2>
+    <span class="ds-badge ds-badge--live">Live</span>
+  </div>
+  <p class="ds-section-desc">Opis komponentu...</p>
+  <!-- live demo lub code snippet -->
+</section>
+```
