@@ -15,8 +15,10 @@ Design system marki: `.claude/skills/design.md` — czytaj przed każdą pracą 
 ## Struktura plików
 
 ```
-index.html      ← cała strona
-style.css       ← wszystkie custom style (bez Tailwinda)
+index.html      ← cała strona (landing page)
+style.css       ← wszystkie custom style — wspólny dla index.html i podstron oferta/
+oferta/
+  strony-internetowe.html  ← szablon podstrony oferty (skopiuj dla kolejnych usług)
 img/
   logopin3Dv1.png          ← logo pin 3D (64×64)
   herov8.png               ← tło hero (desktop)
@@ -25,6 +27,7 @@ img/
   bento-stronyinternetowe.png
   bento-seo.png
   obslugawww.png
+  responsywnauslugav3.png       ← mockup urządzeń (tile-4 Responsywność)
 examples/       ← screenshoty referencyjne
 PRD_lokalnewww.md
 ```
@@ -45,6 +48,30 @@ PRD_lokalnewww.md
 | `#o-mnie` | `.about-section` — tło `#1A2540`, 2 kolumny foto+tekst | ✅ gotowe |
 | `#kontakt` | — | ❌ brakuje (PRD 6.8) |
 | `#footer` | `.footer-section` — tło `#F8FAFC`, logo+nav+social | ✅ gotowe |
+
+---
+
+## Podstrony oferty (`oferta/`)
+
+Szablon: `oferta/strony-internetowe.html`. Skopiować dla każdej kolejnej usługi.
+
+**Sekcje szablonu (w kolejności):**
+
+1. `.offer-hero` — dark navy gradient, 2 kolumny: tekst (breadcrumb + H1 + opis + badges + CTA) | SVG mockup przeglądarki z floating stat-card
+2. `.offer-benefits-section` — tło `#F0F4FF`, 3×2 grid kart `.offer-benefit-card` (ikona + tytuł + opis)
+3. `.process-section` — reuse z index.html (tło `#F8FAFC`), 4 kroki
+4. `.usp-section` — reuse z index.html (tło `#fff`), layout 2-kolumnowy
+5. `#realizacje .portfolio-section` — reuse z index.html (tło `#080C14`)
+6. `.offer-cta-section` — tło `var(--color-navy)`, centered CTA z przyciskiem + numerem telefonu
+7. `.footer-section` — reuse z index.html
+
+**Ścieżki zasobów w podstronach:** `../img/`, `../style.css`
+
+**Nawigacja:** linki w nav i footer zawierają `/#section` (prefix ukośnikiem do roota)
+
+**Nav JS:** `darkSectionIds = ['offer-hero', 'realizacje']` — białe linki gdy nav nad ciemnymi sekcjami
+
+**Klasy CSS podstron (prefix `offer-`):** `.offer-hero`, `.offer-hero-inner`, `.offer-hero-text`, `.offer-hero-visual`, `.offer-mockup-wrap`, `.offer-hero-mockup`, `.offer-stat-card`, `.offer-label`, `.offer-h1`, `.offer-h1-accent`, `.offer-sub`, `.offer-hero-badges`, `.offer-badge`, `.offer-hero-actions`, `.offer-benefits-section`, `.offer-benefits-grid`, `.offer-benefit-card`, `.offer-benefit-icon`, `.offer-benefit-title`, `.offer-benefit-desc`, `.offer-cta-section`, `.offer-cta-inner`, `.offer-cta-h2`, `.offer-cta-sub`, `.offer-cta-actions`, `.btn-offer-ghost`, `.btn-offer-phone`
 
 ---
 
@@ -99,13 +126,20 @@ Struktura karty:
 
 ---
 
-## Sekcja 6.4 — BENTO GRID (`.bento-section`)
+## Sekcja 6.4 — BENTO GRID (`.bento2-section`)
 
-Tło: `#F0F4FF` (jasny niebieski). Kafelki: białe (`#fff`), `border-radius: 20px`, padding `28px`.
+Tło: `#F0F4FF` (jasny niebieski). Kafelki: białe (`#fff`), `border-radius: 24px`, padding `32px`.
 
-Grid: 3 kolumny. tile-1: `grid-column: 1/3; grid-row: 1/3`. tile-5: navy background. tile-6: ostatni w rzędzie.
+Grid: 6 kolumn, 3 rzędy (`minmax(160px, auto)` / `minmax(130px, auto)` / `auto`):
 
-Dekoracje — obrazy absolute w tile-1 (`.bento-tile1-deco`), tile-3 (`.bento-tile3-deco`), tile-4 (`.bento-tile4-deco`) z `opacity: 0.4`.
+- tile-1: `1/3 × 1/3` (duży, tekst + obraz dół)
+- tile-2: `3/7 × 1` (szeroki, obraz `.bento2-tile2-deco` absolute)
+- tile-3: `3/5 × 2` (gradient niebieski)
+- tile-4: `5/7 × 2` — **Responsywność** — tekst góra + `.bento2-t4-visual` (panel dół, `height: 190px`, `overflow: hidden`, `background: #fff`) z obrazem `img/responsywnauslugav3.png`
+- tile-5: `1/4 × 3` (tekst góra + `.bento2-t5-visual` panel dół)
+- tile-6: `4/7 × 3`
+
+Wzorzec tile z obrazem dolnym (tile-4, tile-5): `padding: 28px 28px 0`, `.bento2-copy { flex: 0 0 auto }`, visual panel bleeding edge-to-edge przez ujemne marginesy `-28px`.
 
 ---
 

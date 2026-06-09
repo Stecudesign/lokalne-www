@@ -411,6 +411,48 @@
     .btn-ghost:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; }
     .btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
 
+    .btn-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--color-blue);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 4px 0;
+      border: none;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: gap 0.18s ease, color 0.18s ease;
+    }
+    .btn-text:hover { gap: 10px; color: #1D4ED8; }
+    .btn-text--dark { color: var(--color-text-primary); }
+    .btn-text--dark:hover { color: var(--color-blue); gap: 10px; }
+    .btn-text--light { color: rgba(255,255,255,0.82); }
+    .btn-text--light:hover { color: #fff; gap: 10px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-blue);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 28px 10px 10px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-secondary:hover { background: #1D4ED8; transform: scale(1.02); box-shadow: 0 8px 24px rgba(37,99,235,0.35); }
+    .btn-secondary:focus-visible { outline: 2px solid var(--color-blue-light); outline-offset: 3px; }
+    .btn-secondary:active { transform: scale(0.98); }
+    .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-cta-icon--light { background: rgba(255,255,255,0.18); }
+
     .btn-nav-brand {
       display: inline-flex;
       align-items: center;
@@ -1130,13 +1172,20 @@
     <section class="ds-section" id="buttons">
       <p class="ds-section-label">Komponenty</p>
       <h2 class="ds-section-title">Przyciski</h2>
-      <p class="ds-section-desc">4 warianty przycisku. <strong>btn-primary</strong> i <strong>btn-nav-brand</strong> — żółty fill. <strong>btn-ghost</strong> — kontur, hover niebieski. Wszystkie przyciski: pill (border-radius: 9999px), font Inter, pełna obsługa stanów klawiatury.</p>
+      <p class="ds-section-desc">6 wariantów przycisku. <strong>btn-primary</strong> i <strong>btn-nav-brand</strong> — żółty fill. <strong>btn-secondary</strong> — niebieski fill, biały tekst. <strong>btn-ghost</strong> — kontur, hover niebieski. <strong>btn-text</strong> — bez tła i obramowania, animowany gap na hover (warianty: --dark, --light). Wszystkie pill poza btn-text, pełna obsługa klawiatury.</p>
 
       <div class="ds-demo">
         <button class="btn-primary"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Bezpłatna konsultacja</button>
+        <button class="btn-secondary"><span class="btn-cta-icon btn-cta-icon--light"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Zobacz ofertę</button>
         <button class="btn-ghost">Zobacz realizacje <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         <button class="btn-nav-brand"><span class="btn-cta-icon btn-cta-icon--sm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Napisz do mnie</button>
+        <button class="btn-text">Dowiedz się więcej <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
       </div>
+
+      <div class="ds-demo ds-demo--dark">
+        <button class="btn-text btn-text--light">Dowiedz się więcej <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+      </div>
+      <p style="font-size:0.75rem;color:var(--color-text-muted);margin:0 0 20px">↑ btn-text--light na ciemnym tle (animacja gap na hover)</p>
 
       <div class="ds-demo ds-demo--dark">
         <button class="btn-about-cta"><span class="btn-cta-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Skontaktuj się</button>
@@ -1164,14 +1213,38 @@
         </div>
       </div>
 
+      <h3 style="font-size:0.875rem;font-weight:700;color:var(--color-text-primary);margin:24px 0 12px">Stany btn-secondary</h3>
+      <div class="ds-demo" style="flex-direction:column;gap:12px;align-items:flex-start">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-secondary"><span class="btn-cta-icon btn-cta-icon--light"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Default</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— #2563EB fill, biały tekst</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-secondary" style="background:#1D4ED8;transform:scale(1.02);box-shadow:0 8px 24px rgba(37,99,235,0.35)"><span class="btn-cta-icon btn-cta-icon--light"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Hover</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— #1D4ED8, scale(1.02), shadow blue</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-secondary" style="outline:2px solid var(--color-blue-light);outline-offset:3px"><span class="btn-cta-icon btn-cta-icon--light"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Focus</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— :focus-visible, outline 2px blue-light</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="btn-secondary" disabled><span class="btn-cta-icon btn-cta-icon--light"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Disabled</button>
+          <span style="font-size:0.75rem;color:var(--color-text-muted)">— opacity: 0.4, cursor: not-allowed</span>
+        </div>
+      </div>
+
       <div class="ds-anatomy">
         <table>
-          <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
+          <thead><tr><th>Wariant</th><th>Kiedy używać</th><th>Tło / Tekst</th></tr></thead>
           <tbody>
-            <tr><td>.btn-cta-icon</td><td>Ikona-kółko</td><td>Okrągły kontener ikony SVG, background rgba(15,23,42,0.12)</td></tr>
-            <tr><td>tekst</td><td>Etykieta</td><td>Font 700 (primary, nav-brand) lub 500 (ghost), white-space: nowrap</td></tr>
-            <tr><td>padding</td><td>Padding</td><td>10px 28px 10px 10px — lewy padding mniejszy dla ikony</td></tr>
-            <tr><td>border-radius</td><td>Kształt</td><td>9999px — pełny pill we wszystkich wariantach</td></tr>
+            <tr><td>btn-primary</td><td>Główne CTA na sekcję (maks. 1 na ekran)</td><td>--color-yellow / #0F172A</td></tr>
+            <tr><td>btn-secondary</td><td>Drugie CTA lub akcja równoważna primary</td><td>--color-blue / #fff</td></tr>
+            <tr><td>btn-ghost</td><td>Trzecioplanowe działanie, linki nawigacyjne</td><td>transparent / --color-text-primary</td></tr>
+            <tr><td>btn-nav-brand</td><td>Wyłącznie w nawigacji i footerze</td><td>--color-yellow / #0F172A</td></tr>
+            <tr><td>btn-about-cta</td><td>Wyłącznie w sekcji O mnie (ciemne tło)</td><td>--color-yellow / #0F172A</td></tr>
+            <tr><td>btn-text</td><td>Inline link-akcja, "czytaj więcej", linki wtórne</td><td>transparent / --color-blue</td></tr>
+            <tr><td>btn-text--dark</td><td>Wariant na białym tle, kolor tekstu primary</td><td>transparent / --color-text-primary</td></tr>
+            <tr><td>btn-text--light</td><td>Wariant na ciemnym tle navy/dark</td><td>transparent / rgba(255,255,255,0.82)</td></tr>
           </tbody>
         </table>
       </div>
@@ -1181,18 +1254,21 @@
           <div class="ds-do-label">✓ Tak</div>
           <ul>
             <li>Używaj btn-primary jako głównego CTA na sekcję</li>
-            <li>Ikona-kółko zawsze po lewej stronie tekstu</li>
-            <li>Żółty kolor tylko dla przycisków akcji</li>
-            <li>btn-ghost jako drugorzędne działanie obok primary</li>
+            <li>btn-secondary gdy potrzebujesz drugiego wyraźnego CTA obok primary</li>
+            <li>Ikona-kółko zawsze po lewej: btn-cta-icon (ciemne) na żółtym, btn-cta-icon--light (białe) na niebieskim</li>
+            <li>btn-ghost jako akcja trzecioplanowa</li>
+            <li>btn-text do linków inline i akcji pobocznych (np. "Dowiedz się więcej")</li>
           </ul>
         </div>
         <div class="ds-dont">
           <div class="ds-dont-label">✗ Nie</div>
           <ul>
             <li>Nie umieszczaj dwóch btn-primary obok siebie</li>
-            <li>Nie zmieniaj koloru tekstu przycisku (zawsze #0F172A)</li>
-            <li>Nie używaj żółtego poza przyciskami CTA</li>
+            <li>Nie używaj btn-secondary na ciemnym tle navy (zły kontrast)</li>
+            <li>Nie mieszaj btn-cta-icon i btn-cta-icon--light — ciemne na żółtym, białe na niebieskim</li>
             <li>Nie modyfikuj border-radius — zawsze pill</li>
+            <li>Nie używaj btn-text jako głównego CTA — to akcja poboczna</li>
+            <li>Nie używaj btn-text--light na jasnym tle (kontrast)</li>
           </ul>
         </div>
       </div>
@@ -1207,10 +1283,30 @@
   Bezpłatna konsultacja
 &lt;/a&gt;
 
+&lt;!-- btn-secondary --&gt;
+&lt;a href="#uslugi" class="btn-secondary"&gt;
+  &lt;span class="btn-cta-icon btn-cta-icon--light"&gt;
+    &lt;svg width="16" height="16" ...&gt;...&lt;/svg&gt;
+  &lt;/span&gt;
+  Zobacz ofertę
+&lt;/a&gt;
+
 &lt;!-- btn-ghost --&gt;
 &lt;a href="#realizacje" class="btn-ghost"&gt;
   Zobacz realizacje
   &lt;svg width="15" height="15" ...&gt;...&lt;/svg&gt;
+&lt;/a&gt;
+
+&lt;!-- btn-text (niebieski, na jasnym tle) --&gt;
+&lt;a href="#" class="btn-text"&gt;
+  Dowiedz się więcej
+  &lt;svg width="14" height="14" ...&gt;...&lt;/svg&gt;
+&lt;/a&gt;
+
+&lt;!-- btn-text--light (na ciemnym tle) --&gt;
+&lt;a href="#" class="btn-text btn-text--light"&gt;
+  Dowiedz się więcej
+  &lt;svg width="14" height="14" ...&gt;...&lt;/svg&gt;
 &lt;/a&gt;</code></pre>
       </div>
     </section>

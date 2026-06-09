@@ -153,6 +153,25 @@ Czcionka: **Inter** (Google Fonts)
 - **Nawigacja:** logo + tekst obok (flex, items-center, gap-2)
 - **Rozmiar pinu w nav:** 32px × auto
 
+### 4.5 Przyciski
+
+Wszystkie przyciski: pill (`border-radius: 9999px`), font Inter, obsługa `:focus-visible`.
+
+| Klasa | Tło | Tekst | Ikona-kółko | Kiedy używać |
+|---|---|---|---|---|
+| `btn-primary` | `--color-yellow` | `#0F172A` | `.btn-cta-icon` (ciemne) | Główne CTA — maks. 1 na ekran |
+| `btn-secondary` | `--color-blue` (#2563EB) | `#fff` | `.btn-cta-icon--light` (białe) | Drugie wyraźne CTA obok primary |
+| `btn-ghost` | transparent | `--color-text-primary` | brak | Akcja trzecioplanowa, linki nawigacyjne |
+| `btn-nav-brand` | `--color-yellow` | `#0F172A` | `.btn-cta-icon--sm` (ciemne) | Wyłącznie w nav i footerze |
+| `btn-about-cta` | `--color-yellow` | `#0F172A` | `.btn-cta-icon` (ciemne) | Wyłącznie sekcja O mnie (ciemne tło) |
+| `btn-text` | transparent | `--color-blue` | brak | Akcja poboczna inline — "Dowiedz się więcej" |
+| `btn-text--dark` | transparent | `--color-text-primary` | brak | Wariant na białym tle, hover zmienia na blue |
+| `btn-text--light` | transparent | `rgba(255,255,255,0.82)` | brak | Wariant na ciemnym tle navy/dark |
+
+**Hover btn-secondary:** `background: #1D4ED8`, `transform: scale(1.02)`, `box-shadow: 0 8px 24px rgba(37,99,235,0.35)`
+
+**Hover btn-text:** `gap: 6px → 10px` (animacja przesunięcia strzałki), `color` ciemnieje o jeden krok
+
 ---
 
 ## 5. Animacje i interakcje

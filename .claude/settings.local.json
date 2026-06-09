@@ -15,7 +15,11 @@
       "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html style.css; git commit -m \"Tile 1: full-height photo fill with gradient overlay\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
       "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html style.css; git commit -m \"Tile 1: darker photo with code screen, fixed overlay gradient\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
       "Bash(git add *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\\\\oferta\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\pawel\\Desktop\\kodowanie\\lokalnewww"
     ]
   }
 }
