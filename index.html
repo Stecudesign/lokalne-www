@@ -641,6 +641,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.getElementById('nav');
   const darkSectionIds = ['proces', 'o-mnie-v2', 'realizacje'];
 
+  // Scrollspy — podświetla aktywną pozycję menu (biały pill)
+  const pillLinks = Array.from(document.querySelectorAll('.nav-links-pill a'));
+  const resolveSection = (href) =>
+    document.querySelector(href) || document.querySelector(href + '-v2');
+  const spyTargets = pillLinks
+    .map(a => ({ link: a, section: resolveSection(a.getAttribute('href')) }))
+    .filter(t => t.section);
+
   const updateNav = () => {
     nav.classList.toggle('scrolled', window.scrollY > 80);
 
@@ -652,6 +660,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return r.top <= navMidY && r.bottom >= navMidY;
     });
     nav.classList.toggle('nav--light', overDark);
+
+    // Ostatnia sekcja, której góra minęła linię nawigacji, jest aktywna
+    let active = null;
+    for (const t of spyTargets) {
+      if (t.section.getBoundingClientRect().top <= 120) active = t.link;
+    }
+    pillLinks.forEach(a => a.classList.toggle('is-active', a === active));
   };
 
   window.addEventListener('scroll', updateNav, { passive: true });

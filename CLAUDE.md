@@ -38,7 +38,7 @@ PRD_lokalnewww.md
 
 | ID | Klasa/styl sekcji | Status |
 |---|---|---|
-| `#nav` | `.nav-island` — floating pill, transparent → shadow po scrollu | ✅ gotowe |
+| `#nav` | `.nav-island` — floating pill, niebieskie szkło (`rgba(37,99,235,0.42)`), białe linki, aktywna pozycja = biały pill (`.is-active`, scrollspy) | ✅ gotowe |
 | `#hero` | tło `img/herov8.png` + overlay `rgba(255,255,255,0.2)`, treść do lewej | ✅ gotowe |
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC`, 3 karty w gridzie | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient, 6 kafli | ✅ gotowe |
