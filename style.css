@@ -1356,6 +1356,18 @@ body {
   min-height: 260px;
 }
 
+.process-step--anim {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: var(--step-delay, 0ms);
+}
+
+.process-step--anim.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Przerywana linia między krokami */
 .process-step:not(:last-child)::after {
   content: '';
@@ -1652,7 +1664,7 @@ body {
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  background-image: url('../img/omniefotelgaming.png');
+  background-image: url('../img/omniefotelgaming.webp');
   background-size: 260%;
   background-position: 72% 6%;
   background-repeat: no-repeat;
@@ -1734,7 +1746,7 @@ body {
 
 /* ---- Section: Co mnie wyróżnia (6.6) ---- */
 .usp-section {
-  background: #fff;
+  background: #F8FAFC;
   padding: 7rem 0;
 }
 
@@ -1775,6 +1787,13 @@ body {
   font-size: 1.125rem;
   line-height: 1.75;
   margin: 0;
+}
+
+.usp-box {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 12px 40px rgba(15,23,42,0.08), 0 4px 12px rgba(15,23,42,0.04);
 }
 
 .usp-grid {
@@ -1831,6 +1850,7 @@ body {
   }
   .usp-photo { aspect-ratio: 4 / 3; }
   .usp-grid { gap: 2rem; }
+  .usp-box { padding: 28px; border-radius: 20px; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -1842,7 +1862,7 @@ body {
 .about2-section {
   position: relative;
   min-height: 90svh;
-  background-image: url('img/omniev2.webp');
+  background-image: url('img/omniegaming.webp');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
