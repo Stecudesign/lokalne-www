@@ -23,6 +23,15 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* Lenis smooth scroll — wymagane style.
+   Gdy Lenis jest aktywny (klasy .lenis .lenis-smooth na <html>) wyłączamy natywny
+   scroll-behavior, inaczej dwa silniki płynnego scrolla walczą ze sobą (lag/„zawieszanie"). */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
 :focus-visible {
   outline: 2px solid var(--color-blue);
   outline-offset: 3px;
@@ -81,25 +90,25 @@ body {
 
 .nav-island {
   flex: 0 0 auto;
-  background: rgba(37,99,235,0.42);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(255,255,255,0.28);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-radius: 100px;
   padding: 5px;
-  border: 1px solid rgba(255,255,255,0.30);
+  border: 1px solid rgba(255,255,255,0.55);
   box-shadow:
-    0 8px 30px rgba(37,99,235,0.28),
-    0 1px 3px rgba(15,23,42,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.35);
+    0 4px 24px rgba(15,23,42,0.10),
+    0 1px 3px rgba(15,23,42,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.8);
   transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 #nav.scrolled .nav-island {
-  background: rgba(37,99,235,0.52);
-  border-color: rgba(255,255,255,0.24);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.35);
   box-shadow:
-    0 4px 20px rgba(37,99,235,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.28);
+    0 2px 16px rgba(15,23,42,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
 .nav-actions {
@@ -137,25 +146,25 @@ body {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: rgba(255,255,255,0.82);
+  color: #1E293B;
   text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
 }
 .nav-links-pill a:hover {
-  background: rgba(255,255,255,0.16);
-  color: #fff;
+  background: rgba(15,23,42,0.07);
+  color: #0F172A;
 }
-/* Aktywna pozycja — pełny biały pill (jak w referencji) */
+/* Aktywna pozycja — pełny niebieski pill (kontrast na białym szkle) */
 .nav-links-pill a.is-active {
-  background: #fff;
-  color: var(--color-navy);
+  background: var(--color-blue);
+  color: #fff;
   font-weight: 700;
-  box-shadow: 0 2px 10px rgba(15,23,42,0.20);
+  box-shadow: 0 2px 10px rgba(37,99,235,0.35);
 }
 .nav-links-pill a.is-active:hover {
-  background: #fff;
-  color: var(--color-navy);
+  background: var(--color-blue);
+  color: #fff;
 }
 /* Badge licznikowy (superscript) */
 .nav-links-pill a .nav-badge {
@@ -165,10 +174,10 @@ body {
   font-size: 0.625rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--color-yellow);
+  color: var(--color-blue);
 }
 .nav-links-pill a.is-active .nav-badge {
-  color: var(--color-blue);
+  color: var(--color-yellow);
 }
 
 .btn-nav-brand {
@@ -322,10 +331,7 @@ body {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background-image: url('img/heronewv3a.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: var(--color-bg-white);
   position: relative;
 }
 #hero::before {
@@ -334,7 +340,27 @@ body {
   inset: 0;
   background: rgba(255, 255, 255, 0.2);
   pointer-events: none;
+  z-index: 2;
 }
+.hero-content {
+  position: relative;
+  z-index: 4;
+}
+
+/* Główny element wizualny hero (dłoń z telefonem) — animowany przez GSAP */
+.hero-desktop-visual {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+html.gsap-enhance .hero-desktop-visual { opacity: 0; }
+/* Gdy sekwencją hero steruje GSAP, wyłącz CSS-owe transition z .anim-init */
+html.gsap-enhance #hero .anim-init { transition: none; }
 
 .hero-text {
   max-width: 52%;
@@ -402,7 +428,6 @@ body {
   transform: skewX(-6deg);
   z-index: 0;
   clip-path: inset(0 100% 0 0);
-  animation: highlight-in 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
 }
 @keyframes highlight-in {
   to { clip-path: inset(0 -4px 0 0); }
@@ -413,7 +438,20 @@ body {
   display: inline-block;
   color: var(--color-yellow);
   opacity: 0;
+}
+/* Fallback bez GSAP: highlight odsłania się automatycznie po załadowaniu */
+html:not(.gsap-enhance) .hero-highlight-wrap::before {
+  animation: highlight-in 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+html:not(.gsap-enhance) .hero-highlight-wrap span {
   animation: text-in 0.3s ease 1.0s forwards;
+}
+/* Z GSAP: highlight sterowany przez timeline (klasa .is-revealed) */
+html.gsap-enhance .hero-highlight-wrap.is-revealed::before {
+  animation: highlight-in 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+html.gsap-enhance .hero-highlight-wrap.is-revealed span {
+  animation: text-in 0.32s ease 0.42s forwards;
 }
 @keyframes text-in {
   to { opacity: 1; }
@@ -620,6 +658,9 @@ body {
     overflow: hidden;
   }
   #hero::before {
+    display: none;
+  }
+  .hero-desktop-visual {
     display: none;
   }
   .hero-heading-block {
@@ -953,11 +994,18 @@ body {
   overflow: hidden;
   position: relative;
   box-shadow: 0 2px 14px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.04);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 .bento2-tile:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 50px rgba(15,23,42,0.1), 0 4px 14px rgba(15,23,42,0.06);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(15,23,42,0.13), 0 6px 18px rgba(15,23,42,0.08);
+}
+
+/* Stan początkowy dla animacji GSAP kafli usług — aktywny tylko gdy JS dodał
+   .gsap-enhance. Bez JS klasa nie istnieje → kafle są normalnie widoczne. */
+.gsap-enhance #uslugi .bento2-tile { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .gsap-enhance #uslugi .bento2-tile { opacity: 1; }
 }
 
 /* --- Copy layout --- */
@@ -1063,7 +1111,10 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
+/* Mikroanimacja: strzałka przesuwa się delikatnie w prawo (bez pulsowania) */
+.bento2-cta:hover .bento2-cta-icon { transform: translateX(3px); }
 
 /* --- Icon box & badge utilities (tile 2 SEO, tile 4 Responsywność) --- */
 .bento2-icon-box {
@@ -1381,16 +1432,32 @@ body {
   min-height: 260px;
 }
 
-.process-step--anim {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  transition-delay: var(--step-delay, 0ms);
+/* Rysowana linia postępu (jeden pasek przez cały timeline — desktop) */
+.process-line {
+  position: absolute;
+  top: 23px;
+  left: calc(1.5rem + 24px);   /* środek badge'a kroku 01 */
+  width: 75%;                  /* dokładnie od środka 01 do środka 04 (3 × 25%) */
+  height: 2px;
+  z-index: 0;
+  pointer-events: none;
+  display: none;               /* aktywna tylko na desktopie (patrz media query) */
 }
-
-.process-step--anim.in-view {
-  opacity: 1;
-  transform: translateY(0);
+.process-line-track,
+.process-line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  border-top: 2px dashed rgba(37, 99, 235, 0.22);
+}
+.process-line-track { width: 100%; }
+.process-line-fill {
+  width: 0;                    /* GSAP animuje do 100% */
+  height: 2px;
+  border-top: none;            /* ciągła linia postępu zamiast przerywanej */
+  background: var(--color-blue);
+  border-radius: 2px;
 }
 
 /* Przerywana linia między krokami */
@@ -1427,16 +1494,20 @@ body {
 }
 .process-step:hover .process-badge {
   border-color: rgba(37, 99, 235, 0.8);
-  background: rgba(37, 99, 235, 0.12);
+  /* nieprzezroczyste tło (biel + warstwa odcienia) — żeby linia nie prześwitywała przez badge */
+  background-color: #fff;
+  background-image: linear-gradient(rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0.12));
 }
 
 .process-badge--final {
-  background: rgba(250, 204, 21, 0.06);
+  background-color: #fff;
+  background-image: linear-gradient(rgba(250, 204, 21, 0.06), rgba(250, 204, 21, 0.06));
   border-color: rgba(250, 204, 21, 0.45);
   color: #FACC15;
 }
 .process-step:hover .process-badge--final {
-  background: rgba(250, 204, 21, 0.14);
+  background-color: #fff;
+  background-image: linear-gradient(rgba(250, 204, 21, 0.14), rgba(250, 204, 21, 0.14));
   border-color: rgba(250, 204, 21, 0.75);
 }
 
@@ -1473,6 +1544,43 @@ body {
   font-size: 0.875rem;
   color: #475569;
   line-height: 1.8;
+}
+
+/* Delikatny pulse ostatniego kroku (04) — akcent #FFCC49 */
+@keyframes process-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 204, 73, 0); }
+  50%      { box-shadow: 0 0 0 7px rgba(255, 204, 73, 0.10), 0 0 20px rgba(255, 204, 73, 0.38); }
+}
+.process-badge--final.is-pulsing {
+  animation: process-pulse 2.6s ease-in-out infinite;
+}
+
+/* Stan początkowy dla animacji GSAP — aktywny tylko gdy JS dodał .gsap-enhance.
+   Bez JS klasa nie istnieje → treść jest normalnie widoczna. */
+.gsap-enhance #proces .process-label,
+.gsap-enhance #proces .process-h2,
+.gsap-enhance #proces .process-badge,
+.gsap-enhance #proces .process-ghost,
+.gsap-enhance #proces .process-title,
+.gsap-enhance #proces .process-desc { opacity: 0; }
+.gsap-enhance #proces .process-line-fill { width: 0; }
+
+/* Szacunek dla użytkownika: bez ruchu pokazujemy wszystko od razu */
+@media (prefers-reduced-motion: reduce) {
+  .gsap-enhance #proces .process-label,
+  .gsap-enhance #proces .process-h2,
+  .gsap-enhance #proces .process-badge,
+  .gsap-enhance #proces .process-ghost,
+  .gsap-enhance #proces .process-title,
+  .gsap-enhance #proces .process-desc { opacity: 1; }
+  .gsap-enhance #proces .process-line-fill { width: 100%; }
+  .process-badge--final.is-pulsing { animation: none; }
+}
+
+/* Desktop: rysowana linia zastępuje łączniki ::after między krokami */
+@media (min-width: 1024px) {
+  .process-line { display: block; }
+  .process-step:not(:last-child)::after { display: none; }
 }
 
 @media (max-width: 767px) {
@@ -1893,7 +2001,7 @@ body {
   background-repeat: no-repeat;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .about2-overlay {
@@ -1992,6 +2100,14 @@ body {
 }
 
 
+/* Laptopy (m.in. 16") — odsuń tekst od postaci w tle:
+   mniejszy lewy padding przesuwa blok w lewo, cap na nagłówku skraca linię.
+   Zakres do 1919px, bo 16" laptopy bywają szersze niż 1680px. */
+@media (min-width: 1024px) and (max-width: 1919px) {
+  .about2-content { padding-left: 6vw; padding-right: 4vw; max-width: 1180px; }
+  .about2-h2 { font-size: clamp(2.2rem, 3vw, 3.1rem); }
+}
+
 @media (max-width: 767px) {
   .about2-section { min-height: 80svh; }
   .about2-content { padding: 3rem 1.5rem; }
@@ -2000,9 +2116,14 @@ body {
 }
 
 /* ---- Section: Portfolio / Realizacje (6.5) ---- */
+/* Slider transform-driven (GSAP x = translate3d na .portfolio-track).
+   Animujemy WYŁĄCZNIE transform + opacity. will-change: transform tylko na
+   tracku i aktywnej karcie. Hover (lift/zoom) na .portfolio-card-inner, aby
+   nie kolidował z transformem karty (scale aktywnej) ani tracka (x). */
 .portfolio-section {
   background: #080C14;
-  padding: 7rem 0 5rem;
+  padding: 7rem 0 4rem;
+  overflow: hidden;               /* pełny bleed slidera bez poziomego scrolla strony */
 }
 
 .portfolio-header {
@@ -2021,7 +2142,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.4);
   margin-bottom: 1.25rem;
 }
 
@@ -2043,53 +2164,72 @@ body {
 }
 
 .portfolio-nav-btn {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: transparent;
+  border: 1px solid transparent;
+  background: var(--color-blue);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease;
+  box-shadow: 0 6px 18px -6px rgba(37,99,235,0.6);
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 .portfolio-nav-btn:hover {
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(255,255,255,0.4);
+  background: #1D4ED8;
+  box-shadow: 0 8px 22px -6px rgba(37,99,235,0.75);
+}
+.portfolio-nav-btn:active { transform: scale(0.94); }
+.portfolio-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  background: rgba(37,99,235,0.35);
+  box-shadow: none;
 }
 
+/* Viewport slidera — full-bleed, ale wewnętrzny padding wyrównuje pierwszą
+   kartę do kontenera (max 1200px + 1.5rem). Domyślnie natywny scroll (fallback
+   bez JS); tryb transform (GSAP) dodaje .is-gsap i chowa overflow. */
 .portfolio-slider {
-  display: flex;
-  gap: 20px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  padding-inline: max(1.5rem, calc((100% - 1200px) / 2 + 1.5rem));
+  /* pion: miejsce na lift (-8px) i miękki cień karty, by overflow: hidden ich nie ucinał */
+  padding-block: 14px 46px;
+  touch-action: pan-y;
   cursor: grab;
   user-select: none;
+  -webkit-user-select: none;
 }
 .portfolio-slider::-webkit-scrollbar { display: none; }
-.portfolio-slider.is-dragging {
-  cursor: grabbing;
-  scroll-snap-type: none;
+.portfolio-slider.is-gsap { overflow: hidden; }
+.portfolio-slider.is-dragging { cursor: grabbing; }
+
+.portfolio-track {
+  display: flex;
+  gap: 26px;
+  will-change: transform;
 }
 
 .portfolio-card {
-  flex-shrink: 0;
-  width: 400px;
-  scroll-snap-align: start;
+  flex: 0 0 460px;
+  transform-origin: center center;
 }
+.portfolio-card.is-active { will-change: transform; }
 
 .portfolio-card-inner {
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  position: relative;
   overflow: hidden;
-  border-radius: 16px;
-  background: #131B2E;
+  border-radius: 24px;
+  background: #0E1626;
+  box-shadow: 0 18px 40px -24px rgba(0,0,0,0.7);
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.45s cubic-bezier(0.22,1,0.36,1);
 }
 
 .portfolio-card-inner img {
@@ -2097,104 +2237,104 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
-}
-.portfolio-card:hover .portfolio-card-inner img {
-  transform: scale(1.02);
+  transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
 }
 
-.portfolio-card-inner::after {
-  content: '';
+/* Gradientowy overlay od dołu — zamiast jednolitego przyciemnienia */
+.portfolio-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(transparent, rgba(0,0,0,0.70));
+  background: linear-gradient(
+    to top,
+    rgba(4,7,14,0.92) 0%,
+    rgba(4,7,14,0.55) 26%,
+    rgba(4,7,14,0.10) 52%,
+    transparent 70%);
+  transition: opacity 0.45s ease;
   z-index: 1;
   pointer-events: none;
 }
 
-.portfolio-card-bar {
+.portfolio-card-content {
   position: absolute;
-  bottom: 0;
   left: 0;
   right: 0;
-  padding: 1.25rem;
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
+  bottom: 0;
+  padding: 0 28px 30px;
   z-index: 2;
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+
+.portfolio-card-cat {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FFCC49;
+  margin-bottom: 10px;
+}
+
+.portfolio-card-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .portfolio-card-arrow {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: #fff;
-  color: #0F172A;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(15,23,42,0.35);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.portfolio-card:hover .portfolio-card-arrow {
-  opacity: 1;
-  transform: scale(1);
+  transform: scale(0.8) translateY(-4px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  z-index: 3;
 }
 
-.portfolio-card-info { flex: 1; min-width: 0; }
-
-.portfolio-card-name {
-  display: block;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: -0.02em;
-  line-height: 1.35;
-  margin-bottom: 3px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* Hover — tylko urządzenia z prawdziwym wskaźnikiem (bez „lepkiego" stanu na dotyku) */
+@media (hover: hover) and (pointer: fine) {
+  .portfolio-card-inner:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 55px -28px rgba(0,0,0,0.85);
+  }
+  .portfolio-card-inner:hover img { transform: scale(1.04); }
+  .portfolio-card-inner:hover .portfolio-card-overlay { opacity: 0.82; }
+  .portfolio-card-inner:hover .portfolio-card-content { transform: translateY(-4px); }
+  .portfolio-card-inner:hover .portfolio-card-arrow {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    background: rgba(37,99,235,0.55);
+  }
 }
 
-.portfolio-card-meta {
-  display: block;
-  font-size: 0.875rem;
-  color: #94A3B8;
-}
+/* Stan początkowy dla animacji wejścia GSAP — tylko gdy JS dodał .gsap-enhance.
+   Bez JS / bez GSAP klasa nie istnieje → elementy są normalnie widoczne. */
+.gsap-enhance #realizacje .portfolio-label,
+.gsap-enhance #realizacje .portfolio-h2,
+.gsap-enhance #realizacje .portfolio-nav-btn,
+.gsap-enhance #realizacje .portfolio-card { opacity: 0; }
 
-/* Placeholder cards */
-.portfolio-card-inner--placeholder::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.portfolio-card-inner--warm {
-  background: linear-gradient(145deg, #1C1208 0%, #2E1C0E 50%, #160E05 100%);
-}
-.portfolio-card-inner--cool {
-  background: linear-gradient(145deg, #0B1428 0%, #172040 50%, #080E1C 100%);
-}
-.portfolio-card-inner--teal {
-  background: linear-gradient(145deg, #071614 0%, #0E2420 50%, #051010 100%);
-}
-
-.portfolio-subline {
-  text-align: center;
-  font-size: 0.875rem;
-  color: rgba(255,255,255,0.22);
-  margin-top: 2.5rem;
-  padding: 0 1.5rem;
+@media (prefers-reduced-motion: reduce) {
+  .gsap-enhance #realizacje .portfolio-label,
+  .gsap-enhance #realizacje .portfolio-h2,
+  .gsap-enhance #realizacje .portfolio-nav-btn,
+  .gsap-enhance #realizacje .portfolio-card { opacity: 1; }
 }
 
 @media (max-width: 767px) {
-  .portfolio-section { padding: 4rem 0 3rem; }
+  .portfolio-section { padding: 4rem 0 3.5rem; }
   .portfolio-header {
     flex-direction: column;
     align-items: flex-start;
@@ -2203,11 +2343,15 @@ body {
   }
   .portfolio-nav-btns { padding-bottom: 0; }
   .portfolio-h2 { white-space: normal; font-size: 1.75rem; }
-  .portfolio-card { width: 320px; }
+  .portfolio-track { gap: 16px; }
+  /* jedna karta + fragment następnej */
+  .portfolio-card { flex: 0 0 min(78vw, 320px); }
+  .portfolio-card-content { padding: 0 22px 26px; }
+  .portfolio-card-name { font-size: 1.25rem; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .portfolio-card { width: 360px; }
+  .portfolio-card { flex: 0 0 400px; }
 }
 
 /* ---- Scroll animations (IntersectionObserver) ---- */
@@ -3077,3 +3221,824 @@ body {
   .feat-item,
   .feat-item--rev { grid-template-columns: 1fr 1fr; gap: 3rem; }
 }
+
+
+/* ============================================================
+   REDESIGN PODSTRONY OFERTY (screenshot layout, jasny motyw)
+   Sekcje: svc-hero · svc-section (akordeon) · svc-cta · svc-work · testi
+   ============================================================ */
+
+/* ---- Hero (centered) ---- */
+.svc-hero {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(37,99,235,0.10) 0%, transparent 55%),
+    linear-gradient(180deg, #F0F4FF 0%, #FFFFFF 100%);
+  padding: 9.5rem 0 5.5rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+.svc-hero-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.svc-breadcrumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.75rem;
+}
+.svc-breadcrumb a { color: var(--color-text-secondary); transition: color 0.15s ease; }
+.svc-breadcrumb a:hover { color: var(--color-blue); }
+.svc-breadcrumb-sep { opacity: 0.5; }
+
+.svc-hero-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-blue);
+  background: rgba(37,99,235,0.08);
+  border: 1px solid rgba(37,99,235,0.16);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+}
+.svc-hero-h1 {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0 0 1.5rem;
+}
+.svc-hero-h1-accent { color: var(--color-blue); }
+.svc-hero-sub {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  max-width: 60ch;
+  margin: 0 auto 2.5rem;
+}
+.svc-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* ---- Services section ---- */
+.svc-section {
+  background: var(--color-bg-white);
+  padding: 7rem 0;
+}
+.svc-intro {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 5rem;
+}
+.svc-intro-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-blue);
+  margin-bottom: 1rem;
+}
+.svc-intro-h2 {
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 1.25rem;
+}
+.svc-intro-sub {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Service block (alternating) ---- */
+.svc-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  padding: 4rem 0;
+}
+.svc-block + .svc-block { border-top: 1px solid var(--color-border); }
+.svc-block--rev .svc-block-visual { order: -1; }
+
+.svc-block-num {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-blue);
+  margin-bottom: 0.875rem;
+}
+.svc-block-h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+.svc-block-desc {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0 0 2rem;
+}
+
+/* ---- Accordion ---- */
+.svc-accordion {
+  display: flex;
+  flex-direction: column;
+}
+.svc-acc-item {
+  border-top: 1px solid var(--color-border);
+}
+.svc-acc-item:last-child { border-bottom: 1px solid var(--color-border); }
+
+.svc-acc-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0.25rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+.svc-acc-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  transition: color 0.18s ease;
+}
+.svc-acc-head:hover .svc-acc-title,
+.svc-acc-item.is-open .svc-acc-title { color: var(--color-blue); }
+
+.svc-acc-chevron {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, background 0.18s ease, color 0.18s ease;
+}
+.svc-acc-item.is-open .svc-acc-chevron {
+  transform: rotate(180deg);
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+
+.svc-acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+.svc-acc-item.is-open .svc-acc-panel { grid-template-rows: 1fr; }
+.svc-acc-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.svc-acc-panel-inner p {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  margin: 0 0 1rem;
+}
+
+.svc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-bottom: 1.4rem;
+}
+.svc-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 13px;
+  background: rgba(37,99,235,0.06);
+  border: 1px solid rgba(37,99,235,0.14);
+  border-radius: 100px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #3B82F6;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Service visual ---- */
+.svc-block-visual {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+}
+.svc-block-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  box-shadow: inset 0 0 0 3px rgba(37,99,235,0.35);
+  pointer-events: none;
+}
+.svc-block-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.svc-block:hover .svc-block-img { transform: scale(1.03); }
+
+/* ---- CTA banner ---- */
+.svc-cta {
+  background: var(--color-bg-white);
+  padding: 2rem 0 5rem;
+}
+.svc-cta-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0A1628 0%, #1A2540 55%, #142A4F 100%);
+  border-radius: 28px;
+  padding: 4rem 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.svc-cta-glow {
+  position: absolute;
+  top: -120px;
+  left: -60px;
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(37,99,235,0.35) 0%, transparent 68%);
+  pointer-events: none;
+}
+.svc-cta-h2 {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 0;
+}
+.svc-cta-btn { position: relative; z-index: 1; flex-shrink: 0; }
+
+/* ---- Featured work ---- */
+.svc-work {
+  background: var(--color-bg-light);
+  padding: 7rem 0;
+  border-top: 1px solid var(--color-border);
+}
+.svc-work-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 4rem;
+}
+.svc-work-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-blue);
+  margin-bottom: 1rem;
+}
+.svc-work-h2 {
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+.svc-work-sub {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+.svc-work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.svc-work-card {
+  display: block;
+  text-decoration: none;
+}
+.svc-work-thumb {
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #131B2E;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.svc-work-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.svc-work-card:hover .svc-work-thumb {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.svc-work-card:hover .svc-work-thumb img { transform: scale(1.04); }
+
+.svc-work-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1.25rem 0 0.5rem;
+}
+.svc-work-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.svc-work-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  background: rgba(37,99,235,0.06);
+  border: 1px solid rgba(37,99,235,0.14);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #3B82F6;
+}
+.svc-work-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  transition: color 0.18s ease, gap 0.18s ease;
+}
+.svc-work-card:hover .svc-work-visit { color: var(--color-blue); gap: 8px; }
+.svc-work-name {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* ---- Testimonials ---- */
+.testi-section {
+  background: var(--color-bg-white);
+  padding: 7rem 0;
+}
+.testi-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+.testi-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-blue);
+  margin-bottom: 1rem;
+}
+.testi-h2 {
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+.testi-nav { display: flex; gap: 10px; flex-shrink: 0; padding-bottom: 4px; }
+.testi-nav-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.testi-nav-btn:hover { border-color: var(--color-blue); color: var(--color-blue); }
+.testi-nav-btn--active {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+.testi-nav-btn--active:hover { background: #1D4ED8; color: #fff; }
+
+.testi-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+  cursor: grab;
+  user-select: none;
+}
+.testi-track::-webkit-scrollbar { display: none; }
+.testi-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+
+.testi-card {
+  flex: 0 0 calc((100% - 48px) / 3);
+  scroll-snap-align: start;
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+.testi-card:hover {
+  background: #fff;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.testi-stars {
+  color: var(--color-yellow-dark);
+  font-size: 0.9375rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+.testi-quote {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin: 0 0 1.75rem;
+  flex: 1;
+}
+.testi-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-blue) 0%, #1D4ED8 100%);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+.testi-author-info { display: flex; flex-direction: column; }
+.testi-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-text-primary); }
+.testi-role { font-size: 0.8125rem; color: var(--color-text-muted); }
+.testi-date { font-size: 0.8125rem; color: var(--color-text-muted); white-space: nowrap; }
+
+/* ---- Redesign responsive ---- */
+@media (max-width: 767px) {
+  .svc-hero { padding: 7.5rem 0 4rem; }
+  .svc-hero-sub { font-size: 1rem; }
+
+  .svc-section { padding: 4.5rem 0; }
+  .svc-intro { margin-bottom: 3rem; }
+  .svc-block,
+  .svc-block--rev {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    padding: 3rem 0;
+  }
+  .svc-block--rev .svc-block-visual { order: -1; }
+  .svc-block-visual { order: -1; }
+
+  .svc-cta { padding: 1rem 0 3.5rem; }
+  .svc-cta-card { padding: 2.75rem 1.75rem; text-align: center; justify-content: center; }
+  .svc-cta-glow { left: 50%; transform: translateX(-50%); }
+
+  .svc-work { padding: 4.5rem 0; }
+  .svc-work-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+
+  .testi-section { padding: 4.5rem 0; }
+  .testi-header { align-items: center; }
+  .testi-card { flex: 0 0 85%; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .svc-block,
+  .svc-block--rev { gap: 3rem; }
+  .svc-work-grid { grid-template-columns: repeat(2, 1fr); }
+  .testi-card { flex: 0 0 calc((100% - 24px) / 2); }
+}
+
+
+/* ============================================================
+   MOTYW CIEMNY PODSTRONY OFERTY
+   Jednolite ciemne tło + gradientowe wstawki (jak w screenie).
+   Aktywny przez <body class="offer-dark">. Nie dotyka index.html.
+   ============================================================ */
+
+body.offer-dark {
+  color: var(--color-text-light);
+  background:
+    radial-gradient(58% 45% at 12% -2%,  rgba(37,99,235,0.22)  0%, transparent 60%),
+    radial-gradient(48% 40% at 100% 26%, rgba(37,99,235,0.13)  0%, transparent 55%),
+    radial-gradient(45% 38% at 50% 118%, rgba(96,165,250,0.09) 0%, transparent 60%),
+    #070B16;
+  background-attachment: fixed;
+}
+
+/* Sekcje przezroczyste — pokazują jednolite tło body */
+body.offer-dark .svc-hero,
+body.offer-dark .svc-section,
+body.offer-dark .svc-cta,
+body.offer-dark .svc-work,
+body.offer-dark .testi-section { background: transparent; }
+
+body.offer-dark .svc-hero { border-bottom: 1px solid rgba(255,255,255,0.07); }
+body.offer-dark .svc-work { border-top: 1px solid rgba(255,255,255,0.07); }
+body.offer-dark .svc-block + .svc-block { border-top-color: rgba(255,255,255,0.08); }
+
+/* Nagłówki i teksty */
+body.offer-dark .svc-hero-h1,
+body.offer-dark .svc-intro-h2,
+body.offer-dark .svc-block-h3,
+body.offer-dark .svc-work-h2,
+body.offer-dark .testi-h2,
+body.offer-dark .svc-acc-title,
+body.offer-dark .svc-work-name,
+body.offer-dark .testi-name { color: #fff; }
+
+body.offer-dark .svc-hero-sub,
+body.offer-dark .svc-intro-sub,
+body.offer-dark .svc-block-desc,
+body.offer-dark .svc-work-sub,
+body.offer-dark .svc-acc-panel-inner p { color: rgba(255,255,255,0.6); }
+
+body.offer-dark .testi-quote { color: rgba(255,255,255,0.78); }
+
+body.offer-dark .testi-role,
+body.offer-dark .testi-date { color: rgba(255,255,255,0.42); }
+
+/* Akcenty / labele */
+body.offer-dark .svc-hero-h1-accent,
+body.offer-dark .svc-intro-label,
+body.offer-dark .svc-block-num,
+body.offer-dark .svc-work-label,
+body.offer-dark .testi-label { color: #60A5FA; }
+
+body.offer-dark .svc-hero-label {
+  color: #93C5FD;
+  background: rgba(37,99,235,0.15);
+  border-color: rgba(37,99,235,0.32);
+}
+
+/* Breadcrumb */
+body.offer-dark .svc-breadcrumb { color: rgba(255,255,255,0.42); }
+body.offer-dark .svc-breadcrumb a { color: rgba(255,255,255,0.6); }
+body.offer-dark .svc-breadcrumb a:hover { color: #93C5FD; }
+
+/* Tagi */
+body.offer-dark .svc-tag,
+body.offer-dark .svc-work-tag {
+  background: rgba(37,99,235,0.14);
+  border-color: rgba(37,99,235,0.3);
+  color: #93C5FD;
+}
+
+/* Akordeon */
+body.offer-dark .svc-acc-item { border-top-color: rgba(255,255,255,0.1); }
+body.offer-dark .svc-acc-item:last-child { border-bottom-color: rgba(255,255,255,0.1); }
+body.offer-dark .svc-acc-chevron {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+}
+body.offer-dark .svc-acc-item.is-open .svc-acc-chevron {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+body.offer-dark .svc-acc-head:hover .svc-acc-title,
+body.offer-dark .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
+
+/* Obrazy w blokach usług */
+body.offer-dark .svc-block-visual {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 24px 55px rgba(0,0,0,0.5);
+}
+
+/* Baner CTA — obrys + głębszy cień na ciemnym tle */
+body.offer-dark .svc-cta-card {
+  border: 1px solid rgba(37,99,235,0.28);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.45);
+}
+
+/* Karty realizacji */
+body.offer-dark .svc-work-thumb {
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.42);
+}
+body.offer-dark .svc-work-visit { color: rgba(255,255,255,0.6); }
+body.offer-dark .svc-work-card:hover .svc-work-visit { color: #93C5FD; }
+
+/* Opinie */
+body.offer-dark .testi-card {
+  background: rgba(255,255,255,0.035);
+  border-color: rgba(255,255,255,0.08);
+}
+body.offer-dark .testi-card:hover {
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+body.offer-dark .testi-stars { color: var(--color-yellow); }
+body.offer-dark .testi-nav-btn {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.14);
+  color: #fff;
+}
+body.offer-dark .testi-nav-btn:hover { border-color: #60A5FA; color: #93C5FD; }
+body.offer-dark .testi-nav-btn--active,
+body.offer-dark .testi-nav-btn--active:hover {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+
+/* Przycisk ghost (hero „Zobacz realizacje") */
+body.offer-dark .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.2); }
+body.offer-dark .btn-ghost:hover { border-color: #60A5FA; color: #93C5FD; }
+
+/* Nawigacja na ciemnej podstronie: biały pill + ciemne linki (jak index.html),
+   logo jasne na ciemnym tle (nav--light steruje kolorem logotypu). */
+body.offer-dark #nav .nav-island,
+body.offer-dark #nav.scrolled .nav-island {
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(255,255,255,0.7);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+body.offer-dark #nav.nav--light .nav-links-pill a:not(.is-active) { color: #1E293B; }
+body.offer-dark #nav.nav--light .nav-links-pill a:not(.is-active):hover {
+  background: rgba(15,23,42,0.07);
+  color: #0F172A;
+}
+
+/* Hero na ciemnej podstronie — subtelna siatka (grid) + niebieska poświata (jak w referencji) */
+body.offer-dark .svc-hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 11rem;
+}
+body.offer-dark .svc-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 42%, #000 25%, transparent 82%);
+          mask-image: radial-gradient(ellipse 75% 75% at 50% 42%, #000 25%, transparent 82%);
+}
+body.offer-dark .svc-hero::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -46%;
+  transform: translateX(-50%);
+  width: 960px;
+  height: 640px;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(37,99,235,0.20) 0%, rgba(37,99,235,0.06) 42%, transparent 66%);
+}
+body.offer-dark .svc-hero-inner { position: relative; z-index: 1; }
+
+/* ============================================================
+   SIATKA USŁUG (6 usług z homepage + przyciski do podstron)
+   ============================================================ */
+.svc-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.svc-service-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  padding: 2rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.svc-service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(37,99,235,0.35);
+}
+.svc-service-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37,99,235,0.08);
+  color: var(--color-blue);
+  margin-bottom: 1.25rem;
+}
+.svc-service-title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+.svc-service-desc {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin: 0 0 1.75rem;
+  flex: 1;
+}
+.svc-service-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: rgba(37,99,235,0.08);
+  border: 1px solid rgba(37,99,235,0.2);
+  color: var(--color-blue);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.18s ease, gap 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.svc-service-btn svg { transition: transform 0.18s ease; }
+.svc-service-card:hover .svc-service-btn { background: var(--color-blue); border-color: var(--color-blue); color: #fff; gap: 11px; }
+.svc-service-card:hover .svc-service-btn svg { transform: translateX(2px); }
+
+@media (max-width: 767px) { .svc-services-grid { grid-template-columns: 1fr; } }
+@media (min-width: 768px) and (max-width: 1023px) { .svc-services-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Ciemny motyw — karty usług */
+body.offer-dark .svc-service-card {
+  background: rgba(255,255,255,0.035);
+  border-color: rgba(255,255,255,0.08);
+}
+body.offer-dark .svc-service-card:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(37,99,235,0.45);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+body.offer-dark .svc-service-icon { background: rgba(37,99,235,0.16); color: #93C5FD; }
+body.offer-dark .svc-service-title { color: #fff; }
+body.offer-dark .svc-service-desc { color: rgba(255,255,255,0.6); }
+body.offer-dark .svc-service-btn {
+  background: rgba(37,99,235,0.14);
+  border-color: rgba(37,99,235,0.32);
+  color: #93C5FD;
+}
+body.offer-dark .svc-service-card:hover .svc-service-btn { background: var(--color-blue); border-color: var(--color-blue); color: #fff; }

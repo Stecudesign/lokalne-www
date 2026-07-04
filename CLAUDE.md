@@ -16,9 +16,8 @@ Design system marki: `.claude/skills/design.md` — czytaj przed każdą pracą 
 
 ```
 index.html      ← cała strona (landing page)
-style.css       ← wszystkie custom style — wspólny dla index.html i podstron oferta/
-oferta/
-  strony-internetowe.html  ← szablon podstrony oferty (skopiuj dla kolejnych usług)
+oferta.html     ← strona Oferta (root, URL /oferta) — usługi w akordeonie, motyw ciemny
+style.css       ← wszystkie custom style — wspólny dla index.html i oferta.html
 img/
   logopin3Dv1.png          ← logo pin 3D (64×64)
   herov8.png               ← tło hero (desktop)
@@ -38,11 +37,11 @@ PRD_lokalnewww.md
 
 | ID | Klasa/styl sekcji | Status |
 |---|---|---|
-| `#nav` | `.nav-island` — floating pill, niebieskie szkło (`rgba(37,99,235,0.42)`), białe linki, aktywna pozycja = biały pill (`.is-active`, scrollspy) | ✅ gotowe |
+| `#nav` | `.nav-island` — floating pill, białe półprzezroczyste szkło (`rgba(255,255,255,0.28)`), ciemne linki, aktywna pozycja = niebieski pill (`.is-active`, scrollspy) | ✅ gotowe |
 | `#hero` | tło `img/herov8.png` + overlay `rgba(255,255,255,0.2)`, treść do lewej | ✅ gotowe |
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC`, 3 karty w gridzie | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient, 6 kafli | ✅ gotowe |
-| `#realizacje` | `.portfolio-section` — tło `#080C14`, slider poziomy 5 kart, prev/next + drag-scroll | ✅ gotowe |
+| `#realizacje` | `.portfolio-section` — tło `#080C14`, slider transform-driven (GSAP `x`/translate3d) 5 kart, coverflow (aktywna karta = wyśrodkowana, `scale 1`/`opacity 1`; pozostałe `0.96`/`0.62`), prev/next + drag/touch (Pointer Events) + wolny autoplay z pauzą na hover | ✅ gotowe |
 | `#proces` | `.process-section` — tło `#0F172A`, 4 kroki z numerami | ✅ gotowe |
 | `#wyrozniam-sie` | `.usp-section` — tło `#fff`, 2×2 grid kart | ✅ gotowe |
 | `#o-mnie` | `.about-section` — tło `#1A2540`, 2 kolumny foto+tekst | ✅ gotowe |
@@ -51,27 +50,30 @@ PRD_lokalnewww.md
 
 ---
 
-## Podstrony oferty (`oferta/`)
+## Strona Oferta (`oferta.html`)
 
-Szablon: `oferta/strony-internetowe.html`. Skopiować dla każdej kolejnej usługi.
+Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca całą ofertę; usługi = te z „zajawki" na index.html (bento), rozwinięte w akordeonie. Ścieżki zasobów root-relative (`img/`, `style.css`).
+
+**Motyw: ciemny, jednolite tło** — `<body class="offer-dark">` włącza motyw. Tło = jeden ciemny field `#070B16` z gradientowymi wstawkami (radialne blue glow, `background-attachment: fixed`) — wszystkie sekcje przezroczyste, tło ciągłe przez całą stronę (wzorowane na screenie „services"). Akcenty niebieskie (`#60A5FA`/`#93C5FD`), teksty jasne, karty półprzezroczyste (`rgba(255,255,255,0.03–0.06)`). Layout: hero minimalny + siatka 6 kart usług + siatka realizacji + opinie. Style bazowe (jasne) i override ciemny w `style.css` na końcu — sekcje „REDESIGN PODSTRONY OFERTY" + „MOTYW CIEMNY PODSTRONY OFERTY". Nav: `updateNav` wymusza `nav--light` gdy `body.offer-dark`.
 
 **Sekcje szablonu (w kolejności):**
 
-1. `.offer-hero` — dark navy gradient, 2 kolumny: tekst (breadcrumb + H1 + opis + badges + CTA) | SVG mockup przeglądarki z floating stat-card
-2. `.offer-benefits-section` — tło `#F0F4FF`, 3×2 grid kart `.offer-benefit-card` (ikona + tytuł + opis)
-3. `.process-section` — reuse z index.html (tło `#F8FAFC`), 4 kroki
-4. `.usp-section` — reuse z index.html (tło `#fff`), layout 2-kolumnowy
-5. `#realizacje .portfolio-section` — reuse z index.html (tło `#080C14`)
-6. `.offer-cta-section` — tło `var(--color-navy)`, centered CTA z przyciskiem + numerem telefonu
-7. `.footer-section` — reuse z index.html
+1. `#svc-hero .svc-hero` — **minimalny, wyśrodkowany** (jak „Our Services"): breadcrumb + H1 „Oferta" + krótki opis (bez przycisków, bez labela). Ciemny motyw: `::before` = subtelna siatka (grid 60px, maska radialna), `::after` = niebieska poświata u dołu; content `z-index: 1`.
+2. `#uslugi .svc-section` — **akordeon w 3 naprzemiennych blokach** (`.svc-block`, `.svc-block--rev` = obraz z lewej), po 2 usługi na blok = 6 usług z zajawki na index.html: Blok 1 „Projekt i strona" (Strony internetowe + Indywidualny design), Blok 2 „Widoczność i jakość" (SEO + Responsywność), Blok 3 „Rozwój i dane" (Opieka nad stroną + Analityka Google). Każdy blok: tekst z akordeonem (`.svc-accordion` → `.svc-acc-item.is-open`, panel przez `grid-template-rows 0fr→1fr`, chevron obraca się + niebieskie kółko, tagi `.svc-tag`) | obraz `.svc-block-visual` (blue inset ring). Pierwsza pozycja w bloku otwarta. (Klasy `.svc-service-*` z wariantu „6 kart z przyciskami" pozostały w CSS jako nieużywane.)
+3. `.svc-cta` — baner: ciemna navy karta `.svc-cta-card` (radius 28px, blue glow) z H2 + żółty `btn-primary`
+4. `#realizacje .svc-work` — tło `#F8FAFC`, siatka 3 kart `.svc-work-card` (thumb + tagi + „Zobacz stronę ↗" + nazwa)
+5. `.testi-section` — tło białe, opinie: header z prev/next (`.testi-nav-btn`, active = niebieski) + `.testi-track` (scroll-snap + drag) z kartami `.testi-card` (gwiazdki + cytat + avatar-inicjały + nazwa/rola + data). **Placeholder — podmienić na prawdziwe opinie.**
+6. `.footer-section` — reuse z index.html
 
-**Ścieżki zasobów w podstronach:** `../img/`, `../style.css`
+**Ścieżki zasobów:** root-relative — `img/`, `style.css` (plik jest w katalogu głównym)
 
 **Nawigacja:** linki w nav i footer zawierają `/#section` (prefix ukośnikiem do roota)
 
-**Nav JS:** `darkSectionIds = ['offer-hero', 'realizacje']` — białe linki gdy nav nad ciemnymi sekcjami
+**Nav JS:** motyw ciemny → `updateNav` wymusza `nav--light` gdy `body.offer-dark`; dodatkowo pill nadpisany na biały (`body.offer-dark #nav .nav-island`) z ciemnymi linkami, logo jasne. Slider opinii: `#testi-prev/#testi-next` + drag na `#testi-track`. (Akordeon `.svc-acc-*` już nieużywany na tej stronie — CSS został jako martwy.)
 
-**Klasy CSS podstron (prefix `offer-`):** `.offer-hero`, `.offer-hero-inner`, `.offer-hero-text`, `.offer-hero-visual`, `.offer-mockup-wrap`, `.offer-hero-mockup`, `.offer-stat-card`, `.offer-label`, `.offer-h1`, `.offer-h1-accent`, `.offer-sub`, `.offer-hero-badges`, `.offer-badge`, `.offer-hero-actions`, `.offer-benefits-section`, `.offer-benefits-grid`, `.offer-benefit-card`, `.offer-benefit-icon`, `.offer-benefit-title`, `.offer-benefit-desc`, `.offer-cta-section`, `.offer-cta-inner`, `.offer-cta-h2`, `.offer-cta-sub`, `.offer-cta-actions`, `.btn-offer-ghost`, `.btn-offer-phone`
+**Klasy CSS podstron (prefiksy `svc-`, `testi-`):** `.svc-hero`, `.svc-hero-inner`, `.svc-breadcrumb`, `.svc-hero-label`, `.svc-hero-h1`, `.svc-hero-h1-accent`, `.svc-hero-sub`, `.svc-hero-actions`, `.svc-section`, `.svc-intro`, `.svc-intro-label/h2/sub`, `.svc-services-grid`, `.svc-service-card`, `.svc-service-icon`, `.svc-service-title`, `.svc-service-desc`, `.svc-service-btn`, `.svc-block`, `.svc-block--rev`, `.svc-block-text`, `.svc-block-num`, `.svc-block-h3`, `.svc-block-desc`, `.svc-block-visual`, `.svc-block-img`, `.svc-accordion`, `.svc-acc-item`, `.svc-acc-head`, `.svc-acc-title`, `.svc-acc-chevron`, `.svc-acc-panel`, `.svc-acc-panel-inner`, `.svc-tags`, `.svc-tag`, `.svc-cta`, `.svc-cta-card`, `.svc-cta-glow`, `.svc-cta-h2`, `.svc-cta-btn`, `.svc-work`, `.svc-work-header`, `.svc-work-label/h2/sub`, `.svc-work-grid`, `.svc-work-card`, `.svc-work-thumb`, `.svc-work-meta`, `.svc-work-tags`, `.svc-work-tag`, `.svc-work-visit`, `.svc-work-name`, `.testi-section`, `.testi-header`, `.testi-label`, `.testi-h2`, `.testi-nav`, `.testi-nav-btn`, `.testi-nav-btn--active`, `.testi-track`, `.testi-card`, `.testi-stars`, `.testi-quote`, `.testi-foot`, `.testi-author`, `.testi-avatar`, `.testi-author-info`, `.testi-name`, `.testi-role`, `.testi-date`
+
+> **Uwaga:** stare klasy podstrony (`.offer-hero*`, `.offer-benefits*`, `.offer-cta*`, `.feat-*`) pozostały w `style.css` jako martwy kod po redesignie — do usunięcia przy sprzątaniu (nie są używane przez index.html).
 
 ---
 
@@ -205,6 +207,12 @@ Bottom bar: copyright po lewej, linki Polityka prywatności + Realizacja po praw
 Klasa `.fade-up`: `opacity: 0; transform: translateY(30px)` → po dodaniu `.in-view` przechodzi do widocznego stanu. JS w `<script>` na dole index.html używa `IntersectionObserver` (`threshold: 0.12`). Delay przez `style="transition-delay: Xms"`.
 
 Animacje page-load (hero): klasa `.anim-init` + `.visible` dodawana przez `requestAnimationFrame`.
+
+**Animacje GSAP (progresywne wzbogacenie).** Biblioteki GSAP + ScrollTrigger + Lenis ładowane z CDN na dole `index.html`. Klasa `.gsap-enhance` dodawana synchronicznie w `<head>`; usuwana przez JS gdy brak GSAP lub `prefers-reduced-motion` → treść zostaje statycznie widoczna. Stany początkowe (`opacity: 0`) chowane w CSS przez `.gsap-enhance #<section> ...` (analogicznie do `#proces` i `#uslugi`).
+
+- **Sekcja `#uslugi` (bento):** osobny `<script>` IIFE. Master timeline (`ScrollTrigger` na `.bento2-grid`, `start: 'top 80%'`, `once`) robi sekwencyjny reveal per kafel ze staggerem `i * 0.12`: karta (`y40→0`, `scale 0.96→1`) → nagłówek → opis → CTA → grafika (`y30→0`, `scale 0.92→1`, `rotation 1→0`). Karty/teksty używają `clearProps: 'transform'`, by po revealu działał hover (CSS). **Parallax** grafik to osobny scrub-ScrollTrigger na `img` (nie na kontenerze) — `y: 12 → -12`; tile-1 ma `gsap.set(img, { yPercent: 22 })` odtwarzające bazowe `translateY(22%)`, żeby parallax się z nim składał, a nie nadpisywał. **Hover** grafiki (`scale 1.03`) sterowany GSAP-em (składa się z parallaxem), lift karty + cień w CSS (`transition 0.35s ease`). Micro-anim strzałki CTA tile-2: `translateX(3px)` (CSS).
+
+- **Sekcja `#realizacje` (slider):** osobny `<script>` IIFE. Struktura DOM: `.portfolio-slider` (viewport, `overflow: hidden` w trybie `.is-gsap`) → `.portfolio-track` (pozycja przez GSAP `x` = `translate3d`, `force3D: true`, jedyny `will-change: transform` obok aktywnej karty) → `.portfolio-card` (GSAP `scale`/`opacity` stanu aktywnego) → `.portfolio-card-inner` (hover lift/zoom w CSS — osobna warstwa, by transformy się nie kolidowały). **Animujemy wyłącznie `transform` + `opacity`.** Ruch tracka: `moveTo(x)` z `clamp` do `[minX, 0]`; `step` = różnica `offsetLeft` dwóch kart; `minX` liczony z `clientWidth − padding − scrollWidth`. **Aktywna karta** (coverflow) wykrywana przez `getBoundingClientRect` (środek najbliżej środka viewportu) → `scale 1`/`opacity 1`, reszta `0.96`/`0.62` + toggle `.is-active` (nośnik `will-change`). **Drag/touch:** Pointer Events + `setPointerCapture`, rubber-band 0.35 poza granicami, snap do `Math.round(x/step)*step` na `pointerup`; guard „ghost click" gdy `moved`. **Autoplay:** `setInterval` 5 s, `autoNext` przesuwa o `step` i wraca płynnie na `0` po ostatniej; pauza na `mouseenter`, wznowienie na `mouseleave`; włączany dopiero po revealu wejścia i tylko gdy `minX < 0`. **Reveal wejścia** (`ScrollTrigger`, `start: 'top 78%'`, `once`): label (`opacity`+`y16`+`letter-spacing 0.30→0.15em`) → H2 (`y40`) → przyciski (`scale 0.9→1`, `back.out`) → karty (`y60`, `scale 0.94→1`, stagger `0.12`); po zakończeniu `updateActive` + start autoplay. **Fallback** (brak GSAP / `reduce-motion`): natywny scroll poziomy, przyciski robią `scrollBy`. Stany startowe `opacity: 0` chowane w CSS przez `.gsap-enhance #realizacje …` (z un-hide dla `prefers-reduced-motion`).
 
 ---
 

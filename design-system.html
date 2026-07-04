@@ -671,39 +671,44 @@
     .usp-desc-demo { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.65; }
 
     /* ─── PORTFOLIO CARD (demo) ──────────────────────────── */
+    /* Obraz na całą kartę + gradientowy overlay od dołu, kategoria #FFCC49,
+       tytuł ~28px od dołu, duże zaokrąglenie. Odpowiada .portfolio-card w index.html. */
     .portfolio-card-demo {
-      background: #1E293B;
-      border-radius: 16px;
+      position: relative;
+      border-radius: 24px;
       overflow: hidden;
-      min-width: 260px;
-      max-width: 300px;
+      min-width: 240px;
+      max-width: 280px;
+      aspect-ratio: 1 / 1;
+      background: #0E1626;
     }
     .portfolio-img-demo {
-      width: 100%;
-      height: 160px;
+      position: absolute;
+      inset: 0;
       background: linear-gradient(135deg, #334155 0%, #1E293B 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #475569;
-      font-size: 0.75rem;
-      font-weight: 500;
     }
-    .portfolio-body-demo { padding: 20px; }
+    .portfolio-overlay-demo {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(4,7,14,0.92) 0%, rgba(4,7,14,0.55) 26%,
+        rgba(4,7,14,0.10) 52%, transparent 70%);
+    }
+    .portfolio-body-demo { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 26px; z-index: 2; }
     .portfolio-tag-demo {
       display: inline-block;
-      font-size: 0.625rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--color-blue-light);
-      background: rgba(96,165,250,0.12);
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin-bottom: 8px;
+      letter-spacing: 0.14em;
+      color: #FFCC49;
+      margin-bottom: 10px;
     }
-    .portfolio-title-demo { font-size: 1rem; font-weight: 700; color: #F1F5F9; margin-bottom: 6px; }
-    .portfolio-desc-demo { font-size: 0.8125rem; color: #64748B; line-height: 1.65; }
+    .portfolio-title-demo { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; margin: 0; }
 
     /* ─── A11Y ───────────────────────────────────────────── */
     .a11y-table { width: 100%; border-collapse: collapse; }
@@ -1551,27 +1556,27 @@
     <section class="ds-section" id="portfolio">
       <p class="ds-section-label">Komponenty</p>
       <h2 class="ds-section-title">Portfolio Card</h2>
-      <p class="ds-section-desc">Karty w poziomym sliderze sekcji #realizacje. Ciemne tło, drag-scroll + prev/next. Placeholder obrazu zastępuje zrzut ekranu projektu.</p>
+      <p class="ds-section-desc">Karty w sliderze transform-driven (GSAP) sekcji #realizacje. Obraz na całą kartę + gradientowy overlay od dołu, kategoria w kolorze <code>#FFCC49</code> nad tytułem, duże zaokrąglenie (24px). Coverflow: aktywna karta <code>scale 1</code>/<code>opacity 1</code>, pozostałe przygaszone. Placeholder obrazu zastępuje zrzut ekranu projektu.</p>
 
       <div class="ds-demo ds-demo--dark" style="gap:16px">
         <div class="portfolio-card-demo">
           <div class="portfolio-img-demo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
+          <div class="portfolio-overlay-demo"></div>
           <div class="portfolio-body-demo">
             <span class="portfolio-tag-demo">Strona WWW</span>
             <div class="portfolio-title-demo">Salon Urody Klaudia</div>
-            <div class="portfolio-desc-demo">Landing page z formularzem rezerwacji i galerią. +240% wizyt z Google w 3 miesiące.</div>
           </div>
         </div>
         <div class="portfolio-card-demo">
           <div class="portfolio-img-demo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
+          <div class="portfolio-overlay-demo"></div>
           <div class="portfolio-body-demo">
-            <span class="portfolio-tag-demo">E-commerce</span>
+            <span class="portfolio-tag-demo">Redesign</span>
             <div class="portfolio-title-demo">Piekarnia Kowalski</div>
-            <div class="portfolio-desc-demo">Sklep online z systemem zamówień. Wdrożenie w 5 dni roboczych.</div>
           </div>
         </div>
       </div>

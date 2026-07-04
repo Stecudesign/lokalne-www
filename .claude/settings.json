@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start \"\" \"c:/Users/pawel/Desktop/kodowanie/lokalnewww/index.html\")",
+      "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('index.html','utf8'\\); const m=s.match\\(/bento grid[\\\\s\\\\S]*?window.addEventListener\\\\\\('load'/\\); console.log\\(m?'script-block-present':'MISSING'\\); console.log\\('tiles fade-up removed:', !/bento2-grid fade-up/.test\\(s\\)\\);\")",
+      "Bash(cd \"c:/Users/pawel/Desktop/kodowanie/lokalnewww\" && cat \"/c/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/36dae434-740e-44b1-9c9b-8eb49a41a2e8/scratchpad/redesign.css\" >> style.css && wc -l style.css && tail -3 style.css)",
+      "Read(//c/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/36dae434-740e-44b1-9c9b-8eb49a41a2e8/scratchpad/**)",
+      "Bash(python -c \"s=open\\('style.css'\\).read\\(\\); print\\('open',s.count\\('{'\\),'close',s.count\\('}'\\)\\)\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(grep -rc \"about2-fig\\\\|about2-inner\\\\|about2-figure\\\\|omnietyl\" index.html style.css CLAUDE.md)",
+      "Bash(node -e \"const h=require\\('fs'\\).readFileSync\\('index.html','utf8'\\);console.log\\('open',\\(h.match\\(/\\\\\\(function/g\\)||[]\\).length,'close',\\(h.match\\(/\\\\}\\\\\\)\\\\\\(\\\\\\);/g\\)||[]\\).length\\)\")",
+      "Bash(node -e \"const h=require\\('fs'\\).readFileSync\\('index.html','utf8'\\);console.log\\('IIFE open',\\(h.match\\(/\\\\\\(function/g\\)||[]\\).length,'close',\\(h.match\\(/\\\\}\\\\\\)\\\\\\(\\\\\\);/g\\)||[]\\).length\\)\")"
+    ]
+  }
+}
