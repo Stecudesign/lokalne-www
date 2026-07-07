@@ -10,7 +10,15 @@
       "Skill(run:*)",
       "Bash(grep -rc \"about2-fig\\\\|about2-inner\\\\|about2-figure\\\\|omnietyl\" index.html style.css CLAUDE.md)",
       "Bash(node -e \"const h=require\\('fs'\\).readFileSync\\('index.html','utf8'\\);console.log\\('open',\\(h.match\\(/\\\\\\(function/g\\)||[]\\).length,'close',\\(h.match\\(/\\\\}\\\\\\)\\\\\\(\\\\\\);/g\\)||[]\\).length\\)\")",
-      "Bash(node -e \"const h=require\\('fs'\\).readFileSync\\('index.html','utf8'\\);console.log\\('IIFE open',\\(h.match\\(/\\\\\\(function/g\\)||[]\\).length,'close',\\(h.match\\(/\\\\}\\\\\\)\\\\\\(\\\\\\);/g\\)||[]\\).length\\)\")"
+      "Bash(node -e \"const h=require\\('fs'\\).readFileSync\\('index.html','utf8'\\);console.log\\('IIFE open',\\(h.match\\(/\\\\\\(function/g\\)||[]\\).length,'close',\\(h.match\\(/\\\\}\\\\\\)\\\\\\(\\\\\\);/g\\)||[]\\).length\\)\")",
+      "mcp__claude_ai_higsfield__generate_image",
+      "mcp__claude_ai_higsfield__job_status",
+      "Bash(python -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
+      "Bash(node -e \"try{require\\('sharp'\\);console.log\\('sharp ok'\\)}catch\\(e\\){console.log\\('no sharp'\\)}\")",
+      "Bash(cd /c/Users/pawel/Desktop/kodowanie/lokalnewww *)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\pawel\\Desktop\\kodowanie\\lokalnewww\\.tmp_img"
     ]
   }
 }

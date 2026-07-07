@@ -27,6 +27,12 @@ img/
   bento-seo.png
   obslugawww.png
   responsywnauslugav3.png       ← mockup urządzeń (tile-4 Responsywność)
+  oferta-seo.webp               ← ilustracja usługi SEO (oferta.html, Higgsfield)
+  oferta-strony.webp            ← ilustracja usługi Strony internetowe (oferta.html)
+  oferta-design.webp            ← ilustracja usługi Indywidualny design (oferta.html)
+  oferta-responsywnosc.webp     ← ilustracja usługi Responsywność (oferta.html)
+  oferta-opieka.webp            ← ilustracja usługi Opieka nad stroną (oferta.html)
+  oferta-analityka.webp         ← ilustracja usługi Analityka Google (oferta.html)
 examples/       ← screenshoty referencyjne
 PRD_lokalnewww.md
 ```
@@ -52,26 +58,33 @@ PRD_lokalnewww.md
 
 ## Strona Oferta (`oferta.html`)
 
-Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca całą ofertę; usługi = te z „zajawki" na index.html (bento), rozwinięte w akordeonie. Ścieżki zasobów root-relative (`img/`, `style.css`).
+Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca całą ofertę; 6 usług = te z „zajawki" na index.html (bento), każda w osobnym pełnoszerokościowym pasie z akordeonem. Ścieżki zasobów root-relative (`img/`, `style.css`).
 
-**Motyw: ciemny, jednolite tło** — `<body class="offer-dark">` włącza motyw. Tło = jeden ciemny field `#070B16` z gradientowymi wstawkami (radialne blue glow, `background-attachment: fixed`) — wszystkie sekcje przezroczyste, tło ciągłe przez całą stronę (wzorowane na screenie „services"). Akcenty niebieskie (`#60A5FA`/`#93C5FD`), teksty jasne, karty półprzezroczyste (`rgba(255,255,255,0.03–0.06)`). Layout: hero minimalny + siatka 6 kart usług + siatka realizacji + opinie. Style bazowe (jasne) i override ciemny w `style.css` na końcu — sekcje „REDESIGN PODSTRONY OFERTY" + „MOTYW CIEMNY PODSTRONY OFERTY". Nav: `updateNav` wymusza `nav--light` gdy `body.offer-dark`.
+**Motyw: jasny hero z siatką + naprzemienne pasy** — `<body class="offer-page">`. Hero jasny (gradient `#F0F4FF→#fff`) z **siatką („kratka") w tle** (`.svc-hero::before` = grid 54px w kolorze `rgba(37,99,235,0.09)`, maska radialna, żeby wygasała po bokach) + niebieska poświata u dołu (`::after`). Poniżej **6 pasów usług naprzemiennie ciemny/jasny** (`.svc-band--dark` / `.svc-band--light`): SEO (ciemny), Strony internetowe (jasny), Indywidualny design (ciemny), Responsywność (jasny), Opieka nad stroną (ciemny), Analityka Google (jasny). Pas ciemny = `#0A1120` + radialne blue glow; pas jasny = `#F8FAFC`. Style w `style.css` w sekcji „PODSTRONA OFERTY — jasny hero z siatką + naprzemienne pasy" (po „REDESIGN PODSTRONY OFERTY"). Stara sekcja „MOTYW CIEMNY PODSTRONY OFERTY" (`body.offer-dark`) jest teraz **martwym kodem**.
 
 **Sekcje szablonu (w kolejności):**
 
-1. `#svc-hero .svc-hero` — **minimalny, wyśrodkowany** (jak „Our Services"): breadcrumb + H1 „Oferta" + krótki opis (bez przycisków, bez labela). Ciemny motyw: `::before` = subtelna siatka (grid 60px, maska radialna), `::after` = niebieska poświata u dołu; content `z-index: 1`.
-2. `#uslugi .svc-section` — **akordeon w 3 naprzemiennych blokach** (`.svc-block`, `.svc-block--rev` = obraz z lewej), po 2 usługi na blok = 6 usług z zajawki na index.html: Blok 1 „Projekt i strona" (Strony internetowe + Indywidualny design), Blok 2 „Widoczność i jakość" (SEO + Responsywność), Blok 3 „Rozwój i dane" (Opieka nad stroną + Analityka Google). Każdy blok: tekst z akordeonem (`.svc-accordion` → `.svc-acc-item.is-open`, panel przez `grid-template-rows 0fr→1fr`, chevron obraca się + niebieskie kółko, tagi `.svc-tag`) | obraz `.svc-block-visual` (blue inset ring). Pierwsza pozycja w bloku otwarta. (Klasy `.svc-service-*` z wariantu „6 kart z przyciskami" pozostały w CSS jako nieużywane.)
-3. `.svc-cta` — baner: ciemna navy karta `.svc-cta-card` (radius 28px, blue glow) z H2 + żółty `btn-primary`
-4. `#realizacje .svc-work` — tło `#F8FAFC`, siatka 3 kart `.svc-work-card` (thumb + tagi + „Zobacz stronę ↗" + nazwa)
-5. `.testi-section` — tło białe, opinie: header z prev/next (`.testi-nav-btn`, active = niebieski) + `.testi-track` (scroll-snap + drag) z kartami `.testi-card` (gwiazdki + cytat + avatar-inicjały + nazwa/rola + data). **Placeholder — podmienić na prawdziwe opinie.**
-6. `.footer-section` — reuse z index.html
+1. `#svc-hero .svc-hero` — **minimalny, wyśrodkowany**: H1 „Oferta" + lead na 3 zdania (`.svc-hero-sub`). Bez breadcrumbu i bez osobnej sekcji intro (scalone w hero). Jasny motyw z siatką w tle (`::before`) i poświatą (`::after`); content `.svc-hero-inner` na `z-index: 1`.
+2. **6× `.svc-band`** (id `svc-seo`, `svc-strony`, `svc-design`, `svc-responsywnosc`, `svc-opieka`, `svc-analityka`) — każdy pas ma jeden `.svc-block` (grid 2 kol; `.svc-block--rev` = obraz z lewej dla pasów jasnych). Tekst: `.svc-block-num` + `.svc-block-h3` + `.svc-block-desc` + **akordeon** `.svc-accordion` z 3 pozycjami „co obejmuje" (`.svc-acc-item`, pierwsza `.is-open`; panel przez `grid-template-rows 0fr→1fr`, chevron-down obraca się o 180° + niebieskie kółko). **Bez tagów** (`.svc-tag` usunięte). Obraz `.svc-block-visual` z ilustracją Higgsfield (`img/oferta-*.webp`, minimal flat, paleta marki).
+3. `.svc-cta` — baner: ciemna navy karta `.svc-cta-card` (radius 28px, blue glow) z H2 + żółty `btn-primary`.
+4. `#realizacje .svc-work` — tło `#F8FAFC`, siatka 3 kart `.svc-work-card` (thumb + tagi + „Zobacz stronę ↗" + nazwa).
+5. `.footer-section` — reuse z index.html.
+
+> Sekcja opinii (`.testi-section`) została **usunięta** z oferta.html (CSS `.testi-*` pozostał jako martwy kod).
 
 **Ścieżki zasobów:** root-relative — `img/`, `style.css` (plik jest w katalogu głównym)
 
 **Nawigacja:** linki w nav i footer zawierają `/#section` (prefix ukośnikiem do roota)
 
-**Nav JS:** motyw ciemny → `updateNav` wymusza `nav--light` gdy `body.offer-dark`; dodatkowo pill nadpisany na biały (`body.offer-dark #nav .nav-island`) z ciemnymi linkami, logo jasne. Slider opinii: `#testi-prev/#testi-next` + drag na `#testi-track`. (Akordeon `.svc-acc-*` już nieużywany na tej stronie — CSS został jako martwy.)
+**Nav JS:** `updateNav` wymusza `nav--light` gdy scroll nad pasem ciemnym — `darkSectionIds = ['svc-seo','svc-design','svc-opieka']` (jak scrollspy na index.html). Akordeon: klik na `.svc-acc-head` toggluje `.is-open` (zamyka pozostałe w tym samym `.svc-accordion`).
 
-**Klasy CSS podstron (prefiksy `svc-`, `testi-`):** `.svc-hero`, `.svc-hero-inner`, `.svc-breadcrumb`, `.svc-hero-label`, `.svc-hero-h1`, `.svc-hero-h1-accent`, `.svc-hero-sub`, `.svc-hero-actions`, `.svc-section`, `.svc-intro`, `.svc-intro-label/h2/sub`, `.svc-services-grid`, `.svc-service-card`, `.svc-service-icon`, `.svc-service-title`, `.svc-service-desc`, `.svc-service-btn`, `.svc-block`, `.svc-block--rev`, `.svc-block-text`, `.svc-block-num`, `.svc-block-h3`, `.svc-block-desc`, `.svc-block-visual`, `.svc-block-img`, `.svc-accordion`, `.svc-acc-item`, `.svc-acc-head`, `.svc-acc-title`, `.svc-acc-chevron`, `.svc-acc-panel`, `.svc-acc-panel-inner`, `.svc-tags`, `.svc-tag`, `.svc-cta`, `.svc-cta-card`, `.svc-cta-glow`, `.svc-cta-h2`, `.svc-cta-btn`, `.svc-work`, `.svc-work-header`, `.svc-work-label/h2/sub`, `.svc-work-grid`, `.svc-work-card`, `.svc-work-thumb`, `.svc-work-meta`, `.svc-work-tags`, `.svc-work-tag`, `.svc-work-visit`, `.svc-work-name`, `.testi-section`, `.testi-header`, `.testi-label`, `.testi-h2`, `.testi-nav`, `.testi-nav-btn`, `.testi-nav-btn--active`, `.testi-track`, `.testi-card`, `.testi-stars`, `.testi-quote`, `.testi-foot`, `.testi-author`, `.testi-avatar`, `.testi-author-info`, `.testi-name`, `.testi-role`, `.testi-date`
+**Animacje GSAP pasów usług (`oferta.html`).** Analogicznie do index.html: GSAP + ScrollTrigger + Lenis z CDN na dole strony, klasa `.gsap-enhance` dodawana synchronicznie w `<head>`, zdejmowana przez JS gdy brak GSAP / `prefers-reduced-motion` (treść zostaje statycznie widoczna). Osobny `<script>` IIFE ze **spięciem Lenis z tickerem GSAP** oraz `gsap.matchMedia()`:
+> - **Desktop/tablet (`min-width: 768px`)** — *alternating reveal* per pas (`ScrollTrigger` na `.svc-block`, `start: 'top 78%'`, `once`), `ease: power3.out`. Tekst wjeżdża od swojej strony: pasy ciemne (tekst z lewej) `x:-30, y:30`, pasy jasne `.svc-block--rev` (tekst z prawej) `x:+30, y:30`. Kolejność timeline: **numer/label** (`y:12`, `letter-spacing 0.16→0.02em`) → **H3** (`y:40`) → **opis** (`y:24`) → **`.svc-acc-item` stagger 0.1**; `.svc-block-visual` w tym samym timeline `x:±60, y:30, scale:0.94→1, rotation:±1.5°→0`, `duration:1`. Po revealu `clearProps: 'transform'` na tekstach (żeby działał CSS accordionu). **Parallax** grafiki: osobny scrub-`ScrollTrigger` na `.svc-block-img` (`yPercent 5→-5`, `start: 'top bottom'`, `end: 'bottom top'`); baza `scale:1.12` żeby ruch nie odsłaniał krawędzi w kadrze `overflow:hidden`. **Hover** grafiki (`scale 1.12↔1.16`) sterowany GSAP-em (`gsap.quickTo`) — komponuje się z parallaxem, bez konfliktu transformów.
+> - **Mobile (`max-width: 767px`)** — lżej: tylko `opacity + y` (numer/H3/opis `y:24`, akordeon `y:20` stagger 0.08, grafika `y:30`), **bez `x`, `scale`, `rotation` i bez parallaxu**.
+>
+> **Wydajność:** animowane wyłącznie `transform` + `opacity` (`force3D`), `will-change: transform` tylko na `.svc-block-img`. Stany początkowe (`opacity:0`) chowane w CSS pod `html.gsap-enhance body.offer-page .svc-band …` (sekcja „Stany początkowe animacji GSAP (podstrona oferty)" w `style.css`); wrapper `.svc-block.fade-up` zneutralizowany (`opacity:1; transform:none`), a CSS-owy `transition`/`:hover` na `.svc-block-img` zdjęty (transform grafiki należy do GSAP). `@media (prefers-reduced-motion: reduce)` un-hide jako zabezpieczenie zanim JS zdejmie klasę. Pozostałe `.fade-up` na podstronie (hero, CTA, realizacje) dalej obsługuje `IntersectionObserver`.
+
+**Klasy CSS podstron (prefiksy `svc-`, `testi-`):** `.svc-hero`, `.svc-hero-inner`, `.svc-hero-label`, `.svc-hero-h1`, `.svc-hero-h1-accent`, `.svc-hero-sub`, `.svc-hero-actions`, `.svc-section`, `.svc-services-grid`, `.svc-service-card`, `.svc-service-icon`, `.svc-service-title`, `.svc-service-desc`, `.svc-service-btn`, `.svc-block`, `.svc-block--rev`, `.svc-block-text`, `.svc-block-num`, `.svc-block-h3`, `.svc-block-desc`, `.svc-block-visual`, `.svc-block-img`, `.svc-accordion`, `.svc-acc-item`, `.svc-acc-head`, `.svc-acc-title`, `.svc-acc-chevron`, `.svc-acc-panel`, `.svc-acc-panel-inner`, `.svc-tags`, `.svc-tag`, `.svc-cta`, `.svc-cta-card`, `.svc-cta-glow`, `.svc-cta-h2`, `.svc-cta-btn`, `.svc-work`, `.svc-work-header`, `.svc-work-label/h2/sub`, `.svc-work-grid`, `.svc-work-card`, `.svc-work-thumb`, `.svc-work-meta`, `.svc-work-tags`, `.svc-work-tag`, `.svc-work-visit`, `.svc-work-name`, `.testi-section`, `.testi-header`, `.testi-label`, `.testi-h2`, `.testi-nav`, `.testi-nav-btn`, `.testi-nav-btn--active`, `.testi-track`, `.testi-card`, `.testi-stars`, `.testi-quote`, `.testi-foot`, `.testi-author`, `.testi-avatar`, `.testi-author-info`, `.testi-name`, `.testi-role`, `.testi-date`
 
 > **Uwaga:** stare klasy podstrony (`.offer-hero*`, `.offer-benefits*`, `.offer-cta*`, `.feat-*`) pozostały w `style.css` jako martwy kod po redesignie — do usunięcia przy sprzątaniu (nie są używane przez index.html).
 

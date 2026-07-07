@@ -3241,19 +3241,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   max-width: 780px;
   margin: 0 auto;
 }
-.svc-breadcrumb {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-  margin-bottom: 1.75rem;
-}
-.svc-breadcrumb a { color: var(--color-text-secondary); transition: color 0.15s ease; }
-.svc-breadcrumb a:hover { color: var(--color-blue); }
-.svc-breadcrumb-sep { opacity: 0.5; }
-
 .svc-hero-label {
   display: inline-block;
   font-size: 0.75rem;
@@ -3296,34 +3283,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   background: var(--color-bg-white);
   padding: 7rem 0;
 }
-.svc-intro {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 5rem;
-}
-.svc-intro-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-blue);
-  margin-bottom: 1rem;
-}
-.svc-intro-h2 {
-  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
-  font-weight: 800;
-  color: var(--color-text-primary);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  margin: 0 0 1.25rem;
-}
-.svc-intro-sub {
-  font-size: 1.0625rem;
-  line-height: 1.75;
-  color: var(--color-text-secondary);
-}
-
 /* ---- Service block (alternating) ---- */
 .svc-block {
   display: grid;
@@ -3740,7 +3699,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   .svc-hero-sub { font-size: 1rem; }
 
   .svc-section { padding: 4.5rem 0; }
-  .svc-intro { margin-bottom: 3rem; }
   .svc-block,
   .svc-block--rev {
     grid-template-columns: 1fr;
@@ -3771,9 +3729,120 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 
 /* ============================================================
-   MOTYW CIEMNY PODSTRONY OFERTY
-   Jednolite ciemne tło + gradientowe wstawki (jak w screenie).
-   Aktywny przez <body class="offer-dark">. Nie dotyka index.html.
+   PODSTRONA OFERTY — jasny hero z siatką + naprzemienne pasy
+   (motyw domyślny; <body class="offer-page">)
+   ============================================================ */
+
+/* ---- Hero: jasny motyw + siatka („kratka") w tle ---- */
+.svc-hero { position: relative; overflow: hidden; }
+.svc-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(ellipse 82% 78% at 50% 38%, #000 16%, transparent 78%);
+          mask-image: radial-gradient(ellipse 82% 78% at 50% 38%, #000 16%, transparent 78%);
+}
+.svc-hero::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -42%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 560px;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(37,99,235,0.13) 0%, transparent 66%);
+}
+.svc-hero-inner { position: relative; z-index: 1; }
+
+/* ---- Pasy usług: naprzemienne tło ciemne / jasne ---- */
+.svc-band { padding: 5.5rem 0; }
+.svc-band .svc-block { padding: 0; border: none; }
+.svc-band--light { background: var(--color-bg-light); }
+.svc-band--dark {
+  background:
+    radial-gradient(58% 58% at 12% 0%,   rgba(37,99,235,0.16)  0%, transparent 60%),
+    radial-gradient(50% 55% at 100% 100%, rgba(96,165,250,0.08) 0%, transparent 55%),
+    #0A1120;
+}
+
+/* ---- Pas ciemny: teksty / akordeon / obraz ---- */
+.svc-band--dark .svc-block-h3,
+.svc-band--dark .svc-acc-title { color: #fff; }
+.svc-band--dark .svc-block-num { color: #60A5FA; }
+.svc-band--dark .svc-block-desc,
+.svc-band--dark .svc-acc-panel-inner p { color: rgba(255,255,255,0.62); }
+.svc-band--dark .svc-acc-item { border-top-color: rgba(255,255,255,0.1); }
+.svc-band--dark .svc-acc-item:last-child { border-bottom-color: rgba(255,255,255,0.1); }
+.svc-band--dark .svc-acc-chevron {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+}
+.svc-band--dark .svc-acc-item.is-open .svc-acc-chevron {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+.svc-band--dark .svc-acc-head:hover .svc-acc-title,
+.svc-band--dark .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
+.svc-band--dark .svc-block-visual {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 24px 55px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 767px) {
+  .svc-band { padding: 3.5rem 0; }
+}
+
+/* ---- Stany początkowe animacji GSAP (podstrona oferty) ----
+   Aktywne tylko gdy JS dodał .gsap-enhance. Bez JS / reduce-motion
+   klasa nie istnieje → treść jest normalnie widoczna. Wrapper .svc-block
+   neutralizujemy (fade-up steruje IntersectionObserver na innych sekcjach),
+   a jego wnętrze odsłania timeline GSAP. */
+html.gsap-enhance body.offer-page .svc-band .svc-block.fade-up {
+  opacity: 1;
+  transform: none;
+}
+html.gsap-enhance body.offer-page .svc-band .svc-block-num,
+html.gsap-enhance body.offer-page .svc-band .svc-block-h3,
+html.gsap-enhance body.offer-page .svc-band .svc-block-desc,
+html.gsap-enhance body.offer-page .svc-band .svc-acc-item,
+html.gsap-enhance body.offer-page .svc-band .svc-block-visual {
+  opacity: 0;
+}
+/* GSAP przejmuje transform grafiki (parallax + hover) — zdejmujemy
+   przejście i hover z CSS, żeby scrub nie „gonił" transition. */
+html.gsap-enhance body.offer-page .svc-band .svc-block-img {
+  transition: none;
+  will-change: transform;
+}
+html.gsap-enhance body.offer-page .svc-band .svc-block:hover .svc-block-img {
+  transform: none;
+}
+/* Belt-and-suspenders: gdyby JS jeszcze nie zdjął klasy przy reduce-motion. */
+@media (prefers-reduced-motion: reduce) {
+  html.gsap-enhance body.offer-page .svc-band .svc-block-num,
+  html.gsap-enhance body.offer-page .svc-band .svc-block-h3,
+  html.gsap-enhance body.offer-page .svc-band .svc-block-desc,
+  html.gsap-enhance body.offer-page .svc-band .svc-acc-item,
+  html.gsap-enhance body.offer-page .svc-band .svc-block-visual {
+    opacity: 1;
+  }
+}
+
+
+/* ============================================================
+   MOTYW CIEMNY PODSTRONY OFERTY — DEPRECATED (nieużywany)
+   Zastąpiony przez naprzemienne pasy (offer-page). Martwy kod:
+   aktywował się przez <body class="offer-dark">, którego już nie ma.
    ============================================================ */
 
 body.offer-dark {
@@ -3799,7 +3868,6 @@ body.offer-dark .svc-block + .svc-block { border-top-color: rgba(255,255,255,0.0
 
 /* Nagłówki i teksty */
 body.offer-dark .svc-hero-h1,
-body.offer-dark .svc-intro-h2,
 body.offer-dark .svc-block-h3,
 body.offer-dark .svc-work-h2,
 body.offer-dark .testi-h2,
@@ -3808,7 +3876,6 @@ body.offer-dark .svc-work-name,
 body.offer-dark .testi-name { color: #fff; }
 
 body.offer-dark .svc-hero-sub,
-body.offer-dark .svc-intro-sub,
 body.offer-dark .svc-block-desc,
 body.offer-dark .svc-work-sub,
 body.offer-dark .svc-acc-panel-inner p { color: rgba(255,255,255,0.6); }
@@ -3820,7 +3887,6 @@ body.offer-dark .testi-date { color: rgba(255,255,255,0.42); }
 
 /* Akcenty / labele */
 body.offer-dark .svc-hero-h1-accent,
-body.offer-dark .svc-intro-label,
 body.offer-dark .svc-block-num,
 body.offer-dark .svc-work-label,
 body.offer-dark .testi-label { color: #60A5FA; }
@@ -3830,11 +3896,6 @@ body.offer-dark .svc-hero-label {
   background: rgba(37,99,235,0.15);
   border-color: rgba(37,99,235,0.32);
 }
-
-/* Breadcrumb */
-body.offer-dark .svc-breadcrumb { color: rgba(255,255,255,0.42); }
-body.offer-dark .svc-breadcrumb a { color: rgba(255,255,255,0.6); }
-body.offer-dark .svc-breadcrumb a:hover { color: #93C5FD; }
 
 /* Tagi */
 body.offer-dark .svc-tag,
