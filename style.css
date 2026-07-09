@@ -526,9 +526,27 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 /* ---- Section: Co zyskasz (6.3) ---- */
 .benefit-section {
+  position: relative;
+  overflow: hidden;
   background: #F0F4FF;
   padding: 5rem 0 7rem;
 }
+/* siatka („kratka") w tle — jak w hero podstrony oferty */
+.benefit-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
+  background-size: 54px 54px;
+  /* mocniejsza siatka przy nagłówku, słabsza w obszarze 3 kart */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, rgba(0,0,0,0.9) 34%, rgba(0,0,0,0.22) 52%, rgba(0,0,0,0.12) 80%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 20%, rgba(0,0,0,0.9) 34%, rgba(0,0,0,0.22) 52%, rgba(0,0,0,0.12) 80%, transparent 100%);
+}
+.benefit-section > .max-w-container { position: relative; z-index: 1; }
 
 .benefit-label {
   display: inline-block;
@@ -3793,6 +3811,60 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   background: radial-gradient(circle, rgba(37,99,235,0.13) 0%, transparent 66%);
 }
 .svc-hero-inner { position: relative; z-index: 1; }
+
+/* ---- HERO wariant B: kratka full-bleed + tekst do lewej, lead z prawej ---- */
+.svc-hero--b {
+  text-align: left;
+  padding: 10rem 0 8rem;
+}
+.svc-hero--b .svc-hero-inner {
+  max-width: none;
+  margin: 0;
+}
+/* kratka rozciągnięta na całą szerokość, wygaszana góra/dół (bez radialnej maski) */
+body.offer-page .svc-hero--b::before {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
+}
+.svc-hero-b-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+.svc-hero-b-main { flex: 1 1 auto; }
+.svc-hero--b .svc-hero-h1 { margin: 0; }
+.svc-hero--b .svc-hero-label { margin-bottom: 1.25rem; }
+/* wypełniony niebieski badge z kwadracikiem (jak na referencji) */
+.svc-hero-label--filled {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+}
+.svc-hero-label--filled::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: #fff;
+}
+.svc-hero-b-lead {
+  flex: 0 1 500px;
+  margin: 0;
+  padding-bottom: 0.35rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+@media (max-width: 767px) {
+  .svc-hero--b { padding: 7.5rem 0 4rem; }
+  .svc-hero-b-row { gap: 1.75rem; }
+  .svc-hero-b-lead { flex-basis: 100%; }
+}
 
 /* ---- Pasy usług: naprzemienne tło ciemne / jasne ---- */
 .svc-band { padding: 5.5rem 0; }
