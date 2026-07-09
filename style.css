@@ -1116,6 +1116,38 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 /* Mikroanimacja: strzałka przesuwa się delikatnie w prawo (bez pulsowania) */
 .bento2-cta:hover .bento2-cta-icon { transform: translateX(3px); }
 
+/* --- Link/CTA do sekcji oferty (pod tekstem kafla) --- */
+.bento2-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin-top: 16px;
+  color: var(--color-blue);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.bento2-more-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(37,99,235,0.1);
+  color: var(--color-blue);
+  transition: background 0.22s ease, color 0.22s ease, transform 0.25s ease;
+}
+.bento2-more:hover { color: #1D4ED8; }
+.bento2-more:hover .bento2-more-icon {
+  background: var(--color-blue);
+  color: #fff;
+  transform: translateX(3px);
+}
+
 /* --- Icon box & badge utilities (tile 2 SEO, tile 4 Responsywność) --- */
 .bento2-icon-box {
   width: 44px;
