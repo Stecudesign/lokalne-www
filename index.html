@@ -88,15 +88,15 @@
     <div class="nav-island">
       <div class="nav-links-pill">
         <a href="oferta.html">Oferta</a>
-        <a href="#o-mnie">O mnie</a>
-        <a href="#blog">Blog</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="o-mnie.html">O mnie</a>
+        <a href="/#blog">Blog</a>
+        <a href="kontakt.html">Kontakt</a>
       </div>
     </div>
 
     <!-- CTA + hamburger — poza pillem -->
     <div class="nav-actions">
-      <a href="#kontakt" class="btn-nav-brand">
+      <a href="kontakt.html" class="btn-nav-brand">
         <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </span>
@@ -120,10 +120,10 @@
     </svg>
   </button>
   <a href="oferta.html"  data-menu-link>Oferta</a>
-  <a href="#o-mnie"  data-menu-link>O mnie</a>
-  <a href="#blog"    data-menu-link>Blog</a>
-  <a href="#kontakt" data-menu-link>Kontakt</a>
-  <a href="#kontakt" data-menu-link class="btn-primary mt-2">
+  <a href="o-mnie.html"  data-menu-link>O mnie</a>
+  <a href="/#blog"    data-menu-link>Blog</a>
+  <a href="kontakt.html" data-menu-link>Kontakt</a>
+  <a href="kontakt.html" data-menu-link class="btn-primary mt-2">
     <span class="btn-cta-icon" aria-hidden="true">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </span>
@@ -511,7 +511,7 @@
       Tworzę strony, które<br>
       <span class="about2-h2-last">
         sprzedają za Ciebie.
-        <a href="#kontakt" class="about2-pill" aria-label="Przejdź do kontaktu">
+        <a href="kontakt.html" class="about2-pill" aria-label="Przejdź do kontaktu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </span>
@@ -519,7 +519,7 @@
     <p class="about2-sub">
       Jestem Paweł — freelancer specjalizujący się w stronach dla lokalnych firm. Bez agencji, bez pośredników. Ty rozmawiasz ze mną, ja tworzę Twoją stronę.
     </p>
-    <a href="#kontakt" class="about2-cta">
+    <a href="kontakt.html" class="about2-cta">
       <span class="btn-cta-icon" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </span>
@@ -613,8 +613,11 @@
             <span>lokalne</span><span>www.pl</span>
           </span>
         </a>
-        <p class="footer-brand-tagline">Strony WWW dla małych firm&nbsp;—<br>szybko, profesjonalnie, z pasją.</p>
-        <a href="#kontakt" class="btn-footer-cta">
+        <div class="footer-cta-copy">
+          <span class="footer-cta-label">Zacznijmy działać</span>
+          <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej marki.</span></h2>
+        </div>
+        <a href="kontakt.html" class="btn-footer-cta">
           <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </span>
@@ -624,10 +627,20 @@
 
       <!-- Nav -->
       <nav class="footer-nav" aria-label="Nawigacja stopki">
-        <a href="oferta.html">Oferta</a>
-        <a href="#o-mnie">O mnie</a>
-        <a href="#blog">Blog</a>
-        <a href="#kontakt">Kontakt</a>
+        <div class="footer-nav-group">
+          <a href="oferta.html">Oferta</a>
+          <ul class="footer-subnav">
+            <li><a href="oferta.html#svc-strony">Strony internetowe</a></li>
+            <li><a href="oferta.html#svc-seo">SEO</a></li>
+            <li><a href="oferta.html#svc-design">Indywidualny design</a></li>
+            <li><a href="oferta.html#svc-responsywnosc">Responsywność</a></li>
+            <li><a href="oferta.html#svc-opieka">Opieka nad stroną</a></li>
+            <li><a href="oferta.html#svc-analityka">Analityka Google</a></li>
+          </ul>
+        </div>
+        <a href="o-mnie.html">O mnie</a>
+        <a href="/#blog">Blog</a>
+        <a href="kontakt.html">Kontakt</a>
       </nav>
 
       <!-- Social -->
@@ -1084,12 +1097,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Navigation — sticky po scrollu + jasny tekst nad ciemnymi sekcjami
   const nav = document.getElementById('nav');
-  const darkSectionIds = ['proces', 'o-mnie-v2', 'realizacje'];
+  const darkSectionIds = ['o-mnie-v2', 'realizacje'];
 
   // Scrollspy — podświetla aktywną pozycję menu (biały pill)
   const pillLinks = Array.from(document.querySelectorAll('.nav-links-pill a'));
-  const resolveSection = (href) =>
-    document.querySelector(href) || document.querySelector(href + '-v2');
+  const resolveSection = (href) => {
+    // linki nav są jednolite z podstronami (prefiks „/#…") — tu sprowadzamy do lokalnej kotwicy
+    const hash = href.startsWith('/#') ? href.slice(1) : href;
+    if (!hash.startsWith('#') || hash.length < 2) return null; // np. „oferta.html"
+    return document.querySelector(hash) || document.querySelector(hash + '-v2');
+  };
   const spyTargets = pillLinks
     .map(a => ({ link: a, section: resolveSection(a.getAttribute('href')) }))
     .filter(t => t.section);
@@ -1161,9 +1178,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Portfolio slider — osobny moduł (patrz <script> „realizacje" powyżej).
 
   // 7. Smooth scroll dla anchor linków (Lenis gdy dostępny, inaczej natywnie)
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
+  document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(link => {
     link.addEventListener('click', e => {
-      const target = document.querySelector(link.getAttribute('href'));
+      const raw = link.getAttribute('href');
+      const hash = raw.startsWith('/#') ? raw.slice(1) : raw; // „/#kontakt" → „#kontakt"
+      if (hash.length < 2) return;                            // np. href="#" (bez celu)
+      const target = document.querySelector(hash);
       if (target) {
         e.preventDefault();
         if (window.__lenis) {

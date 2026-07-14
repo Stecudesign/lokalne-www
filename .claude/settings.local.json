@@ -16,7 +16,12 @@
       "PowerShell(cd \"C:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\"; git add index.html style.css; git commit -m \"Tile 1: darker photo with code screen, fixed overlay gradient\"; $env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; git push 2>&1)",
       "Bash(git add *)",
       "Bash(git restore *)",
-      "Bash(mkdir -p \"c:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\\\\oferta\")"
+      "Bash(mkdir -p \"c:\\\\Users\\\\pawel\\\\Desktop\\\\kodowanie\\\\lokalnewww\\\\oferta\")",
+      "Bash(node -e 'const b=require\\(\"fs\"\\).readFileSync\\(process.argv[1]\\);const w=b.readUInt32BE\\(16\\),h=b.readUInt32BE\\(20\\),ct=b.readUInt8\\(25\\);const t={0:\"gray\",2:\"RGB\",3:\"palette\",4:\"gray+alpha\",6:\"RGBA\"};console.log\\(\"PNG\",w+\"x\"+h,\"colorType:\",ct,\"\\(\"+\\(t[ct]||\"?\"\\)+\"\\)\",\"bytes:\",b.length\\)' c:/Users/pawel/Desktop/kodowanie/lokalnewww/img/omnie-bgremoved.png)",
+      "Bash(node -e 'const b=require\\(\"fs\"\\).readFileSync\\(process.argv[1]\\);const w=b.readUInt32BE\\(16\\),h=b.readUInt32BE\\(20\\),ct=b.readUInt8\\(25\\);const t={0:\"gray\",2:\"RGB\",3:\"palette\",4:\"gray+alpha\",6:\"RGBA\"};console.log\\(\"PNG\",w+\"x\"+h,\"colorType:\",ct,\"\\(\"+\\(t[ct]||\"?\"\\)+\"\\)\",\"bytes:\",b.length\\)' c:/Users/pawel/Desktop/kodowanie/lokalnewww/img/omnie-bgremoved2.png)",
+      "Bash(node -e ' *)",
+      "Bash(python -c \"from PIL import Image; print\\(Image.open\\('img/pawel_nobackground.png'\\).size\\)\")",
+      "Bash(identify img/pawel_nobackground.png)"
     ],
     "additionalDirectories": [
       "c:\\Users\\pawel\\Desktop\\kodowanie\\lokalnewww"

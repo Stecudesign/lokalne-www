@@ -15,7 +15,23 @@
       "mcp__claude_ai_higsfield__job_status",
       "Bash(python -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
       "Bash(node -e \"try{require\\('sharp'\\);console.log\\('sharp ok'\\)}catch\\(e\\){console.log\\('no sharp'\\)}\")",
-      "Bash(cd /c/Users/pawel/Desktop/kodowanie/lokalnewww *)"
+      "Bash(cd /c/Users/pawel/Desktop/kodowanie/lokalnewww *)",
+      "Bash(npx --no-install playwright --version)",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless=new --disable-gpu --hide-scrollbars --window-size=1440,2400 --screenshot=C:/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/54f4da18-fc68-404b-8c47-d89c9a490bce/scratchpad/kontakt-desktop.png file:///c:/Users/pawel/Desktop/kodowanie/lokalnewww/kontakt.html)",
+      "Bash(echo \"desktop exit: $?\")",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless=new --disable-gpu --hide-scrollbars --window-size=390,2600 --screenshot=C:/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/54f4da18-fc68-404b-8c47-d89c9a490bce/scratchpad/kontakt-mobile.png file:///c:/Users/pawel/Desktop/kodowanie/lokalnewww/kontakt.html)",
+      "Bash(echo \"mobile exit: $?\")",
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless=new --disable-gpu --hide-scrollbars --force-prefers-reduced-motion --virtual-time-budget=5000 --window-size=1440,2200 --screenshot=C:/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/54f4da18-fc68-404b-8c47-d89c9a490bce/scratchpad/kontakt-desktop2.png file:///c:/Users/pawel/Desktop/kodowanie/lokalnewww/kontakt.html)",
+      "mcp__claude_ai_higsfield__balance",
+      "mcp__claude_ai_higsfield__media_upload",
+      "mcp__claude_ai_higsfield__media_confirm",
+      "mcp__claude_ai_higsfield__models_explore",
+      "Bash(node -e ' *)",
+      "Bash(curl -sL \"https://higgsfield.ai/s/IMJcJHVhfOA\" -A \"Mozilla/5.0\")",
+      "Bash(curl -s -o C:/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/54f4da18-fc68-404b-8c47-d89c9a490bce/scratchpad/share.webp https://d8j0ntlcm91z4.cloudfront.net/user_3G6MBQAupxH8tt2sUaWkN4v4M8x/hf_20260711_154745_722e7725-0ebc-476e-9bfc-5299cbd1e6c8_min.webp)",
+      "Bash(node -e 'const b=require\\(\"fs\"\\).readFileSync\\(process.argv[1]\\);const c=b.toString\\(\"ascii\",12,16\\);let w,h;if\\(c===\"VP8 \"\\){w=b.readUInt16LE\\(26\\)&0x3fff;h=b.readUInt16LE\\(28\\)&0x3fff}else if\\(c===\"VP8X\"\\){w=b.readUIntLE\\(24,3\\)+1;h=b.readUIntLE\\(27,3\\)+1}else if\\(c===\"VP8L\"\\){const p=b.readUInt32LE\\(21\\);w=\\(p&0x3fff\\)+1;h=\\(\\(p>>14\\)&0x3fff\\)+1}console.log\\(\"dims:\",w+\"x\"+h,\"| bytes:\",b.length,\"| fmt:\",c\\)' C:/Users/pawel/AppData/Local/Temp/claude/c--Users-pawel-Desktop-kodowanie-lokalnewww/54f4da18-fc68-404b-8c47-d89c9a490bce/scratchpad/share.webp)",
+      "Bash(curl -s -o c:/Users/pawel/Desktop/kodowanie/lokalnewww/img/omnie-hero.png https://d8j0ntlcm91z4.cloudfront.net/user_3G6MBQAupxH8tt2sUaWkN4v4M8x/hf_20260711_154745_722e7725-0ebc-476e-9bfc-5299cbd1e6c8.png)",
+      "Bash(node -e 'const b=require\\(\"fs\"\\).readFileSync\\(process.argv[1]\\); *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\pawel\\Desktop\\kodowanie\\lokalnewww\\.tmp_img"

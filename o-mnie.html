@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Progresywne wzbogacenie animacjami — klasa zdejmowana przez JS gdy brak GSAP / reduce-motion -->
+  <script>document.documentElement.classList.add('gsap-enhance');</script>
+
+  <!-- SEO -->
+  <title>O mnie — Paweł, twórca stron dla lokalnych firm | lokalnewww.pl</title>
+  <meta name="description" content="Poznaj mnie — Paweł, freelancer specjalizujący się w stronach internetowych dla lokalnych firm. Design, SEO i wsparcie po wdrożeniu, bez agencji i pośredników.">
+  <link rel="canonical" href="https://lokalnewww.pl/o-mnie">
+  <link rel="icon" type="image/png" href="img/logopin3Dv1.webp">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="O mnie — Paweł, twórca stron dla lokalnych firm | lokalnewww.pl">
+  <meta property="og:description" content="Freelancer od stron internetowych dla lokalnych firm — design, widoczność w Google i wsparcie po wdrożeniu. Ty rozmawiasz ze mną, ja tworzę Twoją stronę.">
+  <meta property="og:url" content="https://lokalnewww.pl/o-mnie">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { navy: '#1A2540', 'navy-mid': '#243155' },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          maxWidth: { container: '1440px' }
+        }
+      }
+    }
+  </script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="aboutme-page">
+
+
+<!-- ============================================================
+     NAWIGACJA
+     ============================================================ -->
+<nav id="nav">
+  <div class="nav-wrapper">
+
+    <a href="/" class="nav-logo">
+      <img src="img/logopin3Dv1.webp" alt="lokalnewww.pl" class="logo-img">
+      <span class="logo-text"><span>lokalne</span><span>www.pl</span></span>
+    </a>
+
+    <div class="nav-island">
+      <div class="nav-links-pill">
+        <a href="oferta.html">Oferta</a>
+        <a href="o-mnie.html">O mnie</a>
+        <a href="/#blog">Blog</a>
+        <a href="kontakt.html">Kontakt</a>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <a href="kontakt.html" class="btn-nav-brand">
+        <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+        Bezpłatna konsultacja
+      </a>
+      <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu">
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu nawigacyjne">
+  <button data-menu-close class="close-btn" aria-label="Zamknij menu">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </svg>
+  </button>
+  <a href="oferta.html" data-menu-link>Oferta</a>
+  <a href="o-mnie.html" data-menu-link>O mnie</a>
+  <a href="/#blog" data-menu-link>Blog</a>
+  <a href="kontakt.html" data-menu-link>Kontakt</a>
+  <a href="kontakt.html" data-menu-link class="btn-primary mt-2">
+    <span class="btn-cta-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </span>
+    Bezpłatna konsultacja
+  </a>
+</div>
+
+
+<!-- ============================================================
+     HERO — „Cześć" + portret (jasny motyw + kratka, wzór: screen 1)
+     ============================================================ -->
+<section id="me-hero" class="me-hero">
+  <div class="max-w-container mx-auto px-6">
+    <div class="me-hero-grid">
+
+      <div class="me-hero-left fade-up">
+        <h1 class="me-hello">Cześć</h1>
+        <p class="me-hero-tag">— Jestem Paweł, tworzę strony dla lokalnych firm</p>
+      </div>
+
+      <div class="me-hero-photo me-hero-photo--cutout fade-up" style="transition-delay:120ms">
+        <img src="img/pawel_nobackground.png" alt="Paweł — twórca stron internetowych dla lokalnych firm, prezentujący projekt na iPadzie" width="1137" height="1383">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     MISJA — akapit + karta ze statystyką + zdjęcie (wzór: screen 2)
+     ============================================================ -->
+<section id="me-mission" class="me-mission">
+  <div class="max-w-container mx-auto px-6">
+
+    <div class="me-mission-top fade-up">
+      <span class="me-eyebrow">O mnie</span>
+      <p class="me-mission-text">
+        Moją <strong>misją</strong> jest pomóc <strong>lokalnym firmom</strong> zaistnieć w internecie.
+        Tworzę strony, które nie tylko dobrze wyglądają, ale realnie <strong>przyciągają klientów</strong> —
+        łącząc czytelny design ze sprawną technologią. Bez agencji, bez pośredników.
+      </p>
+    </div>
+
+    <div class="me-mission-lower">
+
+      <div class="me-statcard fade-up">
+        <div class="me-bars" aria-hidden="true">
+          <span class="me-bar" style="height:38%"></span>
+          <span class="me-bar" style="height:58%"></span>
+          <span class="me-bar me-bar--accent" style="height:82%"></span>
+          <span class="me-bar" style="height:66%"></span>
+          <span class="me-bar me-bar--accent" style="height:100%"></span>
+        </div>
+        <span class="me-statcard-num">+20%</span>
+        <p class="me-statcard-desc">Średni wzrost liczby zapytań od klientów w pierwszych miesiącach po wdrożeniu nowej strony.</p>
+      </div>
+
+      <div class="me-mission-photo fade-up" style="transition-delay:120ms">
+        <img src="img/omnie-praca.webp" alt="Paweł przy pracy nad projektem strony internetowej" width="2400" height="1792" loading="lazy">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     JAK PRACUJĘ — numerowana lista + zdjęcie (wzór: screen 2)
+     ============================================================ -->
+<section id="me-approach" class="me-sol">
+  <div class="max-w-container mx-auto px-6">
+
+    <h2 class="me-sol-h2 fade-up">Nowoczesne strony dopasowane<br>do Twojego sukcesu</h2>
+
+    <div class="me-sol-grid">
+
+      <div class="me-sol-photo fade-up">
+        <img src="img/omnie-portret.webp" alt="Paweł — freelancer web developer" width="1792" height="2400" loading="lazy">
+      </div>
+
+      <ol class="me-sol-list fade-up" style="transition-delay:100ms">
+        <li class="me-sol-row">
+          <span class="me-sol-num">01.</span>
+          <span class="me-sol-title">Indywidualny design skrojony na miarę</span>
+          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+        </li>
+        <li class="me-sol-row me-sol-row--active">
+          <span class="me-sol-num">02.</span>
+          <span class="me-sol-title">Widoczność w Google i SEO lokalne</span>
+          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+        </li>
+        <li class="me-sol-row">
+          <span class="me-sol-num">03.</span>
+          <span class="me-sol-title">Szybkość i pełna responsywność</span>
+          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+        </li>
+        <li class="me-sol-row">
+          <span class="me-sol-num">04.</span>
+          <span class="me-sol-title">Opieka i wsparcie po wdrożeniu</span>
+          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+        </li>
+        <li class="me-sol-row">
+          <span class="me-sol-num">05.</span>
+          <span class="me-sol-title">Jeden kontakt i jasna komunikacja</span>
+          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+        </li>
+      </ol>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     BANER CTA
+     ============================================================ -->
+<section class="svc-cta">
+  <div class="max-w-container mx-auto px-6">
+    <div class="svc-cta-card fade-up">
+      <div class="svc-cta-glow" aria-hidden="true"></div>
+      <h2 class="svc-cta-h2">Zbudujmy razem stronę,<br>która pracuje na Twoją firmę</h2>
+      <a href="kontakt.html" class="btn-primary svc-cta-btn">
+        <span class="btn-cta-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+        Umów bezpłatną konsultację
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="footer" class="footer-section">
+  <div class="max-w-container mx-auto px-6">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <a href="/" class="footer-logo" aria-label="lokalnewww.pl — strona główna">
+          <img src="img/logopin3Dv1.webp" alt="" class="footer-logo-img" width="40" height="40" loading="lazy">
+          <span class="footer-logo-text">
+            <span>lokalne</span><span>www.pl</span>
+          </span>
+        </a>
+        <div class="footer-cta-copy">
+          <span class="footer-cta-label">Zacznijmy działać</span>
+          <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej firmy w internecie.</span></h2>
+        </div>
+        <a href="kontakt.html" class="btn-footer-cta">
+          <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+          Bezpłatna konsultacja
+        </a>
+      </div>
+
+      <nav class="footer-nav" aria-label="Nawigacja stopki">
+        <div class="footer-nav-group">
+          <a href="oferta.html">Oferta</a>
+          <ul class="footer-subnav">
+            <li><a href="oferta.html#svc-strony">Strony internetowe</a></li>
+            <li><a href="oferta.html#svc-seo">SEO</a></li>
+            <li><a href="oferta.html#svc-design">Indywidualny design</a></li>
+            <li><a href="oferta.html#svc-responsywnosc">Responsywność</a></li>
+            <li><a href="oferta.html#svc-opieka">Opieka nad stroną</a></li>
+            <li><a href="oferta.html#svc-analityka">Analityka Google</a></li>
+          </ul>
+        </div>
+        <a href="o-mnie.html">O mnie</a>
+        <a href="/#blog">Blog</a>
+        <a href="kontakt.html">Kontakt</a>
+      </nav>
+
+      <div class="footer-social">
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 lokalnewww.pl</span>
+      <div class="footer-bottom-links">
+        <a href="#">Polityka prywatności</a>
+        <span class="footer-dot" aria-hidden="true">·</span>
+        <a href="#">Realizacja: lokalnewww.pl</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     Biblioteki animacji: GSAP + ScrollTrigger + Lenis (smooth scroll)
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js"></script>
+
+<!-- ============================================================
+     Lenis smooth scroll (spięty z GSAP tickerem, jeśli dostępny)
+     ============================================================ -->
+<script>
+(function () {
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGSAP = !!(window.gsap && window.ScrollTrigger);
+
+  if (window.Lenis && !reduceMotion) {
+    const lenis = new window.Lenis({ duration: 1.05, smoothWheel: true });
+    window.__lenis = lenis;
+    if (hasGSAP) {
+      lenis.on('scroll', window.ScrollTrigger.update);
+      window.gsap.ticker.add((t) => lenis.raf(t * 1000));
+      window.gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+  }
+
+  // Reveal .fade-up obsługuje IntersectionObserver poniżej — zdejmij klasę, treść zostaje widoczna
+  if (!hasGSAP || reduceMotion) { root.classList.remove('gsap-enhance'); }
+})();
+</script>
+
+<!-- ============================================================
+     JS: nawigacja, animacje, smooth scroll
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Navigation — sticky + jasny tekst nad ciemnymi sekcjami (tu brak — strona jasna)
+  const nav = document.getElementById('nav');
+  const darkSectionIds = [];
+
+  const updateNav = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+    const navMidY = 50;
+    const overDark = darkSectionIds.some(id => {
+      const s = document.getElementById(id);
+      if (!s) return false;
+      const r = s.getBoundingClientRect();
+      return r.top <= navMidY && r.bottom >= navMidY;
+    });
+    nav.classList.toggle('nav--light', overDark);
+  };
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  // 2. Hamburger menu
+  const mobileMenu = document.getElementById('mobile-menu');
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const closeBtn = document.querySelector('[data-menu-close]');
+  const menuLinks = document.querySelectorAll('[data-menu-link]');
+
+  const openMenu  = () => { mobileMenu.classList.add('open');    document.body.style.overflow = 'hidden'; };
+  const closeMenu = () => { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; };
+
+  toggle?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  menuLinks.forEach(l => l.addEventListener('click', closeMenu));
+
+  // 3. IntersectionObserver — animacje scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // 4. Nav fade-in
+  nav.style.opacity = '0';
+  nav.style.transition = 'opacity 0.3s ease';
+  requestAnimationFrame(() => { nav.style.opacity = '1'; });
+
+  // 5. Smooth scroll dla kotwic na tej stronie (obsługa też prefiksu „/#…")
+  document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const raw = link.getAttribute('href');
+      const hash = raw.startsWith('/#') ? raw.slice(1) : raw;
+      if (hash.length < 2) return; // np. href="#"
+      const target = document.querySelector(hash);
+      if (target) {
+        e.preventDefault();
+        if (window.__lenis) {
+          window.__lenis.scrollTo(target, { offset: -20 });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+});
+</script>
+</body>
+</html>

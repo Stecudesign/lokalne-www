@@ -17,7 +17,9 @@ Design system marki: `.claude/skills/design.md` — czytaj przed każdą pracą 
 ```
 index.html      ← cała strona (landing page)
 oferta.html     ← strona Oferta (root, URL /oferta) — usługi w akordeonie, motyw ciemny
-style.css       ← wszystkie custom style — wspólny dla index.html i oferta.html
+kontakt.html    ← strona Kontakt (root, URL /kontakt) — ciemny motyw: hero + dane/formularz + FAQ (akordeon)
+o-mnie.html     ← strona O mnie (root, URL /o-mnie) — jasny motyw: hero „Cześć"+portret, misja+statystyka, numerowana lista
+style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html i o-mnie.html
 img/
   logopin3Dv1.png          ← logo pin 3D (64×64)
   herov8.png               ← tło hero (desktop)
@@ -33,6 +35,10 @@ img/
   oferta-responsywnosc.webp     ← ilustracja usługi Responsywność (oferta.html)
   oferta-opieka.webp            ← ilustracja usługi Opieka nad stroną (oferta.html)
   oferta-analityka.webp         ← ilustracja usługi Analityka Google (oferta.html)
+  omnie-bgremoved2.png          ← zdjęcie hero (o-mnie.html) — wycinek bez tła (RGBA), postać z iPadem, pływa na kratce
+  omnie-bgremoved.png           ← wcześniejszy wariant wycinka (już nieużywany)
+  omnie-praca.webp              ← „przy pracy" przy laptopie (o-mnie.html, sekcja misji)
+  omnie-portret.webp            ← close-up portret (o-mnie.html, sekcja „jak pracuję")
 examples/       ← screenshoty referencyjne
 PRD_lokalnewww.md
 ```
@@ -48,11 +54,31 @@ PRD_lokalnewww.md
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC`, 3 karty w gridzie | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient, 6 kafli | ✅ gotowe |
 | `#realizacje` | `.portfolio-section` — tło `#080C14`, slider transform-driven (GSAP `x`/translate3d) 5 kart, coverflow (aktywna karta = wyśrodkowana, `scale 1`/`opacity 1`; pozostałe `0.96`/`0.62`), prev/next + drag/touch (Pointer Events) + wolny autoplay z pauzą na hover | ✅ gotowe |
-| `#proces` | `.process-section` — tło `#0F172A`, 4 kroki z numerami | ✅ gotowe |
+| `#proces` | `.process-section` — tło `#F8FAFC` (jasne), 4 kroki z numerami | ✅ gotowe |
 | `#wyrozniam-sie` | `.usp-section` — tło `#fff`, 2×2 grid kart | ✅ gotowe |
-| `#o-mnie` | `.about-section` — tło `#1A2540`, 2 kolumny foto+tekst | ✅ gotowe |
-| `#kontakt` | — | ❌ brakuje (PRD 6.8) |
+| `#o-mnie` | mini-sekcja na index (`#o-mnie-v2 .about2-section`, tło `#1A2540`) + osobna strona `o-mnie.html`; wszystkie linki „O mnie" w nav/footer prowadzą do `o-mnie.html` | ✅ gotowe |
+| `#kontakt` | osobna strona `kontakt.html` (nie sekcja na index) — wszystkie linki „Kontakt" i CTA konsultacji prowadzą do `kontakt.html` | ✅ gotowe |
 | `#footer` | `.footer-section` — tło `#F8FAFC`, logo+nav+social | ✅ gotowe |
+
+---
+
+## Szablon podstron — `oferta.html` jest wzorcem
+
+Projekt **nie ma buildu ani include'ów** — każda podstrona to samodzielny plik HTML. `oferta.html` jest **kanonicznym szablonem powłoki podstrony**: przy tworzeniu nowej podstrony (np. `blog.html`, `kontakt.html`, `polityka-prywatnosci.html`) **kopiuj z `oferta.html`** trzy współdzielone bloki i zmieniaj tylko treść między nimi.
+
+**Bloki do skopiowania z `oferta.html` (1:1):**
+
+1. **`<head>`** — struktura meta/SEO/fontów/Tailwind/`style.css`. Podmień tylko `<title>`, `<meta name="description">`, `og:*` i `<link rel="canonical">`. Zostaw `gsap-enhance` inline-script, `link` do fontów, Tailwind config i `style.css`.
+2. **Header** — `<nav id="nav">` (logo + `.nav-island` pill + `.nav-actions` CTA/hamburger) **oraz** `#mobile-menu` tuż pod nim. Kopiuj oba razem.
+3. **Footer** — `<footer id="footer" class="footer-section">` z całą zawartością (`.footer-top` brand+nav+social, `.footer-bottom`).
+4. **Skrypty na dole** — bloki `<script>` GSAP/ScrollTrigger/Lenis CDN + IIFE animacji + główny `DOMContentLoaded` (nawigacja, hamburger, IntersectionObserver, smooth scroll). Sekcje specyficzne dla treści (np. akordeon `.svc-acc-head`) usuń, jeśli podstrona ich nie ma.
+
+**Reguły przy kopiowaniu (łatwo o pomyłkę):**
+
+- **Ścieżki root-relative:** `img/…`, `style.css`, logo `/`. Podstrony są w katalogu głównym, więc bez `../`.
+- **Linki do sekcji strony głównej z prefiksem `/#` — jednolite na wszystkich stronach:** `href="/#o-mnie"`, `/#blog`, `/#kontakt` (identycznie w nav i footer na `index.html` **oraz** podstronach). Link „Oferta" → `oferta.html`. Dzięki temu blok nav + `#mobile-menu` + footer-nav jest **identyczny** na każdej stronie (kopiuj 1:1). Na `index.html` obsługę `/#…` (smooth scroll bez przeładowania + scrollspy) zapewnia JS: `resolveSection` i handler smooth-scroll normalizują `/#sekcja` → `#sekcja`; handler łapie selektor `a[href^="#"], a[href^="/#"]`.
+- **`darkSectionIds` w nav-JS jest per-strona:** lista id ciemnych sekcji, nad którymi nav ma białe linki (`nav--light`). Ustaw ją pod realne ciemne pasy danej podstrony (na `index.html`: `['o-mnie-v2','realizacje']`; na `oferta.html`: `['svc-strony','svc-design','svc-opieka']`). Nowa podstrona bez ciemnych sekcji → pusta tablica `[]`.
+- **Header + footer trzymaj zsynchronizowane ręcznie** — zmiana w nav/footer musi trafić do `index.html`, `oferta.html` i wszystkich podstron (brak include'ów = brak automatycznej propagacji).
 
 ---
 
@@ -87,6 +113,44 @@ Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca
 **Klasy CSS podstron (prefiksy `svc-`, `testi-`):** `.svc-hero`, `.svc-hero-inner`, `.svc-hero-label`, `.svc-hero-h1`, `.svc-hero-h1-accent`, `.svc-hero-sub`, `.svc-hero-actions`, `.svc-section`, `.svc-services-grid`, `.svc-service-card`, `.svc-service-icon`, `.svc-service-title`, `.svc-service-desc`, `.svc-service-btn`, `.svc-block`, `.svc-block--rev`, `.svc-block-text`, `.svc-block-num`, `.svc-block-h3`, `.svc-block-desc`, `.svc-block-visual`, `.svc-block-img`, `.svc-accordion`, `.svc-acc-item`, `.svc-acc-head`, `.svc-acc-title`, `.svc-acc-chevron`, `.svc-acc-panel`, `.svc-acc-panel-inner`, `.svc-tags`, `.svc-tag`, `.svc-cta`, `.svc-cta-card`, `.svc-cta-glow`, `.svc-cta-h2`, `.svc-cta-btn`, `.svc-work`, `.svc-work-header`, `.svc-work-label/h2/sub`, `.svc-work-grid`, `.svc-work-card`, `.svc-work-thumb`, `.svc-work-meta`, `.svc-work-tags`, `.svc-work-tag`, `.svc-work-visit`, `.svc-work-name`, `.testi-section`, `.testi-header`, `.testi-label`, `.testi-h2`, `.testi-nav`, `.testi-nav-btn`, `.testi-nav-btn--active`, `.testi-track`, `.testi-card`, `.testi-stars`, `.testi-quote`, `.testi-foot`, `.testi-author`, `.testi-avatar`, `.testi-author-info`, `.testi-name`, `.testi-role`, `.testi-date`
 
 > **Uwaga:** stare klasy podstrony (`.offer-hero*`, `.offer-benefits*`, `.offer-cta*`, `.feat-*`) pozostały w `style.css` jako martwy kod po redesignie — do usunięcia przy sprzątaniu (nie są używane przez index.html).
+
+---
+
+## Strona Kontakt (`kontakt.html`)
+
+Plik `kontakt.html` w katalogu głównym (URL `/kontakt`), zbudowany na szablonie podstron (`oferta.html`, patrz sekcja „Szablon podstron"): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. **Wszystkie linki „Kontakt" oraz CTA konsultacji** (`btn-nav-brand`, `btn-footer-cta`, mobile CTA, `svc-cta-btn`, dawne `#kontakt` w sekcji O mnie na index) w `index.html` i `oferta.html` prowadzą teraz do `kontakt.html` (wcześniej martwe `/#kontakt`).
+
+**Motyw: jasny hero + ciemna reszta** — `<body class="contact-page">`, tło body `#080C14`. **Hero jasny jak na `oferta.html`** (gradient `#F0F4FF→#fff` + niebieska kratka + poświata), żeby header renderował się identycznie jak na oferta (jasna pigułka nav, ciemne linki). Poniżej sekcje Kontakt i FAQ ciemne. Layout inspirowany referencją (wielki hero + 2 kolumny dane/formularz + FAQ w akordeonie), przełożony na markę (Inter, niebieski/żółty). Ciemne są dopiero sekcje pod hero (łącznie z granatowym footerem), dlatego nav-JS ma `darkSectionIds = ['kontakt','faq','footer']` (bez hero) — nad hero nav jest domyślny (ciemne linki), niżej przełącza się na jasne.
+
+**Sekcje (w kolejności):**
+
+1. `#contact-hero .contact-hero` — **jasny** (gradient `#F0F4FF→#fff`), wielki nagłówek `.contact-hero-h1` (uppercase, `clamp`, kolor `--color-text-primary`, akcent `.accent` = `--color-blue`) + niebieska kratka (`::before`, maska pionowa) + poświata (`::after`, radial) — jak hero na oferta.html. `overflow: hidden`. Na mobile mniejszy font (`clamp(1.6rem, 7vw, 3rem)`), by długie słowa się mieściły.
+2. `#kontakt .contact-section` — grid 2 kol (`.contact-grid`). Lewo: eyebrow `.contact-eyebrow` („● KONTAKT", kropka przez `::before`) + `.contact-h2` + `.contact-list` z wierszami `.contact-row` (ikona `.contact-row-icon` + tekst, rozdzielone `border-top`; `a.contact-row` klikalne — email `mailto:`, telefon `tel:`, adres statyczny `.contact-row--static`). Prawo: karta `.contact-form-card` (`#0F1626`) z `.contact-form-title` + polami `.contact-field`/`.contact-label`/`.contact-input`/`.contact-textarea` + żółty `.btn-primary.contact-submit` + `.contact-form-note` (status). **Dane fejkowe:** tel `+48 512 340 118`, adres `ul. Kwiatowa 8/3, 30-002 Kraków`; email `kontakt@lokalnewww.pl`.
+3. `<hr class="contact-rule contact-rule--wrap">` — linia podziału w szerokości kontenera.
+4. `#faq .contact-section.contact-faq` — grid 2 kol: lewo eyebrow „● FAQ" + `.contact-h2`; prawo **akordeon reużyty z oferty** (`.svc-accordion` / `.svc-acc-*`, pierwszy `.is-open`) — ciemne warianty przez `body.contact-page .svc-acc-*`. 6 pytań o tworzenie stron WWW (koszt, czas, treść/zdjęcia, Google, samodzielna edycja, po wdrożeniu). Obsługuje go ten sam handler `.svc-acc-head` co na oferta.html.
+
+**Formularz:** front-end only (brak backendu) — handler `#contact-form` robi `checkValidity()` + pokazuje potwierdzenie w `#contact-form-note` i czyści pola. Do podpięcia realnej wysyłki (mailto/Formspree/endpoint) w przyszłości.
+
+**Klasy CSS strony kontakt (prefiks `contact-`):** `.contact-page`, `.contact-hero`, `.contact-hero-inner`, `.contact-hero-h1` (+ `.accent`), `.contact-rule` (+ `--wrap`), `.contact-section`, `.contact-faq`, `.contact-grid`, `.contact-col`, `.contact-eyebrow`, `.contact-h2`, `.contact-list`, `.contact-row` (+ `--static`), `.contact-row-icon`, `.contact-form-wrap`, `.contact-form-card`, `.contact-form-title`, `.contact-field`, `.contact-label`, `.contact-input`, `.contact-textarea`, `.contact-submit`, `.contact-form-note`, `.contact-faq-col`. Style w `style.css` w sekcji „PODSTRONA KONTAKT" (koniec pliku).
+
+---
+
+## Strona O mnie (`o-mnie.html`)
+
+Plik `o-mnie.html` w katalogu głównym (URL `/o-mnie`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. **Wszystkie linki „O mnie"** w nav i footer (`index.html`, `oferta.html`, `kontakt.html`, `o-mnie.html`) prowadzą do `o-mnie.html` (wcześniej `/#o-mnie` → mini-sekcja na stronie głównej, która dalej istnieje jako `#o-mnie-v2`, ale nie jest już celem nav).
+
+**Motyw: jasny** — `<body class="aboutme-page">`, hero jak na oferta (gradient `#F0F4FF→#fff` + kratka), więc header renderuje się jako jasna pigułka z ciemnymi linkami. Cała strona jasna → `darkSectionIds = []`. Persona: **Paweł, freelancer od stron dla lokalnych firm**. Layout wzorowany na 2 referencjach (hero „Hello/Cześć" + portret; body: misja + karta statystyki + numerowana lista), przełożony na markę (Inter, niebieski/żółty).
+
+**Sekcje (w kolejności):**
+
+1. `#me-hero .me-hero` — 2 kolumny (`.me-hero-grid`, `min-height:560px`): lewo `.me-hero-left` (statystyki `.me-hero-stats`/`.me-stat` u góry, wielkie cienkie `.me-hello` „Cześć" `font-weight:300` dosunięte w dół przez `margin:auto 0 0`, `.me-hero-tag`, `.me-scroll` z animowaną strzałką); prawo `.me-hero-photo.me-hero-photo--cutout` — **wycinek bez tła** `img/omnie-bgremoved2.png` (RGBA) „pływający" na kratce: bez karty/cienia/ramki, `object-fit:contain` + `object-position:bottom`, `drop-shadow`, wygaszenie dołu (mask na `img`) + delikatny overlay koloru na sylwetce (`::before` z maską z PNG). Kratka hero w `.me-hero::before`.
+2. `#me-mission .me-mission` — `.me-mission-top` (grid: `.me-eyebrow` „● O MNIE" + `.me-mission-text` duży akapit z `<strong>` w kolorze navy). Niżej `.me-mission-lower` (grid: ciemna `.me-statcard` z mini wykresem `.me-bars`/`.me-bar`/`.me-bar--accent` żółty + `.me-statcard-num` „+20%" + opis | zdjęcie `.me-mission-photo` `img/omnie-praca.webp`).
+3. `#me-approach .me-sol` — `.me-sol-h2` + `.me-sol-grid` (lewo `.me-sol-photo` `img/omnie-portret.webp`; prawo `.me-sol-list` `<ol>` z `.me-sol-row` = `.me-sol-num` + `.me-sol-title` + `.me-sol-arrow`; wiersz `.me-sol-row--active` wyróżniony na niebiesko, hover przesuwa strzałkę i wcięcie).
+4. `.svc-cta` (reuse z oferty) + `.footer-section`.
+
+**Grafiki (Higgsfield):** portret klienta `img/gamingomniev2.jpg` (ciemny, fotel z niebieskim neonem) przerobiony modelem **`nano_banana_pro`** (image-to-image, zachowuje twarz) na jasne edytorskie ujęcia na jasnym tle — soul_2 odpadł, bo zawsze wzbogaca prompt i ciągnął z powrotem do ciemnej sceny referencji. Pliki zapisane jako `min.webp` (pełne 2k, ~100–470 KB).
+
+**Klasy CSS strony O mnie (prefiks `me-`):** `.aboutme-page`, `.me-hero`, `.me-hero-grid`, `.me-hero-left`, `.me-hero-stats`, `.me-stat`, `.me-stat-num`, `.me-stat-label`, `.me-hello`, `.me-hero-tag`, `.me-scroll`, `.me-scroll-icon`, `.me-hero-photo`, `.me-mission`, `.me-mission-top`, `.me-eyebrow`, `.me-mission-text`, `.me-mission-lower`, `.me-statcard`, `.me-bars`, `.me-bar` (+ `--accent`), `.me-statcard-num`, `.me-statcard-desc`, `.me-mission-photo`, `.me-sol`, `.me-sol-h2`, `.me-sol-grid`, `.me-sol-photo`, `.me-sol-list`, `.me-sol-row` (+ `--active`), `.me-sol-num`, `.me-sol-title`, `.me-sol-arrow`. Style w `style.css` w sekcji „PODSTRONA O MNIE" (koniec pliku).
 
 ---
 
@@ -160,7 +224,7 @@ Wzorzec tile z obrazem dolnym (tile-4, tile-5): `padding: 28px 28px 0`, `.bento2
 
 ## Sekcja 6.5 — JAK WSPÓŁPRACUJEMY (`.process-section`)
 
-Tło: `#0F172A`, padding: `7rem 0`. 4 kroki w gridzie 4 kolumny.
+Tło: `#F8FAFC` (jasne), padding: `7rem 0`. 4 kroki w gridzie 4 kolumny.
 
 Każdy krok:
 - `.process-badge` — okrągły, `border: blue-600/45%`, kolor `#60A5FA`

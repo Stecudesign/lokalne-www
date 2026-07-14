@@ -1667,7 +1667,10 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 /* ---- Footer (6.9) ---- */
 .footer-section {
-  background: var(--color-navy);
+  /* gradientowe tło: granat + subtelna niebieska poświata w prawym górnym rogu */
+  background:
+    radial-gradient(75% 100% at 100% 0%, rgba(37,99,235,0.20) 0%, transparent 55%),
+    linear-gradient(155deg, #1F2C4D 0%, #1A2540 42%, #131C33 100%);
   border-top: 1px solid rgba(255,255,255,0.08);
   padding: 4rem 0 2.5rem;
 }
@@ -1684,9 +1687,35 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .footer-brand {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-width: 260px;
+  align-items: flex-start;
+  gap: 1.5rem;
+  max-width: 500px;
 }
+/* przycisk CTA nie rozciąga się na całą szerokość kolumny */
+.footer-brand .btn-footer-cta { align-self: flex-start; }
+
+/* Nagłówek CTA w lewej kolumnie stopki (duży tekst, w stylu bannera) */
+.footer-cta-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.footer-cta-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-yellow);
+}
+.footer-cta-heading {
+  font-size: clamp(1.75rem, 3.4vw, 2.85rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #F8FAFC;
+  margin: 0;
+}
+.footer-cta-heading-accent { color: var(--color-yellow); }
 
 .footer-logo {
   display: flex;
@@ -1722,9 +1751,15 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 .footer-nav {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 2rem;
   padding-top: 0.25rem;
+}
+/* grupa „Oferta" + podlista pod nią (jedna kolumna w poziomym rzędzie) */
+.footer-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 .footer-nav a {
   font-size: 0.875rem;
@@ -1734,6 +1769,25 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   transition: color 0.15s ease;
 }
 .footer-nav a:hover { color: #F8FAFC; }
+
+/* Lista podrzędna pod „Oferta" — linki do sekcji strony oferty */
+.footer-subnav {
+  list-style: none;
+  margin: 0.1rem 0 0.35rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.footer-subnav a {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(148,163,184,0.72);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.footer-subnav a:hover { color: #F8FAFC; }
 
 .footer-social {
   padding-top: 0.25rem;
@@ -3336,12 +3390,16 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 /* ---- Service block (alternating) ---- */
 .svc-block {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* 60/40 (7:5) — kolumna z tekstem szersza niż kolumna z obrazem */
+  grid-template-columns: 7fr 5fr;
   gap: 5rem;
-  align-items: center;
+  /* górna krawędź obrazu równa się z górną krawędzią nagłówka (items-start) */
+  align-items: start;
   padding: 4rem 0;
 }
 .svc-block + .svc-block { border-top: 1px solid var(--color-border); }
+/* pas z obrazem po lewej: obraz wąski (5fr), tekst szeroki (7fr) */
+.svc-block--rev { grid-template-columns: 5fr 7fr; }
 .svc-block--rev .svc-block-visual { order: -1; }
 
 .svc-block-num {
@@ -3362,9 +3420,11 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 .svc-block-desc {
   font-size: 1rem;
-  line-height: 1.75;
+  line-height: 1.75; /* leading-relaxed — czytelny opis */
   color: var(--color-text-secondary);
-  margin: 0 0 2rem;
+  /* większy odstęp: blok wprowadzający wyraźnie oddzielony od akordeonu
+     (prawo bliskości) */
+  margin: 0 0 3rem;
 }
 
 /* ---- Accordion ---- */
@@ -3853,17 +3913,16 @@ body.offer-page .svc-hero--b::before {
   background: #fff;
 }
 .svc-hero-b-lead {
-  flex: 0 1 500px;
-  margin: 0;
-  padding-bottom: 0.35rem;
-  font-size: 1rem;
+  max-width: 620px;
+  margin: 1.5rem 0 0;
+  font-size: 1.0625rem;
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
 @media (max-width: 767px) {
   .svc-hero--b { padding: 7.5rem 0 4rem; }
   .svc-hero-b-row { gap: 1.75rem; }
-  .svc-hero-b-lead { flex-basis: 100%; }
+  .svc-hero-b-lead { margin-top: 1.25rem; }
 }
 
 /* ---- Pasy usług: naprzemienne tło ciemne / jasne ---- */
@@ -3898,8 +3957,15 @@ body.offer-page .svc-hero--b::before {
 .svc-band--dark .svc-acc-head:hover .svc-acc-title,
 .svc-band--dark .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 .svc-band--dark .svc-block-visual {
-  border-color: rgba(255,255,255,0.1);
+  /* subtelne ciemne tło (slate-900) zamiast jasnej ramki — obraz wtapia
+     się w ciemny motyw pasa */
+  background: #0F172A;
+  border-color: rgba(255,255,255,0.08);
   box-shadow: 0 24px 55px rgba(0,0,0,0.5);
+}
+/* na ciemnym pasie łagodniejszy wewnętrzny obrys — bez efektu „białej karty" */
+.svc-band--dark .svc-block-visual::after {
+  box-shadow: inset 0 0 0 1px rgba(96,165,250,0.22);
 }
 
 @media (max-width: 767px) {
@@ -4207,3 +4273,572 @@ body.offer-dark .svc-service-btn {
   color: #93C5FD;
 }
 body.offer-dark .svc-service-card:hover .svc-service-btn { background: var(--color-blue); border-color: var(--color-blue); color: #fff; }
+
+
+/* ============================================================
+   PODSTRONA KONTAKT — ciemny motyw (kontakt.html, <body class="contact-page">)
+   Layout inspirowany: wielki hero + 2 kolumny (dane/formularz) + FAQ w akordeonie.
+   ============================================================ */
+body.contact-page {
+  background: #080C14;
+  color: #E2E8F0;
+}
+
+/* ---- Hero: jasny motyw jak oferta.html (nav renderuje się jako jasna pigułka) ---- */
+.contact-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 12rem 0 4.5rem;
+  background: linear-gradient(180deg, #F0F4FF 0%, #FFFFFF 100%);
+}
+/* siatka („kratka") niebieska na jasnym tle */
+.contact-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 78%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 78%, transparent 100%);
+}
+/* niebieska poświata u dołu (jak w oferta) */
+.contact-hero::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -46%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 560px;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 66%);
+}
+.contact-hero-inner { position: relative; z-index: 1; }
+.contact-hero-h1 {
+  font-size: clamp(2.75rem, 8vw, 6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+.contact-hero-h1 .accent { color: var(--color-blue); }
+
+/* ---- Linia podziału między pasami ---- */
+.contact-rule { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 0; }
+.contact-rule--wrap {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  box-sizing: content-box;
+}
+
+/* ---- Sekcja (kontakt / FAQ) ---- */
+.contact-section { padding: 5.5rem 0; position: relative; }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4.5rem;
+  align-items: start;
+}
+
+/* eyebrow „● KONTAKT / ● FAQ" */
+.contact-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-blue-light);
+  margin-bottom: 1.5rem;
+}
+.contact-eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-blue);
+}
+
+.contact-h2 {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #F1F5F9;
+  margin: 0;
+}
+
+/* ---- Lewa kolumna: lista danych kontaktowych ---- */
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5rem;
+}
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.15rem 0.25rem;
+  border-top: 1px solid rgba(255,255,255,0.09);
+  color: rgba(255,255,255,0.82);
+  text-decoration: none;
+  font-size: 0.975rem;
+  transition: color 0.18s ease;
+}
+.contact-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.09); }
+a.contact-row:hover { color: #fff; }
+a.contact-row:hover .contact-row-icon { color: #fff; }
+.contact-row--static { cursor: default; }
+.contact-row-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--color-blue-light);
+  transition: color 0.18s ease;
+}
+
+/* ---- Prawa kolumna: karta formularza ---- */
+.contact-form-card {
+  background: #0F1626;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  padding: 2rem;
+  box-shadow: 0 24px 55px rgba(0,0,0,0.4);
+}
+.contact-form-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.5rem;
+}
+.contact-field { margin-bottom: 1.15rem; }
+.contact-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.5rem;
+}
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  background: #080C14;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  color: #F1F5F9;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.contact-input::placeholder,
+.contact-textarea::placeholder { color: rgba(255,255,255,0.32); }
+.contact-input:focus,
+.contact-textarea:focus {
+  outline: none;
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.25);
+}
+.contact-textarea { resize: vertical; min-height: 120px; }
+.contact-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.35rem;
+}
+.contact-form-note {
+  margin: 1rem 0 0;
+  min-height: 1.2em;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-blue-light);
+}
+
+/* ---- FAQ: akordeon reużyty z podstrony oferty, ciemne warianty ---- */
+body.contact-page .svc-acc-title { color: #fff; }
+body.contact-page .svc-acc-item { border-top-color: rgba(255,255,255,0.1); }
+body.contact-page .svc-acc-item:last-child { border-bottom-color: rgba(255,255,255,0.1); }
+body.contact-page .svc-acc-panel-inner p { color: rgba(255,255,255,0.62); }
+body.contact-page .svc-acc-chevron {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+}
+body.contact-page .svc-acc-item.is-open .svc-acc-chevron {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #fff;
+}
+body.contact-page .svc-acc-head:hover .svc-acc-title,
+body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
+
+/* ---- Responsywność podstrony kontakt ---- */
+@media (max-width: 767px) {
+  .contact-hero { padding: 8.5rem 0 3rem; }
+  /* mniejszy nagłówek, żeby długie słowa mieściły się bez przycięcia */
+  .contact-hero-h1 { font-size: clamp(1.6rem, 7vw, 3rem); letter-spacing: -0.02em; }
+  .contact-section { padding: 3.5rem 0; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.75rem; }
+  .contact-list { margin-top: 1.75rem; }
+  .contact-form-card { padding: 1.5rem; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .contact-grid { gap: 3rem; }
+}
+
+
+/* ============================================================
+   PODSTRONA O MNIE (o-mnie.html, <body class="aboutme-page">)
+   Hero „Cześć" + portret (wzór: screen 1) + misja/statystyka + numerowana lista (wzór: screen 2)
+   ============================================================ */
+
+/* ---- Hero: jasny motyw + kratka (jak oferta), 2 kolumny: tekst / portret ---- */
+.me-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 9.5rem 0 4.5rem;
+  background: linear-gradient(180deg, #F0F4FF 0%, #FFFFFF 100%);
+}
+.me-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 82%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 82%, transparent 100%);
+}
+.me-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 0.65fr 1.35fr;
+  gap: 2rem;
+  align-items: stretch;
+  min-height: 560px;
+}
+.me-hero-left {
+  display: flex;
+  flex-direction: column;
+}
+.me-hero-stats {
+  display: flex;
+  gap: 3rem;
+}
+.me-stat { display: flex; flex-direction: column; }
+.me-stat-num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.me-stat-num sup {
+  font-size: 0.55em;
+  font-weight: 700;
+  color: var(--color-blue);
+  top: -0.7em;
+  margin-right: 1px;
+}
+.me-stat-label {
+  margin-top: 0.4rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+}
+.me-hello {
+  /* takie same style jak nagłówek hero na kontakt.html (.contact-hero-h1) */
+  font-size: clamp(2.75rem, 8vw, 6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  margin: clamp(4rem, 10vw, 9rem) 0 0;  /* nagłówek na wysokości twarzy postaci */
+}
+.me-hero-tag {
+  margin: 1.1rem 0 0;
+  font-size: 1.0625rem;
+  color: var(--color-text-secondary);
+}
+.me-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;            /* dosuwa „Przewiń niżej" do dołu kolumny */
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.me-scroll:hover { color: var(--color-blue); }
+.me-scroll-icon { display: inline-flex; animation: me-bounce 1.8s ease-in-out infinite; }
+@keyframes me-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+.me-hero-photo {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #EEF2FB;
+  box-shadow: var(--shadow-lg);
+}
+.me-hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  box-shadow: inset 0 0 0 1px rgba(15,23,42,0.06);
+  pointer-events: none;
+}
+.me-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  display: block;
+}
+/* wariant „wycinek" (bg-removed PNG z alfą) — pływa na kratce hero, bez ramki/karty */
+.me-hero-photo--cutout {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.me-hero-photo--cutout::after { content: none; }
+.me-hero-photo--cutout img {
+  object-fit: contain;
+  object-position: top left;
+  transform: scale(0.86);
+  transform-origin: top left;
+  filter: drop-shadow(0 26px 44px rgba(15,23,42,0.16));
+  /* delikatny overlay — miękkie wygaszenie dolnej krawędzi (wtapia wycinek w sekcję) */
+  -webkit-mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+}
+/* delikatny overlay koloru na sylwetce — używa PNG jako maski, subtelny chłodny gradient */
+.me-hero-photo--cutout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(37,99,235,0.10) 0%, transparent 42%, transparent 78%, rgba(240,244,255,0.55) 100%);
+  -webkit-mask-image: url('img/pawel_nobackground.png');
+          mask-image: url('img/pawel_nobackground.png');
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: top left; mask-position: top left;
+  -webkit-mask-size: contain; mask-size: contain;
+  transform: scale(0.86);
+  transform-origin: top left;
+}
+
+/* ---- Misja: akapit + (karta statystyki | zdjęcie) ---- */
+.me-mission { padding: 6rem 0; }
+.me-mission-top {
+  display: grid;
+  grid-template-columns: 0.7fr 2.3fr;
+  gap: 3rem;
+  align-items: start;
+}
+.me-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-blue);
+  padding-top: 0.4rem;
+}
+.me-eyebrow::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-blue);
+}
+.me-mission-text {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.4vw, 2.05rem);
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+  color: var(--color-text-secondary);
+}
+.me-mission-text strong { color: var(--color-text-primary); font-weight: 800; }
+
+.me-mission-lower {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  align-items: stretch;
+}
+.me-statcard {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  min-height: 300px;
+  border-radius: 22px;
+  background:
+    radial-gradient(70% 60% at 100% 0%, rgba(37,99,235,0.22) 0%, transparent 60%),
+    #0A1120;
+  color: #fff;
+}
+.me-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 96px;
+  margin-bottom: auto;
+}
+.me-bar {
+  flex: 1;
+  min-height: 8px;
+  background: rgba(255,255,255,0.14);
+  border-radius: 5px 5px 0 0;
+}
+.me-bar--accent { background: var(--color-yellow); }
+.me-statcard-num {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-top: 1.5rem;
+}
+.me-statcard-desc {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.62);
+}
+.me-mission-photo {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #EEF2FB;
+  box-shadow: var(--shadow-lg);
+}
+.me-mission-photo img {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- Jak pracuję: numerowana lista + zdjęcie ---- */
+.me-sol { padding: 2rem 0 6rem; }
+.me-sol-h2 {
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  color: var(--color-text-primary);
+  margin: 0 0 3rem;
+}
+.me-sol-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.7fr;
+  gap: 3.5rem;
+  align-items: end;
+}
+.me-sol-photo {
+  border-radius: 22px;
+  overflow: hidden;
+  background: #EEF2FB;
+  box-shadow: var(--shadow-lg);
+  align-self: stretch;
+}
+.me-sol-photo img {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  display: block;
+}
+.me-sol-list { list-style: none; margin: 0; padding: 0; }
+.me-sol-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.4rem 0.25rem;
+  border-top: 1px solid var(--color-border);
+  transition: padding-left 0.2s ease;
+}
+.me-sol-row:last-child { border-bottom: 1px solid var(--color-border); }
+.me-sol-num {
+  flex-shrink: 0;
+  width: 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.me-sol-title {
+  flex: 1;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text-secondary);
+  transition: color 0.18s ease;
+}
+.me-sol-arrow {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--color-text-muted);
+  transition: transform 0.2s ease, color 0.18s ease;
+}
+.me-sol-row:hover { padding-left: 0.75rem; }
+.me-sol-row:hover .me-sol-title { color: var(--color-text-primary); }
+.me-sol-row:hover .me-sol-arrow { color: var(--color-blue); transform: translate(2px, -2px); }
+/* wiersz wyróżniony (jak „02" na referencji) */
+.me-sol-row--active .me-sol-num { color: var(--color-blue); }
+.me-sol-row--active .me-sol-title { color: var(--color-text-primary); font-weight: 700; }
+.me-sol-row--active .me-sol-arrow { color: var(--color-blue); }
+
+/* ---- Responsywność podstrony O mnie ---- */
+@media (max-width: 1023px) {
+  .me-hero-grid { min-height: unset; }
+}
+@media (max-width: 767px) {
+  .me-hero { padding: 8rem 0 3rem; }
+  .me-hero-grid { grid-template-columns: 1fr; gap: 2.25rem; }
+  .me-hero-stats { gap: 2rem; }
+  .me-hello { font-size: clamp(3.5rem, 20vw, 6rem); margin-top: 1.5rem; }
+  .me-hero-photo { aspect-ratio: 4 / 5; }
+  .me-mission { padding: 3.5rem 0; }
+  .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
+  .me-mission-lower { grid-template-columns: 1fr; margin-top: 2rem; }
+  .me-sol { padding: 1rem 0 4rem; }
+  .me-sol-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .me-sol-photo { max-width: 320px; aspect-ratio: 4 / 5; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
+  .me-sol-grid { gap: 2.25rem; }
+}
