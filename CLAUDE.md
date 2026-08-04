@@ -134,18 +134,18 @@ Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca
 
 Plik `kontakt.html` w katalogu głównym (URL `/kontakt`), zbudowany na szablonie podstron (`oferta.html`, patrz sekcja „Szablon podstron"): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. **Wszystkie linki „Kontakt" oraz CTA konsultacji** (`btn-nav-brand`, `btn-footer-cta`, mobile CTA, `svc-cta-btn`, dawne `#kontakt` w sekcji O mnie na index) w `index.html` i `oferta.html` prowadzą teraz do `kontakt.html` (wcześniej martwe `/#kontakt`).
 
-**Motyw: jasny hero + ciemna reszta** — `<body class="contact-page">`, tło body `#080C14`. **Hero jasny jak na `oferta.html`** (gradient `#F0F4FF→#fff` + niebieska kratka + poświata), żeby header renderował się identycznie jak na oferta (jasna pigułka nav, ciemne linki). Poniżej sekcje Kontakt i FAQ ciemne. Layout inspirowany referencją (wielki hero + 2 kolumny dane/formularz + FAQ w akordeonie), przełożony na markę (Inter, niebieski/żółty). Ciemne są dopiero sekcje pod hero (łącznie z granatowym footerem), dlatego nav-JS ma `darkSectionIds = ['kontakt','faq','footer']` (bez hero) — nad hero nav jest domyślny (ciemne linki), niżej przełącza się na jasne.
+**Motyw: jasny hero + ciemna reszta** — `<body class="contact-page">`, tło body `#080C14`. **Hero to ten sam komponent co na `oferta.html`** — `.svc-hero.svc-hero--b` bez żadnych nadpisań (gradient `#F0F4FF→#fff` + niebieska kratka + poświata, badge + H1 + lead), więc header renderuje się identycznie jak na oferta (jasna pigułka nav, ciemne linki). Poniżej sekcje Kontakt i FAQ ciemne. Layout inspirowany referencją (wielki hero + 2 kolumny dane/formularz + FAQ w akordeonie), przełożony na markę (Inter, niebieski/żółty). Ciemne są dopiero sekcje pod hero (łącznie z granatowym footerem), dlatego nav-JS ma `darkSectionIds = ['kontakt','faq','footer']` (bez hero) — nad hero nav jest domyślny (ciemne linki), niżej przełącza się na jasne.
 
 **Sekcje (w kolejności):**
 
-1. `#contact-hero .contact-hero` — **jasny** (gradient `#F0F4FF→#fff`), wielki nagłówek `.contact-hero-h1` (uppercase, `clamp`, kolor `--color-text-primary`, akcent `.accent` = `--color-blue`) + niebieska kratka (`::before`, maska pionowa) + poświata (`::after`, radial) — jak hero na oferta.html. `overflow: hidden`. Na mobile mniejszy font (`clamp(1.6rem, 7vw, 3rem)`), by długie słowa się mieściły.
+1. `#svc-hero .svc-hero.svc-hero--b` — **pełny reuse hero z `oferta.html`/`proces.html`** (żadnych nadpisań w sekcji „PODSTRONA KONTAKT"): badge `.svc-hero-label--filled` „Kontakt" + `.svc-hero-h1` (akcent `.svc-hero-h1-accent` na słowie „projekcie") + `.svc-hero-b-lead`. Tło, kratka full-bleed i typografia pochodzą z `.svc-hero` / `.svc-hero--b`; `body.contact-page` dopisany do reguły maski kratki obok `body.offer-page` i `body.process-page`. Dawny `.contact-hero*` (wielki uppercase H1) został **usunięty** ze `style.css`.
 2. `#kontakt .contact-section` — grid 2 kol (`.contact-grid`). Lewo: eyebrow `.contact-eyebrow` („● KONTAKT", kropka przez `::before`) + `.contact-h2` + `.contact-list` z wierszami `.contact-row` (ikona `.contact-row-icon` + tekst, rozdzielone `border-top`; `a.contact-row` klikalne — email `mailto:`, telefon `tel:`, adres statyczny `.contact-row--static`). Prawo: karta `.contact-form-card` (`#0F1626`) z `.contact-form-title` + polami `.contact-field`/`.contact-label`/`.contact-input`/`.contact-textarea` + żółty `.btn-primary.contact-submit` + `.contact-form-note` (status). **Dane fejkowe:** tel `+48 512 340 118`, adres `ul. Kwiatowa 8/3, 30-002 Kraków`; email `kontakt@lokalnewww.pl`.
 3. `<hr class="contact-rule contact-rule--wrap">` — linia podziału w szerokości kontenera.
 4. `#faq .contact-section.contact-faq` — grid 2 kol: lewo eyebrow „● FAQ" + `.contact-h2`; prawo **akordeon reużyty z oferty** (`.svc-accordion` / `.svc-acc-*`, pierwszy `.is-open`) — ciemne warianty przez `body.contact-page .svc-acc-*`. 6 pytań o tworzenie stron WWW (koszt, czas, treść/zdjęcia, Google, samodzielna edycja, po wdrożeniu). Obsługuje go ten sam handler `.svc-acc-head` co na oferta.html.
 
 **Formularz:** front-end only (brak backendu) — handler `#contact-form` robi `checkValidity()` + pokazuje potwierdzenie w `#contact-form-note` i czyści pola. Do podpięcia realnej wysyłki (mailto/Formspree/endpoint) w przyszłości.
 
-**Klasy CSS strony kontakt (prefiks `contact-`):** `.contact-page`, `.contact-hero`, `.contact-hero-inner`, `.contact-hero-h1` (+ `.accent`), `.contact-rule` (+ `--wrap`), `.contact-section`, `.contact-faq`, `.contact-grid`, `.contact-col`, `.contact-eyebrow`, `.contact-h2`, `.contact-list`, `.contact-row` (+ `--static`), `.contact-row-icon`, `.contact-form-wrap`, `.contact-form-card`, `.contact-form-title`, `.contact-field`, `.contact-label`, `.contact-input`, `.contact-textarea`, `.contact-submit`, `.contact-form-note`, `.contact-faq-col`. Style w `style.css` w sekcji „PODSTRONA KONTAKT" (koniec pliku).
+**Klasy CSS strony kontakt (prefiks `contact-`):** `.contact-page`, `.contact-rule` (+ `--wrap`), `.contact-section`, `.contact-faq`, `.contact-grid`, `.contact-col`, `.contact-eyebrow`, `.contact-h2`, `.contact-list`, `.contact-row` (+ `--static`), `.contact-row-icon`, `.contact-form-wrap`, `.contact-form-card`, `.contact-form-title`, `.contact-field`, `.contact-label`, `.contact-input`, `.contact-textarea`, `.contact-submit`, `.contact-form-note`, `.contact-faq-col`. Style w `style.css` w sekcji „PODSTRONA KONTAKT" (koniec pliku).
 
 ---
 
@@ -207,6 +207,23 @@ Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie 
 ```
 
 Tailwind config (w `<script>` w head): `navy: #1A2540`, `navy-mid: #243155`, font `Inter`, `max-w-container: 1200px`.
+
+---
+
+## Design system — skala typograficzna sekcji
+
+Jednolita na **wszystkich** stronach (index + podstrony). Przy dodawaniu sekcji używaj tych wartości zamiast wymyślać nowe:
+
+| Poziom | Rozmiar | Klasy |
+|---|---|---|
+| eyebrow / label | `0.75rem` uppercase | `.benefit-label`, `.services-label`, `.portfolio-label`, `.usp-label`, `.process-label`, `.svc-work-label`, `.contact-eyebrow`, `.me-eyebrow` |
+| H2 sekcji | `clamp(1.875rem, 3.5vw, 2.75rem)` | `.benefit-h2`, `.services-h2`, `.portfolio-h2`, `.usp-h2`, `.about2-h2`, `.process-h2`, `.svc-work-h2`, `.proc-steps-h2` |
+| lead pod H2 | `1.0625rem` (17px) | `.benefit-sub`, `.services-sub`, `.usp-sub`, `.about2-sub`, `.svc-work-sub`, `.svc-hero-b-lead` |
+| H1 hero podstrony | `clamp(2.25rem, 5vw, 3.75rem)` | `.svc-hero-h1` |
+
+**Nie dodawaj mobilnych override'ów `font-size` do H2** — `clamp()` obsługuje cały zakres; override łamie spójność (tak było w `.portfolio-h2` i `.about2-h2`). Jeśli nagłówek nie mieści się na wąskim ekranie, przyczyną jest zwykle `white-space: nowrap`, nie rozmiar czcionki — zdejmij `nowrap`, a nie zmniejszaj font.
+
+**Świadome odstępstwa** (statement headings, nie zwykłe H2 sekcji): `.contact-h2` `clamp(2rem, 4.5vw, 3.25rem)`, `.me-why-h2` `clamp(1.9rem, 4vw, 3rem)`, `.me-hello` `clamp(1.9rem, 3.8vw, 3.1rem)`, `.svc-cta-h2` `clamp(1.75rem, 3vw, 2.5rem)`, `.svc-block-h3` `clamp(1.5rem, 2.5vw, 2rem)`.
 
 ---
 
@@ -340,6 +357,8 @@ Animacje page-load (hero): klasa `.anim-init` + `.visible` dodawana przez `reque
 
 ## Ważne decyzje projektowe
 
+- Nagłówki hero podstron: **kluczowa fraza w H1 wyróżniona na niebiesko** (`--color-blue`) — `.svc-hero-h1-accent` na `oferta.html` („lokalnych firm"), `proces.html` („gotowej strony"), `kontakt.html` („projekcie") oraz `.me-hello-accent` na `o-mnie.html` („przyciągają klientów"). `index.html` jest wyjątkiem — ma własne wyróżnienie żółtym tekstem na granatowym skosie (`.hero-highlight-wrap`).
+- Nav: `.nav-wrapper` ma **ten sam box co sekcje strony** — `max-width: 1440px; margin: 0 auto; padding: 0 24px` (odpowiednik tailwindowego `max-w-container mx-auto px-6`), a `#nav` nie ma własnego paddingu. Dzięki temu logo równa się z lewą krawędzią treści sekcji poniżej, a CTA z prawą. Na mobile padding schodzi do `12px` (w media query na `.nav-wrapper`, nie na `#nav`). Zmiana `max-w-container` w Tailwind config wymaga zmiany `max-width` w `.nav-wrapper`.
 - Hero: treść do lewej, kontener `w-full` — bez wewnętrznego `max-width` żeby H1 mieścił się w jednej linii
 - Hero highlight (`dla lokalnych biznesów`) — navy tło skewX(-6deg), animacja clip-path od lewej
 - Bento: białe kafelki na niebieskim gradiencie (nie ciemne jak w PRD)

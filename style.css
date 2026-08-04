@@ -69,13 +69,15 @@ body {
   top: 20px;
   left: 0; right: 0;
   z-index: 50;
-  padding: 0 24px;
   background: transparent;
 }
 
+/* Ten sam box co sekcje strony (Tailwind: max-w-container mx-auto px-6),
+   dzięki czemu logo równa się z lewą krawędzią treści sekcji poniżej */
 .nav-wrapper {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
 }
@@ -579,7 +581,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 .benefit-sub {
   color: #64748B;
-  font-size: 1.125rem;
+  font-size: 1.0625rem; /* standard leadu sekcji */
   max-width: 480px;
   margin: 0 auto;
   line-height: 1.75;
@@ -614,7 +616,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .benefit-title {
-  font-size: 1.25rem;
+  font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
   color: #0F172A;
   letter-spacing: -0.02em;
@@ -654,6 +656,8 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   /* Nav: floating island na mobile */
   #nav {
     top: 10px;
+  }
+  .nav-wrapper {
     padding: 0 12px;
   }
   .nav-island {
@@ -745,7 +749,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 .services-sub {
   color: var(--color-text-secondary);
-  font-size: 1.125rem;
+  font-size: 1.0625rem; /* standard leadu sekcji */
   max-width: 480px;
   margin: 0 auto;
   line-height: 1.75;
@@ -1042,7 +1046,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   flex: 1;
 }
 .bento2-title {
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-size: 1.125rem; /* standard tytułu karty (kafle zwykłe) */
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
@@ -1050,7 +1054,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   margin-bottom: 8px;
 }
 .bento2-desc {
-  font-size: 0.9rem;
+  font-size: 0.9375rem; /* standard opisu karty */
   color: var(--color-text-secondary);
   line-height: 1.65;
 }
@@ -1591,7 +1595,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .process-title {
-  font-size: 1.0625rem;
+  font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
   color: #0F172A;
   letter-spacing: -0.02em;
@@ -1600,7 +1604,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .process-desc {
-  font-size: 0.875rem;
+  font-size: 0.9375rem; /* standard opisu karty */
   color: #475569;
   line-height: 1.8;
 }
@@ -2030,7 +2034,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 .usp-sub {
   color: #64748B;
-  font-size: 1.125rem;
+  font-size: 1.0625rem; /* standard leadu sekcji */
   line-height: 1.75;
   margin: 0;
 }
@@ -2059,7 +2063,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .usp-title {
-  font-size: 1rem;
+  font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
@@ -2148,13 +2152,12 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .about2-h2 {
-  font-size: clamp(2.4rem, 4vw, 4.5rem);
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem); /* standard H2 sekcji */
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.04em;
   line-height: 1.1;
   margin: 0 0 1.75rem;
-  white-space: nowrap;
 }
 
 .about2-h2-last {
@@ -2168,13 +2171,14 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 58px;
-  height: 58px;
+  width: 46px;
+  height: 46px;
   border-radius: 9999px;
   background: rgba(255,255,255,0.90);
   color: #0F172A;
   text-decoration: none;
   flex-shrink: 0;
+  /* proporcja do H2 w standardowym rozmiarze (2.75rem) */
   vertical-align: middle;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
@@ -2186,7 +2190,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .about2-sub {
-  font-size: 1rem;
+  font-size: 1.0625rem; /* standard leadu sekcji */
   color: rgba(255,255,255,0.62);
   max-width: 50ch;
   line-height: 1.82;
@@ -2218,14 +2222,12 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
    Zakres do 1919px, bo 16" laptopy bywają szersze niż 1680px. */
 @media (min-width: 1024px) and (max-width: 1919px) {
   .about2-content { padding-left: 6vw; padding-right: 4vw; max-width: 1180px; }
-  .about2-h2 { font-size: clamp(2.2rem, 3vw, 3.1rem); }
 }
 
 @media (max-width: 767px) {
   .about2-section { min-height: 80svh; }
   .about2-content { padding: 3rem 1.5rem; }
-  .about2-h2 { font-size: clamp(1.5rem, 6.2vw, 2.4rem); }
-  .about2-pill { width: 46px; height: 46px; }
+  .about2-pill { width: 40px; height: 40px; }
 }
 
 /* ---- Section: Portfolio / Realizacje (6.5) ---- */
@@ -2260,7 +2262,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .portfolio-h2 {
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem); /* standard H2 sekcji */
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.04em;
@@ -2389,7 +2391,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .portfolio-card-name {
-  font-size: 1.4rem;
+  font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.02em;
@@ -2455,12 +2457,11 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
     margin-bottom: 2rem;
   }
   .portfolio-nav-btns { padding-bottom: 0; }
-  .portfolio-h2 { white-space: normal; font-size: 1.75rem; }
+  .portfolio-h2 { white-space: normal; }
   .portfolio-track { gap: 16px; }
   /* jedna karta + fragment następnej */
   .portfolio-card { flex: 0 0 min(78vw, 320px); }
   .portfolio-card-content { padding: 0 22px 26px; }
-  .portfolio-card-name { font-size: 1.25rem; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -3684,7 +3685,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 .svc-work-card:hover .svc-work-visit { color: var(--color-blue); gap: 8px; }
 .svc-work-name {
-  font-size: 1.1875rem;
+  font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
@@ -3892,7 +3893,8 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 /* kratka rozciągnięta na całą szerokość, wygaszana góra/dół (bez radialnej maski) */
 body.offer-page .svc-hero--b::before,
-body.process-page .svc-hero--b::before {
+body.process-page .svc-hero--b::before,
+body.contact-page .svc-hero--b::before {
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
           mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
 }
@@ -4295,51 +4297,9 @@ body.contact-page {
   color: #E2E8F0;
 }
 
-/* ---- Hero: jasny motyw jak oferta.html (nav renderuje się jako jasna pigułka) ---- */
-.contact-hero {
-  position: relative;
-  overflow: hidden;
-  padding: 12rem 0 4.5rem;
-  background: linear-gradient(180deg, #F0F4FF 0%, #FFFFFF 100%);
-}
-/* siatka („kratka") niebieska na jasnym tle */
-.contact-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
-  background-size: 54px 54px;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 78%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 78%, transparent 100%);
-}
-/* niebieska poświata u dołu (jak w oferta) */
-.contact-hero::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -46%;
-  transform: translateX(-50%);
-  width: 900px;
-  height: 560px;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 66%);
-}
-.contact-hero-inner { position: relative; z-index: 1; }
-.contact-hero-h1 {
-  font-size: clamp(2.75rem, 8vw, 6rem);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-  line-height: 0.98;
-  color: var(--color-text-primary);
-  margin: 0;
-}
-.contact-hero-h1 .accent { color: var(--color-blue); }
+/* ---- Hero: pełny reuse wariantu B z oferta.html (.svc-hero.svc-hero--b) ----
+   Tło, kratka, padding i typografia H1/lead pochodzą w całości z sekcji
+   „PODSTRONA OFERTY" — tutaj żadnych nadpisań, żeby oba hero były identyczne. */
 
 /* ---- Linia podziału między pasami ---- */
 .contact-rule { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 0; }
@@ -4497,9 +4457,6 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 
 /* ---- Responsywność podstrony kontakt ---- */
 @media (max-width: 767px) {
-  .contact-hero { padding: 8.5rem 0 3rem; }
-  /* mniejszy nagłówek, żeby długie słowa mieściły się bez przycięcia */
-  .contact-hero-h1 { font-size: clamp(1.6rem, 7vw, 3rem); letter-spacing: -0.02em; }
   .contact-section { padding: 3.5rem 0; }
   .contact-grid { grid-template-columns: 1fr; gap: 2.75rem; }
   .contact-list { margin-top: 1.75rem; }
@@ -4582,6 +4539,8 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
   color: var(--color-text-primary);
   margin: 0;
 }
+/* wyróżnienie kluczowej frazy w H1 — jak .svc-hero-h1-accent na pozostałych podstronach */
+.me-hello-accent { color: var(--color-blue); }
 .me-hero-tag {
   margin: 1.25rem 0 0;
   font-size: 1.0625rem;
@@ -4830,7 +4789,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 .me-why-icon--green,
 .me-why-icon--blue { background: none; color: var(--color-navy); }
 .me-why-card-title {
-  font-size: 1.15rem;
+  font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
   letter-spacing: -0.01em;
   color: #0B1220;
@@ -4838,7 +4797,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 }
 .me-why-card-desc {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.9375rem; /* standard opisu karty */
   line-height: 1.7;
   color: #64748B;
 }
