@@ -21,7 +21,18 @@
       "Bash(node -e 'const b=require\\(\"fs\"\\).readFileSync\\(process.argv[1]\\);const w=b.readUInt32BE\\(16\\),h=b.readUInt32BE\\(20\\),ct=b.readUInt8\\(25\\);const t={0:\"gray\",2:\"RGB\",3:\"palette\",4:\"gray+alpha\",6:\"RGBA\"};console.log\\(\"PNG\",w+\"x\"+h,\"colorType:\",ct,\"\\(\"+\\(t[ct]||\"?\"\\)+\"\\)\",\"bytes:\",b.length\\)' c:/Users/pawel/Desktop/kodowanie/lokalnewww/img/omnie-bgremoved2.png)",
       "Bash(node -e ' *)",
       "Bash(python -c \"from PIL import Image; print\\(Image.open\\('img/pawel_nobackground.png'\\).size\\)\")",
-      "Bash(identify img/pawel_nobackground.png)"
+      "Bash(identify img/pawel_nobackground.png)",
+      "mcp__claude_ai_higsfield__balance",
+      "mcp__claude_ai_higsfield__generate_image",
+      "mcp__claude_ai_higsfield__job_status",
+      "Bash(curl -s -o \"/c/Users/pawel/Desktop/kodowanie/lokalnewww/img/omnie-koduje.png\" \"https://d8j0ntlcm91z4.cloudfront.net/user_3G6MBQAupxH8tt2sUaWkN4v4M8x/hf_20260714_091749_ac0b3d74-83d7-4eb0-b480-a8ebc3b47fda.png\")",
+      "Bash(curl -s -o omnie-koduje.webp \"https://d8j0ntlcm91z4.cloudfront.net/user_3G6MBQAupxH8tt2sUaWkN4v4M8x/hf_20260714_091749_ac0b3d74-83d7-4eb0-b480-a8ebc3b47fda_min.webp\")",
+      "Bash(rm -f omnie-koduje.png)",
+      "PowerShell(winget search webp)",
+      "PowerShell(winget install --id Google.Libwebp --exact --accept-source-agreements --accept-package-agreements --disable-interactivity)",
+      "PowerShell($p = Get-ChildItem -Path \"$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\" -Recurse -Filter cwebp.exe -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName; if \\($p\\) { Write-Output $p; & $p -version } else { Write-Output \"cwebp.exe not found under WinGet dir\" })",
+      "Bash(command -v cwebp)",
+      "Bash(cwebp -version)"
     ],
     "additionalDirectories": [
       "c:\\Users\\pawel\\Desktop\\kodowanie\\lokalnewww"

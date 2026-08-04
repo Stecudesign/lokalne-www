@@ -59,7 +59,7 @@
       <div class="nav-links-pill">
         <a href="oferta.html">Oferta</a>
         <a href="o-mnie.html">O mnie</a>
-        <a href="/#blog">Blog</a>
+        <a href="proces.html">Proces</a>
         <a href="kontakt.html">Kontakt</a>
       </div>
     </div>
@@ -90,7 +90,7 @@
   </button>
   <a href="oferta.html" data-menu-link>Oferta</a>
   <a href="o-mnie.html" data-menu-link>O mnie</a>
-  <a href="/#blog" data-menu-link>Blog</a>
+  <a href="proces.html" data-menu-link>Proces</a>
   <a href="kontakt.html" data-menu-link>Kontakt</a>
   <a href="kontakt.html" data-menu-link class="btn-primary mt-2">
     <span class="btn-cta-icon" aria-hidden="true">
@@ -425,7 +425,7 @@
           </ul>
         </div>
         <a href="o-mnie.html">O mnie</a>
-        <a href="/#blog">Blog</a>
+        <a href="proces.html">Proces</a>
         <a href="kontakt.html">Kontakt</a>
       </nav>
 
@@ -576,6 +576,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Navigation — sticky + jasny tekst nad ciemnymi pasami
   const nav = document.getElementById('nav');
   const darkSectionIds = ['svc-strony', 'svc-design', 'svc-opieka'];
+
+  // Aktywna strona — podświetla pozycję menu odpowiadającą bieżącemu URL-owi
+  // (działa i dla „/oferta", i dla „/oferta.html"). Blok wspólny dla wszystkich stron.
+  const currentPage = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
+  document.querySelectorAll('.nav-links-pill a, #mobile-menu a[data-menu-link]:not(.btn-primary)').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href || href.includes('#')) return;
+    const target = href.split('/').pop().replace(/\.html$/, '');
+    if (target && target === currentPage) {
+      a.classList.add('is-active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
 
   const updateNav = () => {
     nav.classList.toggle('scrolled', window.scrollY > 80);

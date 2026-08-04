@@ -19,7 +19,8 @@ index.html      ← cała strona (landing page)
 oferta.html     ← strona Oferta (root, URL /oferta) — usługi w akordeonie, motyw ciemny
 kontakt.html    ← strona Kontakt (root, URL /kontakt) — ciemny motyw: hero + dane/formularz + FAQ (akordeon)
 o-mnie.html     ← strona O mnie (root, URL /o-mnie) — jasny motyw: hero „Cześć"+portret, misja+statystyka, numerowana lista
-style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html i o-mnie.html
+proces.html     ← strona Proces (root, URL /proces) — jasny motyw editorial (styl Snøhetta): hero + lista 6 kroków z ilustracjami
+style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html, o-mnie.html i proces.html
 img/
   logopin3Dv1.png          ← logo pin 3D (64×64)
   herov8.png               ← tło hero (desktop)
@@ -35,10 +36,21 @@ img/
   oferta-responsywnosc.webp     ← ilustracja usługi Responsywność (oferta.html)
   oferta-opieka.webp            ← ilustracja usługi Opieka nad stroną (oferta.html)
   oferta-analityka.webp         ← ilustracja usługi Analityka Google (oferta.html)
-  omnie-bgremoved2.png          ← zdjęcie hero (o-mnie.html) — wycinek bez tła (RGBA), postać z iPadem, pływa na kratce
+  pawel_nobackgroundv1.png      ← zdjęcie hero (o-mnie.html) — wycinek bez tła (RGBA), postać z iPadem, pływa na kratce; 2274×2766 = wersja 2× (retina) pliku poniżej. Używany też jako maska w `.me-hero-photo--cutout::before` — przy podmianie zmień OBA miejsca (img w HTML + mask-image w CSS)
+  pawel_nobackground.png        ← oryginał wycinka 1137×1383 (już nieużywany)
+  omnie-bgremoved2.png          ← wcześniejszy wariant wycinka (już nieużywany)
   omnie-bgremoved.png           ← wcześniejszy wariant wycinka (już nieużywany)
-  omnie-praca.webp              ← „przy pracy" przy laptopie (o-mnie.html, sekcja misji)
-  omnie-portret.webp            ← close-up portret (o-mnie.html, sekcja „jak pracuję")
+  omnie-koduje.webp             ← koduje stronę w domowym biurze nocą (o-mnie.html, sekcja misji, 16:9, Higgsfield nano_banana_pro) — klimat: ciepłe światło, kod + preview na monitorze, roślina
+  omnie-praca.webp              ← wcześniejsze „przy pracy" przy laptopie (już nieużywane w sekcji misji)
+  omnie_kodowanie.png           ← przy biurku od tyłu, kod na dwóch ekranach, niebieski neon fotela (o-mnie.html, sekcja „jak pracuję", 2244×2804) — UWAGA: 6,4 MB, do konwersji na webp
+  omnie-portret.webp            ← wcześniejszy close-up portret (już nieużywany)
+  proces-01-konsultacja.webp    ← ilustracja kroku 01 (proces.html, Higgsfield nano_banana_pro) — konsultacja: laptop z rozmową + dymek czatu
+  proces-02-analiza.webp        ← ilustracja kroku 02 — analiza/strategia: lupa nad wykresem + checklista
+  proces-03-projekt.webp        ← ilustracja kroku 03 — projekt+wycena: makieta strony + dokument z ołówkiem
+  proces-04-realizacja.webp     ← ilustracja kroku 04 — projektowanie+kodowanie: monitor z layoutem + nawiasy kodu
+  proces-05-wdrozenie.webp      ← ilustracja kroku 05 — testy+wdrożenie: rakieta z okna przeglądarki + laptop/telefon
+  proces-06-wsparcie.webp       ← ilustracja kroku 06 — wsparcie: tarcza z checkmarkiem, klucz, strzałki odświeżania
+  (wszystkie proces-*.webp: minimal flat, paleta marki navy/niebieski/żółty na off-white #F8FAFC — spójny set, bez tekstu)
 examples/       ← screenshoty referencyjne
 PRD_lokalnewww.md
 ```
@@ -49,7 +61,7 @@ PRD_lokalnewww.md
 
 | ID | Klasa/styl sekcji | Status |
 |---|---|---|
-| `#nav` | `.nav-island` — floating pill, białe półprzezroczyste szkło (`rgba(255,255,255,0.28)`), ciemne linki, aktywna pozycja = niebieski pill (`.is-active`, scrollspy) | ✅ gotowe |
+| `#nav` | `.nav-island` — floating pill, białe półprzezroczyste szkło (`rgba(255,255,255,0.28)`), ciemne linki, aktywna strona = niebieski pill (`.is-active` + `aria-current`, ustawiane po URL-u) | ✅ gotowe |
 | `#hero` | tło `img/herov8.png` + overlay `rgba(255,255,255,0.2)`, treść do lewej | ✅ gotowe |
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC`, 3 karty w gridzie | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient, 6 kafli | ✅ gotowe |
@@ -78,6 +90,8 @@ Projekt **nie ma buildu ani include'ów** — każda podstrona to samodzielny pl
 - **Ścieżki root-relative:** `img/…`, `style.css`, logo `/`. Podstrony są w katalogu głównym, więc bez `../`.
 - **Linki do sekcji strony głównej z prefiksem `/#` — jednolite na wszystkich stronach:** `href="/#o-mnie"`, `/#blog`, `/#kontakt` (identycznie w nav i footer na `index.html` **oraz** podstronach). Link „Oferta" → `oferta.html`. Dzięki temu blok nav + `#mobile-menu` + footer-nav jest **identyczny** na każdej stronie (kopiuj 1:1). Na `index.html` obsługę `/#…` (smooth scroll bez przeładowania + scrollspy) zapewnia JS: `resolveSection` i handler smooth-scroll normalizują `/#sekcja` → `#sekcja`; handler łapie selektor `a[href^="#"], a[href^="/#"]`.
 - **`darkSectionIds` w nav-JS jest per-strona:** lista id ciemnych sekcji, nad którymi nav ma białe linki (`nav--light`). Ustaw ją pod realne ciemne pasy danej podstrony (na `index.html`: `['o-mnie-v2','realizacje']`; na `oferta.html`: `['svc-strony','svc-design','svc-opieka']`). Nowa podstrona bez ciemnych sekcji → pusta tablica `[]`.
+- **Aktywna strona w nav — blok wspólny, kopiuj 1:1:** w nav-JS (tuż po `const nav`/`darkSectionIds`) jest snippet, który porównuje `location.pathname` z `href` linków i nadaje `.is-active` + `aria-current="page"` pozycji odpowiadającej bieżącej stronie (dopasowanie po nazwie pliku bez `.html`, więc działa i dla `/proces`, i dla `/proces.html`). Obejmuje pill (`.nav-links-pill a`) i `#mobile-menu` (z pominięciem CTA `.btn-primary`); linki z `#` pomija. Snippet jest **identyczny na wszystkich stronach, łącznie z `index.html`**. Styl: pill = `.is-active` (niebieski), mobile = `#mobile-menu a[aria-current="page"]` (żółty + podkreślenie).
+- **Scrollspy nie istnieje** — nawigacja podświetla wyłącznie aktywną **stronę** (patrz punkt wyżej), nie sekcję. `updateNav` odpowiada już tylko za `.scrolled` i `nav--light`.
 - **Header + footer trzymaj zsynchronizowane ręcznie** — zmiana w nav/footer musi trafić do `index.html`, `oferta.html` i wszystkich podstron (brak include'ów = brak automatycznej propagacji).
 
 ---
@@ -102,7 +116,7 @@ Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca
 
 **Nawigacja:** linki w nav i footer zawierają `/#section` (prefix ukośnikiem do roota)
 
-**Nav JS:** `updateNav` wymusza `nav--light` gdy scroll nad pasem ciemnym — `darkSectionIds = ['svc-seo','svc-design','svc-opieka']` (jak scrollspy na index.html). Akordeon: klik na `.svc-acc-head` toggluje `.is-open` (zamyka pozostałe w tym samym `.svc-accordion`).
+**Nav JS:** `updateNav` wymusza `nav--light` gdy scroll nad pasem ciemnym — `darkSectionIds = ['svc-seo','svc-design','svc-opieka']` (jak na index.html). Akordeon: klik na `.svc-acc-head` toggluje `.is-open` (zamyka pozostałe w tym samym `.svc-accordion`).
 
 **Animacje GSAP pasów usług (`oferta.html`).** Analogicznie do index.html: GSAP + ScrollTrigger + Lenis z CDN na dole strony, klasa `.gsap-enhance` dodawana synchronicznie w `<head>`, zdejmowana przez JS gdy brak GSAP / `prefers-reduced-motion` (treść zostaje statycznie widoczna). Osobny `<script>` IIFE ze **spięciem Lenis z tickerem GSAP** oraz `gsap.matchMedia()`:
 > - **Desktop/tablet (`min-width: 768px`)** — *alternating reveal* per pas (`ScrollTrigger` na `.svc-block`, `start: 'top 78%'`, `once`), `ease: power3.out`. Tekst wjeżdża od swojej strony: pasy ciemne (tekst z lewej) `x:-30, y:30`, pasy jasne `.svc-block--rev` (tekst z prawej) `x:+30, y:30`. Kolejność timeline: **numer/label** (`y:12`, `letter-spacing 0.16→0.02em`) → **H3** (`y:40`) → **opis** (`y:24`) → **`.svc-acc-item` stagger 0.1**; `.svc-block-visual` w tym samym timeline `x:±60, y:30, scale:0.94→1, rotation:±1.5°→0`, `duration:1`. Po revealu `clearProps: 'transform'` na tekstach (żeby działał CSS accordionu). **Parallax** grafiki: osobny scrub-`ScrollTrigger` na `.svc-block-img` (`yPercent 5→-5`, `start: 'top bottom'`, `end: 'bottom top'`); baza `scale:1.12` żeby ruch nie odsłaniał krawędzi w kadrze `overflow:hidden`. **Hover** grafiki (`scale 1.12↔1.16`) sterowany GSAP-em (`gsap.quickTo`) — komponuje się z parallaxem, bez konfliktu transformów.
@@ -143,14 +157,35 @@ Plik `o-mnie.html` w katalogu głównym (URL `/o-mnie`), zbudowany na szablonie 
 
 **Sekcje (w kolejności):**
 
-1. `#me-hero .me-hero` — 2 kolumny (`.me-hero-grid`, `min-height:560px`): lewo `.me-hero-left` (statystyki `.me-hero-stats`/`.me-stat` u góry, wielkie cienkie `.me-hello` „Cześć" `font-weight:300` dosunięte w dół przez `margin:auto 0 0`, `.me-hero-tag`, `.me-scroll` z animowaną strzałką); prawo `.me-hero-photo.me-hero-photo--cutout` — **wycinek bez tła** `img/omnie-bgremoved2.png` (RGBA) „pływający" na kratce: bez karty/cienia/ramki, `object-fit:contain` + `object-position:bottom`, `drop-shadow`, wygaszenie dołu (mask na `img`) + delikatny overlay koloru na sylwetce (`::before` z maską z PNG). Kratka hero w `.me-hero::before`.
-2. `#me-mission .me-mission` — `.me-mission-top` (grid: `.me-eyebrow` „● O MNIE" + `.me-mission-text` duży akapit z `<strong>` w kolorze navy). Niżej `.me-mission-lower` (grid: ciemna `.me-statcard` z mini wykresem `.me-bars`/`.me-bar`/`.me-bar--accent` żółty + `.me-statcard-num` „+20%" + opis | zdjęcie `.me-mission-photo` `img/omnie-praca.webp`).
-3. `#me-approach .me-sol` — `.me-sol-h2` + `.me-sol-grid` (lewo `.me-sol-photo` `img/omnie-portret.webp`; prawo `.me-sol-list` `<ol>` z `.me-sol-row` = `.me-sol-num` + `.me-sol-title` + `.me-sol-arrow`; wiersz `.me-sol-row--active` wyróżniony na niebiesko, hover przesuwa strzałkę i wcięcie).
-4. `.svc-cta` (reuse z oferty) + `.footer-section`.
+1. `#me-hero .me-hero` — 2 kolumny (`.me-hero-grid`, `min-height:560px`): lewo `.me-hero-left` (statystyki `.me-hero-stats`/`.me-stat` u góry, wielkie cienkie `.me-hello` „Cześć" `font-weight:300` dosunięte w dół przez `margin:auto 0 0`, `.me-hero-tag`, `.me-scroll` z animowaną strzałką); prawo `.me-hero-photo.me-hero-photo--cutout` — **wycinek bez tła** `img/pawel_nobackgroundv1.png` (RGBA, 2×/retina) „pływający" na kratce: bez karty/cienia/ramki, `object-fit:contain` + `object-position:bottom`, `drop-shadow`, wygaszenie dołu (mask na `img`) + delikatny overlay koloru na sylwetce (`::before` z maską z PNG). Kratka hero w `.me-hero::before`.
+2. `#me-mission .me-mission` — `.me-mission-top` (grid: `.me-eyebrow` „● O MNIE" + `.me-mission-text` duży akapit z `<strong>` w kolorze navy). Niżej `.me-mission-lower` — jedno szerokie zdjęcie 16:9 `.me-mission-photo.me-mission-photo--wide` `img/omnie-koduje.webp` (kodowanie strony w domowym biurze, klimat jak referencja). **Karta statystyki `.me-statcard` (+20% z mini wykresem `.me-bars`) usunięta z HTML — klasy `.me-statcard*`/`.me-bar*` pozostały w `style.css` jako martwy kod.**
+3. `#me-why .me-why` — **„Dlaczego warto pracować ze mną"**: wyśrodkowany nagłówek `.me-why-head` (`.me-eyebrow` „● DLACZEGO JA" + `.me-why-h2` z akcentem `.me-why-h2-accent` + `.me-why-sub`) + `.me-why-grid` (3 kol) z 9× `.me-why-card` (ikona w kolorowym boksie `.me-why-icon` + warianty `--amber/--navy/--green` cyklicznie, `.me-why-card-title`, `.me-why-card-desc`). Karta: białe tło + `border`, hover = lift `translateY(-4px)` + `shadow-lg` + niebieski border, ikona `scale(1.08) rotate(-3deg)`. Animacja wejścia przez `.fade-up` (IntersectionObserver) ze staggerem kolumnowym `transition-delay` 0/90/180ms. Treść wzorowana na screenie referencyjnym (9 atutów), paleta marki (nie różowa jak referencja).
+4. `#me-approach .me-sol` — `.me-sol-h2` + `.me-sol-grid` (lewo `.me-sol-photo` `img/omnie_kodowanie.png`, kadr `object-position: 50% 50%`; prawo `.me-sol-list` `<ol>` z `.me-sol-row` = `.me-sol-num` + `.me-sol-title` + `.me-sol-arrow`; wiersz `.me-sol-row--active` wyróżniony na niebiesko, hover przesuwa strzałkę i wcięcie).
+5. `.svc-cta` (reuse z oferty) + `.footer-section`.
 
 **Grafiki (Higgsfield):** portret klienta `img/gamingomniev2.jpg` (ciemny, fotel z niebieskim neonem) przerobiony modelem **`nano_banana_pro`** (image-to-image, zachowuje twarz) na jasne edytorskie ujęcia na jasnym tle — soul_2 odpadł, bo zawsze wzbogaca prompt i ciągnął z powrotem do ciemnej sceny referencji. Pliki zapisane jako `min.webp` (pełne 2k, ~100–470 KB).
 
-**Klasy CSS strony O mnie (prefiks `me-`):** `.aboutme-page`, `.me-hero`, `.me-hero-grid`, `.me-hero-left`, `.me-hero-stats`, `.me-stat`, `.me-stat-num`, `.me-stat-label`, `.me-hello`, `.me-hero-tag`, `.me-scroll`, `.me-scroll-icon`, `.me-hero-photo`, `.me-mission`, `.me-mission-top`, `.me-eyebrow`, `.me-mission-text`, `.me-mission-lower`, `.me-statcard`, `.me-bars`, `.me-bar` (+ `--accent`), `.me-statcard-num`, `.me-statcard-desc`, `.me-mission-photo`, `.me-sol`, `.me-sol-h2`, `.me-sol-grid`, `.me-sol-photo`, `.me-sol-list`, `.me-sol-row` (+ `--active`), `.me-sol-num`, `.me-sol-title`, `.me-sol-arrow`. Style w `style.css` w sekcji „PODSTRONA O MNIE" (koniec pliku).
+**Klasy CSS strony O mnie (prefiks `me-`):** `.aboutme-page`, `.me-hero`, `.me-hero-grid`, `.me-hero-left`, `.me-hero-stats`, `.me-stat`, `.me-stat-num`, `.me-stat-label`, `.me-hello`, `.me-hero-tag`, `.me-scroll`, `.me-scroll-icon`, `.me-hero-photo`, `.me-mission`, `.me-mission-top`, `.me-eyebrow`, `.me-mission-text`, `.me-mission-lower`, `.me-statcard`, `.me-bars`, `.me-bar` (+ `--accent`), `.me-statcard-num`, `.me-statcard-desc`, `.me-mission-photo`, `.me-why`, `.me-why-head`, `.me-why-h2` (+ `-accent`), `.me-why-sub`, `.me-why-grid`, `.me-why-card`, `.me-why-icon` (+ `--amber`/`--navy`/`--green`), `.me-why-card-title`, `.me-why-card-desc`, `.me-sol`, `.me-sol-h2`, `.me-sol-grid`, `.me-sol-photo`, `.me-sol-list`, `.me-sol-row` (+ `--active`), `.me-sol-num`, `.me-sol-title`, `.me-sol-arrow`. Style w `style.css` w sekcji „PODSTRONA O MNIE" (koniec pliku).
+
+---
+
+## Strona Proces (`proces.html`)
+
+Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. Podlinkowany w nav (pill + mobile menu) i w stopce jako „Proces" na wszystkich stronach — **zastąpił dawny link „Blog", który został usunięty** z całej nawigacji (`index.html`, `oferta.html`, `kontakt.html`, `o-mnie.html`, `proces.html`). Pokazuje proces tworzenia strony WWW od pierwszego kontaktu z klientem po wdrożenie i wsparcie.
+
+**Motyw: jasny, editorial (inspiracja Snøhetta)** — `<body class="process-page">`, `darkSectionIds = []`. Hero jak na oferta (`svc-hero--b`: gradient `#F0F4FF→#fff` + pełnoszerokościowa kratka), więc header renderuje się jako jasna pigułka z ciemnymi linkami. Cała strona jasna, dużo białej przestrzeni, cienkie linie między wierszami. Wizuały kroków to **ilustracje Higgsfield** (`img/proces-0X-*.webp`, `nano_banana_pro`, spójny flat set w palecie marki na off-white — tło grafiki zlewa się z panelem `.proc-step-visual`). Klasy `.proc-step-ghost` / `.proc-step-icon(-*)` + `.proc-step-visual::before` (kratka) pozostały w `style.css` jako **martwy kod** po podmianie ikon na obrazy.
+
+**Animacje:** tylko `.fade-up` (IntersectionObserver, jak na index.html) — brak dedykowanych animacji GSAP na sekcjach. Skrypt Lenis (smooth scroll) zostaje, ale klasa `.gsap-enhance` jest zdejmowana zawsze, żeby stany startowe `.fade-up` nie były przechwytywane przez CSS pasów oferty.
+
+**Sekcje (w kolejności):**
+
+1. `#svc-hero .svc-hero--b` — hero reuse z oferty: label „Proces" (`svc-hero-label--filled`), H1 „Od pomysłu do gotowej strony" + lead.
+2. `#kroki .proc-steps` — **lista 6 kroków** (styl Snøhetta): nagłówek `.proc-steps-head` + 6× `.proc-step` (grid 3 kol: `.proc-step-index` numer/label · `.proc-step-body` H3+opis+`.proc-step-list` z checkmarkami+`.proc-step-meta` badge czasu · `.proc-step-visual` panel z ilustracją `.proc-step-img` `img/proces-0X-*.webp`). Hover: panel lift (`translateY`) + zoom obrazu (`scale 1.04`). Kroki: 01 Kontakt i konsultacja, 02 Analiza i strategia, 03 Projekt i wycena, 04 Projektowanie i kodowanie, 05 Testy i wdrożenie, 06 Wsparcie i rozwój.
+3. `.svc-cta` (reuse) + `.footer-section` (reuse).
+
+> Sekcje `.proc-intro` („Jak pracuję" + akapit) i `.proc-over` (timeline overview 01–06) zostały **usunięte** z `proces.html` — po hero od razu idzie lista 6 kroków. Ich CSS (`.proc-intro*`, `.proc-eyebrow`, `.proc-over*`) pozostał w `style.css` jako martwy kod.
+
+**Klasy CSS strony Proces (prefiks `proc-`):** `.process-page`, `.proc-intro`, `.proc-intro-grid`, `.proc-eyebrow`, `.proc-intro-h2`, `.proc-intro-lead`, `.proc-over`, `.proc-over-grid`, `.proc-over-item` (+ `--final`), `.proc-over-num`, `.proc-over-title`, `.proc-over-desc` (wszystkie martwe po usunięciu sekcji intro/overview), `.proc-steps`, `.proc-steps-head`, `.proc-steps-h2`, `.proc-step`, `.proc-step-index`, `.proc-step-num`, `.proc-step-label`, `.proc-step-body`, `.proc-step-h3`, `.proc-step-desc`, `.proc-step-list`, `.proc-step-meta`, `.proc-step-visual`, `.proc-step-img`, `.proc-step-ghost` (martwy), `.proc-step-icon` (+ `--amber`/`--navy`/`--green`) (martwy). Style w `style.css` w sekcji „PODSTRONA PROCES" (koniec pliku).
 
 ---
 

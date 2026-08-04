@@ -89,7 +89,7 @@
       <div class="nav-links-pill">
         <a href="oferta.html">Oferta</a>
         <a href="o-mnie.html">O mnie</a>
-        <a href="/#blog">Blog</a>
+        <a href="proces.html">Proces</a>
         <a href="kontakt.html">Kontakt</a>
       </div>
     </div>
@@ -121,7 +121,7 @@
   </button>
   <a href="oferta.html"  data-menu-link>Oferta</a>
   <a href="o-mnie.html"  data-menu-link>O mnie</a>
-  <a href="/#blog"    data-menu-link>Blog</a>
+  <a href="proces.html" data-menu-link>Proces</a>
   <a href="kontakt.html" data-menu-link>Kontakt</a>
   <a href="kontakt.html" data-menu-link class="btn-primary mt-2">
     <span class="btn-cta-icon" aria-hidden="true">
@@ -639,7 +639,7 @@
           </ul>
         </div>
         <a href="o-mnie.html">O mnie</a>
-        <a href="/#blog">Blog</a>
+        <a href="proces.html">Proces</a>
         <a href="kontakt.html">Kontakt</a>
       </nav>
 
@@ -1099,17 +1099,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.getElementById('nav');
   const darkSectionIds = ['o-mnie-v2', 'realizacje'];
 
-  // Scrollspy — podświetla aktywną pozycję menu (biały pill)
-  const pillLinks = Array.from(document.querySelectorAll('.nav-links-pill a'));
-  const resolveSection = (href) => {
-    // linki nav są jednolite z podstronami (prefiks „/#…") — tu sprowadzamy do lokalnej kotwicy
-    const hash = href.startsWith('/#') ? href.slice(1) : href;
-    if (!hash.startsWith('#') || hash.length < 2) return null; // np. „oferta.html"
-    return document.querySelector(hash) || document.querySelector(hash + '-v2');
-  };
-  const spyTargets = pillLinks
-    .map(a => ({ link: a, section: resolveSection(a.getAttribute('href')) }))
-    .filter(t => t.section);
+  // Aktywna strona — podświetla pozycję menu odpowiadającą bieżącemu URL-owi
+  // (działa i dla „/oferta", i dla „/oferta.html"). Blok wspólny dla wszystkich stron.
+  const currentPage = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
+  document.querySelectorAll('.nav-links-pill a, #mobile-menu a[data-menu-link]:not(.btn-primary)').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href || href.includes('#')) return;
+    const target = href.split('/').pop().replace(/\.html$/, '');
+    if (target && target === currentPage) {
+      a.classList.add('is-active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
 
   const updateNav = () => {
     nav.classList.toggle('scrolled', window.scrollY > 80);
@@ -1122,13 +1123,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return r.top <= navMidY && r.bottom >= navMidY;
     });
     nav.classList.toggle('nav--light', overDark);
-
-    // Ostatnia sekcja, której góra minęła linię nawigacji, jest aktywna
-    let active = null;
-    for (const t of spyTargets) {
-      if (t.section.getBoundingClientRect().top <= 120) active = t.link;
-    }
-    pillLinks.forEach(a => a.classList.toggle('is-active', a === active));
   };
 
   window.addEventListener('scroll', updateNav, { passive: true });
