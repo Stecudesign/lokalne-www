@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="896" viewBox="0 0 1200 896">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="44%" r="74%">
+      <stop offset="0" stop-color="#FAFCFF"/>
+      <stop offset="1" stop-color="#EDF2FB"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="200%" height="200%">
+      <feDropShadow dx="26" dy="28" stdDeviation="26" flood-color="#8AA6D0" flood-opacity="0.30"/>
+    </filter>
+    <filter id="softSm" x="-60%" y="-60%" width="240%" height="240%">
+      <feDropShadow dx="16" dy="18" stdDeviation="16" flood-color="#8AA6D0" flood-opacity="0.26"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="896" fill="url(#bg)"/>
+
+  <!-- swatch palette pill -->
+  <g filter="url(#softSm)">
+    <rect x="164" y="336" width="88" height="208" rx="44" fill="#FFFFFF"/>
+  </g>
+  <circle cx="208" cy="388" r="21" fill="#1B2440"/>
+  <circle cx="208" cy="440" r="21" fill="#2563EB"/>
+  <circle cx="208" cy="492" r="21" fill="#FBD667"/>
+
+  <!-- artboard -->
+  <g filter="url(#soft)">
+    <rect x="304" y="210" width="592" height="460" rx="32" fill="#FFFFFF"/>
+  </g>
+
+  <!-- layout shapes -->
+  <circle cx="430" cy="345" r="78" fill="#2563EB"/>
+  <rect x="600" y="267" width="200" height="156" rx="26" fill="#FBD667"/>
+  <rect x="352" y="485" width="300" height="64" rx="32" fill="#1B2440"/>
+  <rect x="352" y="577" width="190" height="40" rx="20" fill="#7EAAF5"/>
+
+  <!-- selection frame + resize handles -->
+  <rect x="584" y="251" width="232" height="188" rx="8" fill="none" stroke="#2563EB" stroke-width="5"/>
+  <g fill="#FFFFFF" stroke="#2563EB" stroke-width="6">
+    <rect x="571" y="238" width="26" height="26" rx="7"/>
+    <rect x="803" y="238" width="26" height="26" rx="7"/>
+    <rect x="571" y="426" width="26" height="26" rx="7"/>
+    <rect x="803" y="426" width="26" height="26" rx="7"/>
+  </g>
+
+  <!-- pointer cursor -->
+  <g transform="translate(828 448) scale(1.5)" filter="url(#softSm)">
+    <path d="M0 0 L0 86 L23 66 L38 98 L60 88 L45 56 L74 53 Z"
+          fill="#1B2440" stroke="#1B2440" stroke-width="12"
+          stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+</svg>

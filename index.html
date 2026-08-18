@@ -370,11 +370,7 @@
         <div class="portfolio-card-inner">
           <img src="img/barbermockup.webp" alt="Salon fryzjerski Barber — strona WWW" loading="lazy" draggable="false">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
-          <div class="portfolio-card-arrow" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
           <div class="portfolio-card-content">
-            <span class="portfolio-card-cat">Strona WWW</span>
             <h3 class="portfolio-card-name">Barber</h3>
           </div>
         </div>
@@ -385,11 +381,7 @@
         <div class="portfolio-card-inner">
           <img src="img/sewisbmwmockup.webp" alt="Serwis BMW — strona WWW" loading="lazy" draggable="false">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
-          <div class="portfolio-card-arrow" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
           <div class="portfolio-card-content">
-            <span class="portfolio-card-cat">Redesign</span>
             <h3 class="portfolio-card-name">Serwis BMW</h3>
           </div>
         </div>
@@ -400,11 +392,7 @@
         <div class="portfolio-card-inner">
           <img src="img/fizjomockup.webp" alt="Gabinet fizjoterapii — strona WWW" loading="lazy" draggable="false">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
-          <div class="portfolio-card-arrow" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
           <div class="portfolio-card-content">
-            <span class="portfolio-card-cat">Landing page</span>
             <h3 class="portfolio-card-name">Gabinet Fizjoterapii</h3>
           </div>
         </div>
@@ -415,11 +403,7 @@
         <div class="portfolio-card-inner">
           <img src="img/burgerowniamockup.webp" alt="Burgerownia — strona WWW" loading="lazy" draggable="false">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
-          <div class="portfolio-card-arrow" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
           <div class="portfolio-card-content">
-            <span class="portfolio-card-cat">Strona WWW</span>
             <h3 class="portfolio-card-name">Burgerownia</h3>
           </div>
         </div>
@@ -430,11 +414,7 @@
         <div class="portfolio-card-inner">
           <img src="img/szkolaplywaniamockup.webp" alt="Szkoła pływania Aqua — strona WWW z rezerwacjami" loading="lazy" draggable="false">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
-          <div class="portfolio-card-arrow" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
           <div class="portfolio-card-content">
-            <span class="portfolio-card-cat">Landing page</span>
             <h3 class="portfolio-card-name">Szkoła Pływania</h3>
           </div>
         </div>
@@ -952,28 +932,39 @@
   }
   const clamp = (x) => Math.max(minX, Math.min(0, x));
 
-  // --- Stany aktywnych kart (skala/opacity) — sterowane GSAP-em ---
-  // Środek liczony z getBoundingClientRect — odporny na offsetParent/padding/translate.
+  const last = cards.length - 1;
+
+  // --- Stan przycisków prev/next (wyszarzone na skrajnych kartach) ---
+  function updateButtons() {
+    if (prevBtn) prevBtn.disabled = activeIdx <= 0;
+    if (nextBtn) nextBtn.disabled = activeIdx >= last;
+  }
+
+  // --- Podświetlenie kart (coverflow) — sterowane GSAP-em ---
+  // Aktywna karta dostaje scale 1 / opacity 1, pozostałe są przygaszone.
+  // Indeks jest JAWNY (nie wyliczany z pozycji tracka): dzięki temu każdy krok
+  // strzałki/autoplaya podświetla dokładnie następną kartę — również drugą i ostatnią,
+  // których nie da się wyśrodkować, bo track dobija wtedy do krańca (clamp).
   let activeIdx = -1;
-  function updateActive() {
-    const sr = slider.getBoundingClientRect();
-    const centerX = sr.left + sr.width / 2;
-    let best = 0, bestD = Infinity;
-    for (let i = 0; i < cards.length; i++) {
-      const r = cards[i].getBoundingClientRect();
-      const d = Math.abs((r.left + r.width / 2) - centerX);
-      if (d < bestD) { bestD = d; best = i; }
-    }
-    if (best === activeIdx) return;
-    activeIdx = best;
-    cards.forEach((c, i) => {
-      const on = i === best;
+  function setActive(i) {
+    i = Math.max(0, Math.min(last, i));
+    if (i === activeIdx) return;
+    activeIdx = i;
+    cards.forEach((c, idx) => {
+      const on = idx === i;
       c.classList.toggle('is-active', on);
       gsap.to(c, { scale: on ? 1 : 0.96, opacity: on ? 1 : 0.62,
         duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
     });
-    if (prevBtn) prevBtn.disabled = curX >= -1;
-    if (nextBtn) nextBtn.disabled = curX <= minX + 1;
+    updateButtons();
+  }
+
+  // Pozycja tracka, przy której karta `i` jest wyśrodkowana (na krańcach clamp
+  // trzyma pierwszą kartę przy lewej, a ostatnią przy prawej krawędzi).
+  function xForIndex(i) {
+    const cs = getComputedStyle(slider);
+    const contentW = slider.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+    return clamp(-(i * step + cards[0].offsetWidth / 2 - contentW / 2));
   }
 
   // --- Ruch tracka (translate3d przez gsap x) ---
@@ -982,17 +973,36 @@
     gsap.to(track, {
       x: curX, duration: dur == null ? 0.7 : dur, ease: 'power3.out',
       force3D: true, overwrite: 'auto',
-      onUpdate: () => { curX = gsap.getProperty(track, 'x'); updateActive(); },
-      onComplete: () => { curX = gsap.getProperty(track, 'x'); updateActive(); }
+      onUpdate: () => { curX = gsap.getProperty(track, 'x'); },
+      onComplete: () => { curX = gsap.getProperty(track, 'x'); }
     });
   }
-  const snap = (x) => Math.round(x / step) * step;
+  // Przejście do karty i: podświetlenie + dojazd tracka
+  function goTo(i, dur) {
+    i = Math.max(0, Math.min(last, i));
+    setActive(i);
+    moveTo(xForIndex(i), dur);
+  }
+  // Karta najbliżej środka viewportu — używane w trakcie przeciągania palcem/myszą
+  function nearestIndex() {
+    const sr = slider.getBoundingClientRect();
+    const centerX = sr.left + sr.width / 2;
+    let best = 0, bestD = Infinity;
+    for (let i = 0; i < cards.length; i++) {
+      const r = cards[i].getBoundingClientRect();
+      const d = Math.abs((r.left + r.width / 2) - centerX);
+      if (d < bestD) { bestD = d; best = i; }
+    }
+    // krańce: przy x≈0 pierwsza karta, przy x≈minX ostatnia
+    if (curX >= -1) return 0;
+    if (curX <= minX + 1) return last;
+    return best;
+  }
 
   // --- Autoplay (bardzo wolny, pauza na hover / interakcji) ---
   let autoId = null, autoEnabled = false;
   function autoNext() {
-    const target = curX - step;
-    moveTo(target < minX - 2 ? 0 : target, 1.2);   // po ostatniej wróć płynnie na start
+    goTo(activeIdx >= last ? 0 : activeIdx + 1, 1.2);   // po ostatniej wróć płynnie na start
   }
   function startAutoplay() {
     stopAutoplay();
@@ -1002,8 +1012,8 @@
   function stopAutoplay() { if (autoId) { clearInterval(autoId); autoId = null; } }
 
   // --- Przyciski ---
-  if (prevBtn) prevBtn.addEventListener('click', () => { moveTo(snap(curX + step)); startAutoplay(); });
-  if (nextBtn) nextBtn.addEventListener('click', () => { moveTo(snap(curX - step)); startAutoplay(); });
+  if (prevBtn) prevBtn.addEventListener('click', () => { goTo(activeIdx - 1); startAutoplay(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { goTo(activeIdx + 1); startAutoplay(); });
 
   // --- Drag / touch (Pointer Events) ---
   let dragging = false, startX = 0, startTx = 0, moved = false;
@@ -1025,13 +1035,13 @@
     if (x < minX) x = minX + (x - minX) * 0.35;
     curX = x;
     gsap.set(track, { x: x, force3D: true });
-    updateActive();
+    setActive(nearestIndex());     // podświetlenie podąża za palcem
   });
   function endDrag() {
     if (!dragging) return;
     dragging = false;
     slider.classList.remove('is-dragging');
-    moveTo(snap(curX), 0.6);
+    goTo(nearestIndex(), 0.6);     // dociągnij do karty, na której zatrzymał się efekt
     startAutoplay();
   }
   slider.addEventListener('pointerup', endDrag);
@@ -1055,7 +1065,7 @@
     onComplete: () => {
       measure();
       curX = 0; activeIdx = -1;
-      updateActive();
+      setActive(0);                // efekt startuje na pierwszej karcie
       autoEnabled = true;
       startAutoplay();
     }
@@ -1074,15 +1084,13 @@
       { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' }, '-=0.25');
 
   // --- Reflow po załadowaniu grafik / resize ---
-  window.addEventListener('load', () => { measure(); curX = clamp(curX); gsap.set(track, { x: curX }); updateActive(); ScrollTrigger.refresh(); });
+  window.addEventListener('load', () => { measure(); curX = clamp(curX); gsap.set(track, { x: curX }); updateButtons(); ScrollTrigger.refresh(); });
   let rt;
   window.addEventListener('resize', () => {
     clearTimeout(rt);
     rt = setTimeout(() => {
       measure();
-      curX = clamp(curX);
-      gsap.set(track, { x: curX, force3D: true });
-      activeIdx = -1; updateActive();
+      goTo(Math.max(0, activeIdx), 0);   // przelicz pozycję aktywnej karty po zmianie szerokości
       startAutoplay();
     }, 150);
   });

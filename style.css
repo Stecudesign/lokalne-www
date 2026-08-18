@@ -580,7 +580,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .benefit-sub {
-  color: #64748B;
+  color: var(--color-text-secondary);
   font-size: 1.0625rem; /* standard leadu sekcji */
   max-width: 480px;
   margin: 0 auto;
@@ -647,8 +647,8 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .benefit-desc {
-  color: #64748B;
-  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  font-size: 1rem; /* standard opisu karty */
   line-height: 1.75;
 }
 
@@ -1054,7 +1054,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   margin-bottom: 8px;
 }
 .bento2-desc {
-  font-size: 0.9375rem; /* standard opisu karty */
+  font-size: 1rem; /* standard opisu karty */
   color: var(--color-text-secondary);
   line-height: 1.65;
 }
@@ -1604,7 +1604,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .process-desc {
-  font-size: 0.9375rem; /* standard opisu karty */
+  font-size: 1rem; /* standard opisu karty */
   color: #475569;
   line-height: 1.8;
 }
@@ -2033,7 +2033,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .usp-sub {
-  color: #64748B;
+  color: var(--color-text-secondary);
   font-size: 1.0625rem; /* standard leadu sekcji */
   line-height: 1.75;
   margin: 0;
@@ -2072,8 +2072,8 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .usp-desc {
-  color: #64748B;
-  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  font-size: 1rem; /* standard opisu karty */
   line-height: 1.78;
   margin: 0;
 }
@@ -2239,6 +2239,10 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   background: #080C14;
   padding: 7rem 0 4rem;
   overflow: hidden;               /* pełny bleed slidera bez poziomego scrolla strony */
+  /* Metryka slidera — wspólna dla paddingu viewportu i szerokości kart */
+  --pf-gap: 26px;
+  --pf-peek: 110px;                                          /* widoczny fragment 4. karty */
+  --pf-pad: max(1.5rem, calc((100vw - 1440px) / 2 + 1.5rem)); /* = lewa krawędź .max-w-container */
 }
 
 .portfolio-header {
@@ -2305,13 +2309,14 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 /* Viewport slidera — full-bleed, ale wewnętrzny padding wyrównuje pierwszą
-   kartę do kontenera (max 1200px + 1.5rem). Domyślnie natywny scroll (fallback
-   bez JS); tryb transform (GSAP) dodaje .is-gsap i chowa overflow. */
+   kartę do kontenera (max-w-container 1440px + 1.5rem), czyli do lewej krawędzi
+   nagłówka sekcji. Domyślnie natywny scroll (fallback bez JS); tryb transform
+   (GSAP) dodaje .is-gsap i chowa overflow. */
 .portfolio-slider {
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding-inline: max(1.5rem, calc((100% - 1200px) / 2 + 1.5rem));
+  padding-inline: max(1.5rem, calc((100% - 1440px) / 2 + 1.5rem));
   /* pion: miejsce na lift (-8px) i miękki cień karty, by overflow: hidden ich nie ucinał */
   padding-block: 14px 46px;
   touch-action: pan-y;
@@ -2325,14 +2330,17 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 .portfolio-track {
   display: flex;
-  gap: 26px;
+  gap: var(--pf-gap);
   will-change: transform;
 }
 
+/* Szerokość karty liczona tak, by na ekranie mieściły się 3 karty + fragment 4.
+   (viewport − padding lewy − 3 przerwy − zapowiedź 4. karty) / 3 */
 .portfolio-card {
-  flex: 0 0 460px;
+  flex: 0 0 clamp(320px, calc((100vw - var(--pf-pad) - 3 * var(--pf-gap) - var(--pf-peek)) / 3), 620px);
   transform-origin: center center;
 }
+/* karta najbliżej środka („podświetlona") — nośnik will-change, stan robi GSAP */
 .portfolio-card.is-active { will-change: transform; }
 
 .portfolio-card-inner {
@@ -2380,16 +2388,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
 }
 
-.portfolio-card-cat {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #FFCC49;
-  margin-bottom: 10px;
-}
-
 .portfolio-card-name {
   font-size: 1.125rem; /* standard tytułu karty */
   font-weight: 700;
@@ -2397,25 +2395,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin: 0;
-}
-
-.portfolio-card-arrow {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.22);
-  background: rgba(15,23,42,0.35);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: scale(0.8) translateY(-4px);
-  transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
-  z-index: 3;
 }
 
 /* Hover — tylko urządzenia z prawdziwym wskaźnikiem (bez „lepkiego" stanu na dotyku) */
@@ -2427,11 +2406,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   .portfolio-card-inner:hover img { transform: scale(1.04); }
   .portfolio-card-inner:hover .portfolio-card-overlay { opacity: 0.82; }
   .portfolio-card-inner:hover .portfolio-card-content { transform: translateY(-4px); }
-  .portfolio-card-inner:hover .portfolio-card-arrow {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    background: rgba(37,99,235,0.55);
-  }
 }
 
 /* Stan początkowy dla animacji wejścia GSAP — tylko gdy JS dodał .gsap-enhance.
@@ -2449,7 +2423,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 @media (max-width: 767px) {
-  .portfolio-section { padding: 4rem 0 3.5rem; }
+  .portfolio-section { padding: 4rem 0 3.5rem; --pf-gap: 16px; }
   .portfolio-header {
     flex-direction: column;
     align-items: flex-start;
@@ -2458,7 +2432,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   }
   .portfolio-nav-btns { padding-bottom: 0; }
   .portfolio-h2 { white-space: normal; }
-  .portfolio-track { gap: 16px; }
   /* jedna karta + fragment następnej */
   .portfolio-card { flex: 0 0 min(78vw, 320px); }
   .portfolio-card-content { padding: 0 22px 26px; }
@@ -3501,7 +3474,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   min-height: 0;
 }
 .svc-acc-panel-inner p {
-  font-size: 0.9375rem;
+  font-size: 1rem; /* standard opisu karty */
   line-height: 1.8;
   color: var(--color-text-secondary);
   margin: 0 0 1rem;
@@ -4797,9 +4770,9 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 }
 .me-why-card-desc {
   margin: 0;
-  font-size: 0.9375rem; /* standard opisu karty */
+  font-size: 1rem; /* standard opisu karty */
   line-height: 1.7;
-  color: #64748B;
+  color: var(--color-text-secondary);
 }
 
 /* ---- Jak pracuję: numerowana lista + zdjęcie ---- */
@@ -5018,7 +4991,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 
 .proc-step {
   display: grid;
-  grid-template-columns: 200px 1fr 360px;
+  grid-template-columns: 320px 1fr 360px;
   gap: 3.5rem;
   align-items: start;
   padding: 3.25rem 0;
@@ -5026,20 +4999,18 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 }
 .proc-step:last-child { border-bottom: 1px solid var(--color-border); }
 
-/* kolumna 1 — numer + label */
-.proc-step-index { display: flex; flex-direction: column; gap: 0.5rem; }
+/* kolumna 1 — sam numer, wielki, półprzezroczysty */
+.proc-step-index { display: flex; flex-direction: column; }
 .proc-step-num {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  display: block;
+  font-size: clamp(5.5rem, 15vw, 16rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
   color: var(--color-blue);
-}
-.proc-step-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-text-muted);
+  opacity: 0.34;
+  margin-top: -0.06em;
 }
 
 /* kolumna 2 — treść */
@@ -5063,7 +5034,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  font-size: 0.9375rem;
+  font-size: 1rem; /* standard opisu karty */
   line-height: 1.55;
   color: var(--color-text-secondary);
 }
@@ -5160,7 +5131,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 
 /* ---- Responsywność ---- */
 @media (max-width: 1023px) {
-  .proc-step { grid-template-columns: 160px 1fr 280px; gap: 2.5rem; }
+  .proc-step { grid-template-columns: 200px 1fr 280px; gap: 2.5rem; }
 }
 @media (max-width: 767px) {
   .proc-intro { padding: 4rem 0 0.5rem; }
@@ -5187,7 +5158,6 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
     gap: 1.5rem;
     padding: 2.5rem 0;
   }
-  .proc-step-index { flex-direction: row; align-items: baseline; gap: 0.75rem; }
   .proc-step-visual { order: -1; max-width: 100%; aspect-ratio: 16 / 9; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
