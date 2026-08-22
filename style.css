@@ -3926,11 +3926,18 @@ body.contact-page .svc-hero--b::before {
 .svc-hero--case::before,
 .svc-hero--case::after { content: none; }
 
+/* hero case study rozciąga się na pełną szerokość — bez wewnętrznego kontenera */
+.svc-hero--case .svc-hero-inner {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
 .svc-hero--case .svc-hero-b-row {
   display: grid;
-  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+  grid-template-columns: minmax(0, 52fr) minmax(0, 48fr);
   align-items: center;
-  gap: clamp(2.5rem, 4.5vw, 4rem);
+  gap: clamp(3rem, 4vw, 4rem);
 }
 .svc-hero--case .svc-hero-b-main { max-width: 720px; }
 .svc-hero--case .svc-hero-label { margin-bottom: 1.75rem; }
