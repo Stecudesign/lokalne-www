@@ -58,14 +58,14 @@
     <div class="nav-island">
       <div class="nav-links-pill">
         <a href="oferta.html">Oferta</a>
-        <a href="/#o-mnie">O mnie</a>
-        <a href="/#blog">Blog</a>
-        <a href="/#kontakt">Kontakt</a>
+        <a href="o-mnie.html">O mnie</a>
+        <a href="proces.html">Proces</a>
+        <a href="kontakt.html">Kontakt</a>
       </div>
     </div>
 
     <div class="nav-actions">
-      <a href="/#kontakt" class="btn-nav-brand">
+      <a href="kontakt.html" class="btn-nav-brand">
         <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </span>
@@ -89,10 +89,10 @@
     </svg>
   </button>
   <a href="oferta.html" data-menu-link>Oferta</a>
-  <a href="/#o-mnie" data-menu-link>O mnie</a>
-  <a href="/#blog" data-menu-link>Blog</a>
-  <a href="/#kontakt" data-menu-link>Kontakt</a>
-  <a href="/#kontakt" data-menu-link class="btn-primary mt-2">
+  <a href="o-mnie.html" data-menu-link>O mnie</a>
+  <a href="proces.html" data-menu-link>Proces</a>
+  <a href="kontakt.html" data-menu-link>Kontakt</a>
+  <a href="kontakt.html" data-menu-link class="btn-primary mt-2">
     <span class="btn-cta-icon" aria-hidden="true">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </span>
@@ -102,23 +102,49 @@
 
 
 <!-- ============================================================
-     HERO — nagłówek oferty (centered, jasny motyw)
+     HERO — niebieski, 2 kolumny: nagłówek + realizacja w ramce
      ============================================================ -->
-<section id="svc-hero" class="svc-hero svc-hero--b">
+<section id="svc-hero" class="svc-hero svc-hero--b svc-hero--case">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-hero-inner fade-up">
       <div class="svc-hero-b-row">
+
         <div class="svc-hero-b-main">
-          <span class="svc-hero-label svc-hero-label--filled">Oferta</span>
+    
           <h1 class="svc-hero-h1">
-            Kompleksowa oferta<br>
-            dla lokalnych firm
+            <span class="svc-hero-h1-l1">Kompleksowa oferta</span>
+            <span class="svc-hero-h1-l2">dla lokalnych firm</span>
           </h1>
+          <p class="svc-hero-b-lead">
+            Tworzę nowoczesne strony - od projektu i designu,
+            przez widoczność w Google, po wsparcie po wdrożeniu.
+          </p>
         </div>
-        <p class="svc-hero-b-lead">
-          Tworzę nowoczesne strony dla lokalnych firm — od projektu i designu,
-          przez widoczność w Google, po wsparcie po wdrożeniu.
-        </p>
+
+        <div class="svc-hero-media">
+          <svg class="svc-hero-ring" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="svc-hero-ring-grad" x1="0.15" y1="0" x2="0.85" y2="1">
+                <stop offset="0" stop-color="#FACC15"/>
+                <stop offset="0.5" stop-color="#F59E0B"/>
+                <stop offset="1" stop-color="#FB923C"/>
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="90" fill="none" stroke="url(#svc-hero-ring-grad)" stroke-width="13"
+                    stroke-linecap="round" stroke-dasharray="452 114" transform="rotate(108 100 100)"/>
+          </svg>
+          <div class="svc-hero-device">
+            <img src="img/szkolaplywaniamockup-laptop.webp" alt="Szkoła Pływania Aqua — strona WWW na MacBooku przy basenie" width="1254" height="1254">
+          </div>
+          <a href="#realizacje" class="svc-hero-case">
+            <h2 class="svc-hero-case-title">Szkoła Pływania Aqua</h2>
+            <p class="svc-hero-case-desc">Zapisy na zajęcia, grafik grup i cennik w jednym miejscu — strona, która odciąża telefon w recepcji.</p>
+            <span class="svc-hero-case-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -307,7 +333,7 @@
     <div class="svc-cta-card fade-up">
       <div class="svc-cta-glow" aria-hidden="true"></div>
       <h2 class="svc-cta-h2">Stwórzmy razem coś<br>wyjątkowego dla Twojej firmy</h2>
-      <a href="/#kontakt" class="btn-primary svc-cta-btn">
+      <a href="kontakt.html" class="btn-primary svc-cta-btn">
         <span class="btn-cta-icon" aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </span>
@@ -404,7 +430,7 @@
           <span class="footer-cta-label">Zacznijmy działać</span>
           <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej firmy w internecie.</span></h2>
         </div>
-        <a href="/#kontakt" class="btn-footer-cta">
+        <a href="kontakt.html" class="btn-footer-cta">
           <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </span>
@@ -413,10 +439,20 @@
       </div>
 
       <nav class="footer-nav" aria-label="Nawigacja stopki">
-        <a href="oferta.html">Oferta</a>
-        <a href="/#o-mnie">O mnie</a>
-        <a href="/#blog">Blog</a>
-        <a href="/#kontakt">Kontakt</a>
+        <div class="footer-nav-group">
+          <a href="oferta.html">Oferta</a>
+          <ul class="footer-subnav">
+            <li><a href="oferta.html#svc-strony">Strony internetowe</a></li>
+            <li><a href="oferta.html#svc-seo">SEO</a></li>
+            <li><a href="oferta.html#svc-design">Indywidualny design</a></li>
+            <li><a href="oferta.html#svc-responsywnosc">Responsywność</a></li>
+            <li><a href="oferta.html#svc-opieka">Opieka nad stroną</a></li>
+            <li><a href="oferta.html#svc-analityka">Analityka Google</a></li>
+          </ul>
+        </div>
+        <a href="o-mnie.html">O mnie</a>
+        <a href="proces.html">Proces</a>
+        <a href="kontakt.html">Kontakt</a>
       </nav>
 
       <div class="footer-social">
@@ -565,7 +601,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Navigation — sticky + jasny tekst nad ciemnymi pasami
   const nav = document.getElementById('nav');
-  const darkSectionIds = ['svc-strony', 'svc-design', 'svc-opieka'];
+  const darkSectionIds = ['svc-hero', 'svc-strony', 'svc-design', 'svc-opieka'];
+
+  // Aktywna strona — podświetla pozycję menu odpowiadającą bieżącemu URL-owi
+  // (działa i dla „/oferta", i dla „/oferta.html"). Blok wspólny dla wszystkich stron.
+  const currentPage = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
+  document.querySelectorAll('.nav-links-pill a, #mobile-menu a[data-menu-link]:not(.btn-primary)').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href || href.includes('#')) return;
+    const target = href.split('/').pop().replace(/\.html$/, '');
+    if (target && target === currentPage) {
+      a.classList.add('is-active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
 
   const updateNav = () => {
     nav.classList.toggle('scrolled', window.scrollY > 80);

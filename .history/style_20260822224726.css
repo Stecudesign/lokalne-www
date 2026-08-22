@@ -4017,12 +4017,19 @@ body.contact-page .svc-hero--b::before {
   position: relative;
   display: block;
   width: 72%;
-  margin: -4.35rem 0 0 24%;
-  padding: 1.75rem 1.75rem 1.875rem;
+  margin: -1.75rem 0 0 24%;
+  padding: 1.75rem 5.75rem 1.875rem 1.75rem;
   border: 1px solid rgba(255,255,255,0.42);
   border-radius: 20px;
   background: var(--color-blue);
   color: #fff;
+  text-decoration: none;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.svc-hero-case:hover {
+  background: #1D4ED8;
+  border-color: #fff;
+  transform: translateY(-3px);
 }
 .svc-hero-case-title {
   font-size: 1.5rem;
@@ -4037,6 +4044,20 @@ body.contact-page .svc-hero--b::before {
   color: rgba(255,255,255,0.86);
   margin: 0;
 }
+.svc-hero-case-arrow {
+  position: absolute;
+  top: 1.75rem;
+  right: 1.75rem;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-yellow);
+  color: var(--color-navy);
+  transition: transform 0.3s ease;
+}
+.svc-hero-case:hover .svc-hero-case-arrow { transform: translateX(3px); }
 
 @media (max-width: 1023px) {
   .svc-hero--case { padding: 14rem 0 8.75rem; }
@@ -4051,10 +4072,11 @@ body.contact-page .svc-hero--b::before {
   .svc-hero-case {
     width: 88%;
     margin: -1.25rem 0 0 12%;
-    padding: 1.35rem 1.35rem 1.5rem;
+    padding: 1.35rem 4.5rem 1.5rem 1.35rem;
   }
   .svc-hero-case-title { font-size: 1.25rem; }
   .svc-hero-case-desc { font-size: 0.9375rem; }
+  .svc-hero-case-arrow { top: 1.35rem; right: 1.35rem; width: 38px; height: 38px; }
 }
 @media (max-width: 767px) {
   .svc-hero--case { padding: 11rem 0 8.5rem; }
@@ -4071,8 +4093,9 @@ body.contact-page .svc-hero--b::before {
   .svc-hero-case {
     width: auto;
     margin: -1.25rem 0 0;
-    padding: 1.35rem 1.35rem 1.4rem;
+    padding: 1.35rem 4rem 1.4rem 1.35rem;
   }
+  .svc-hero-case-arrow { top: 1.15rem; right: 1.15rem; width: 34px; height: 34px; }
 }
 
 /* Na >=1920px root font-size rosnie do 18px (patrz "Skala bazowa na duzych monitorach"),
