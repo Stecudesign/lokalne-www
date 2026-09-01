@@ -73,103 +73,177 @@ body {
 .anim-delay-4 { transition-delay: 400ms; }
 .anim-delay-5 { transition-delay: 520ms; }
 
-/* ---- Navigation ---- */
+/* ---- Navigation — dwustanowy floating pill ----------------------------------
+   Stan 1 (góra strony, scrollY ~0–30): pasek WYSOKI i mocno przezroczysty —
+   wtapia się w hero, tło prześwituje.
+   Stan 2 (po ~60px scrolla): pasek FIZYCZNIE SIĘ KURCZY (80 → 62px), szkło
+   gęstnieje, dochodzi delikatny cień, pill zwęża się o kilkanaście px.
+
+   Wszystkie animowane wymiary jadą z custom properties na #nav. Steruje nimi
+   jeden tween GSAP (progres 0→1 + lerp, blok „nawigacja" w JS każdej strony),
+   który dokłada na #nav klasę .nav--gsap wyłączającą transition (żeby CSS nie
+   gonił tweena). Bez GSAP / przy prefers-reduced-motion wartości ustawia sama
+   klasa .scrolled, a przejście dowozi transition na .nav-bar.
+
+   Odstępstwo od referencji (luxury real-estate): paleta zostaje marki —
+   szkło jasne + ciemne linki, a nad ciemnymi sekcjami (.nav--light)
+   ciemne szkło + jasne linki. Ciemne szkło 0.35 na jasnym hero dałoby
+   biały tekst na prawie białym tle. */
+
+@property --nav-alpha  { syntax: '<number>'; inherits: true; initial-value: 0.32; }
+@property --nav-shadow { syntax: '<number>'; inherits: true; initial-value: 0; }
+
 #nav {
   position: fixed;
-  top: 20px;
+  top: 24px;
   left: 0; right: 0;
   z-index: 50;
   background: transparent;
+
+  /* stan „hero" (desktop) */
+  --nav-h: 80;          /* wysokość pilla w px */
+  --nav-px: 22;         /* padding poziomy w pillu */
+  --nav-logo: 42;       /* bok logotypu */
+  --nav-cta-h: 52;      /* wysokość CTA */
+  --nav-link-px: 22;    /* padding poziomy linku */
+  --nav-blur: 12;
+  --nav-alpha: 0.32;
+  --nav-shadow: 0;
+  --nav-squeeze: 0;     /* zwężenie pilla po scrollu */
+
+  --nav-glass: 255, 255, 255;              /* jasne szkło + ciemne linki */
+  --nav-border: rgba(15, 23, 42, 0.07);    /* biały obrys znika na jasnym hero */
+}
+
+/* Fallback bez GSAP + prefers-reduced-motion — stan 2 z samej klasy */
+#nav.scrolled {
+  --nav-h: 62;
+  --nav-px: 16;
+  --nav-logo: 34;
+  --nav-cta-h: 44;
+  --nav-link-px: 18;
+  --nav-blur: 18;
+  --nav-alpha: 0.86;
+  --nav-shadow: 1;
+  --nav-squeeze: 18;
+}
+
+/* Nav nad ciemnymi sekcjami — ciemne szkło, jasne linki */
+#nav.nav--light {
+  --nav-glass: 10, 16, 30;
+  --nav-border: rgba(255,255,255,0.14);
 }
 
 /* Ten sam box co sekcje strony (Tailwind: max-w-container mx-auto px-6),
-   dzięki czemu logo równa się z lewą krawędzią treści sekcji poniżej */
+   więc krawędzie pilla równają się z krawędziami treści poniżej */
 .nav-wrapper {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 24px;
-  display: flex;
-  align-items: center;
 }
+
+/* Pill: grid 1fr auto 1fr — linki są wyśrodkowane w CAŁYM pasku,
+   a nie tylko w przestrzeni między logo a CTA */
+.nav-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: calc(var(--nav-h) * 1px);
+  padding-inline: calc(var(--nav-px) * 1px);
+  margin-inline: calc(var(--nav-squeeze) * 1px);
+  border-radius: 999px;
+  background: rgba(var(--nav-glass), var(--nav-alpha));
+  backdrop-filter: blur(calc(var(--nav-blur) * 1px)) saturate(180%);
+  -webkit-backdrop-filter: blur(calc(var(--nav-blur) * 1px)) saturate(180%);
+  border: 1px solid var(--nav-border);
+  box-shadow:
+    0 10px 40px rgba(15, 23, 42, calc(0.035 + 0.085 * var(--nav-shadow))),
+    inset 0 1px 0 rgba(255, 255, 255, calc(0.22 + 0.55 * (1 - var(--nav-shadow))));
+  will-change: height, background-color;
+  transition:
+    height 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    padding 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    margin 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    background-color 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    border-color 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    box-shadow 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    backdrop-filter 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+/* Gdy stanem steruje GSAP, transition tylko by go rozmywał */
+#nav.nav--gsap .nav-bar { transition: none; }
 
 .nav-logo {
-  flex: 1;
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  min-width: 0;
   text-decoration: none;
 }
-
-.nav-island {
-  flex: 0 0 auto;
-  background: rgba(255,255,255,0.28);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-radius: 100px;
-  padding: 5px 16px;
-  border: 1px solid rgba(255,255,255,0.55);
-  box-shadow:
-    0 4px 24px rgba(15,23,42,0.10),
-    0 1px 3px rgba(15,23,42,0.05),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-  transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+.logo-img {
+  width: calc(var(--nav-logo, 42) * 1px);
+  height: calc(var(--nav-logo, 42) * 1px);
+  flex-shrink: 0;
+  transition:
+    width 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    height 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-
-#nav.scrolled .nav-island {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,255,255,0.35);
-  box-shadow:
-    0 2px 16px rgba(15,23,42,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.5);
-}
+#nav.nav--gsap .logo-img { transition: none; }
 
 .nav-actions {
-  flex: 1;
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 12px;
 }
 
-/* Nav nad ciemnymi sekcjami */
 #nav.nav--light .nav-links-pill a:not(.is-active) {
-  color: rgba(255,255,255,0.82);
+  color: rgba(255,255,255,0.8);
 }
 #nav.nav--light .nav-links-pill a:not(.is-active):hover {
-  background: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.12);
   color: #fff;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.28);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22);
 }
 #nav.nav--light .logo-text {
   color: #fff;
 }
 #nav.nav--light .logo-text span:last-child {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.92);
+}
+#nav.nav--light .ham-line {
+  background: #fff;
 }
 
 .nav-links-pill {
+  grid-column: 2;
+  justify-self: center;
   display: flex;
   align-items: center;
   gap: 2px;
 }
 .nav-links-pill a {
   position: relative;
-  padding: 12px 30px;
+  padding: 9px calc(var(--nav-link-px) * 1px);
   border-radius: 9999px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 500;
   letter-spacing: 0.01em;
   color: #1E293B;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+              padding 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+#nav.nav--gsap .nav-links-pill a { transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
 .nav-links-pill a:hover {
   background: rgba(37,99,235,0.10);
   color: var(--color-blue);
   box-shadow: inset 0 0 0 1px rgba(37,99,235,0.18);
 }
-/* Aktywna pozycja — pełny niebieski pill (kontrast na białym szkle) */
+/* Aktywna pozycja — pełny niebieski pill */
 .nav-links-pill a.is-active {
   background: var(--color-blue);
   color: #fff;
@@ -198,23 +272,49 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  height: calc(var(--nav-cta-h, 52) * 1px);
   background: var(--color-yellow);
   color: #0F172A;
   font-weight: 700;
   font-size: 0.8125rem;
   letter-spacing: 0.01em;
-  padding: 7px 18px 7px 7px;
+  padding: 0 18px 0 7px;
   border-radius: 9999px;
   text-decoration: none;
   box-shadow: 0 2px 8px rgba(250,204,21,0.28);
-  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
   white-space: nowrap;
+  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease,
+              height 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+#nav.nav--gsap .btn-nav-brand {
+  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 .btn-nav-brand:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.03);
   box-shadow: 0 4px 18px rgba(250,204,21,0.45);
 }
+/* Kółko z ikoną kurczy się razem z CTA */
+#nav .btn-nav-brand .btn-cta-icon {
+  width: calc((var(--nav-cta-h) - 14) * 1px);
+  height: calc((var(--nav-cta-h) - 14) * 1px);
+  transition:
+    width 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
+    height 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+#nav.nav--gsap .btn-nav-brand .btn-cta-icon { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-bar,
+  .logo-img,
+  .btn-nav-brand,
+  #nav .btn-nav-brand .btn-cta-icon { transition: none; }
+}
+/* Poniżej 480px CTA ustępuje miejsca logo + hamburgerowi */
+@media (max-width: 479px) {
+  .btn-nav-brand { display: none; }
+}
+
 
 /* ---- Shared icon circle for yellow CTA buttons ---- */
 .btn-cta-icon {
@@ -531,19 +631,15 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 /* ---- Logo ---- */
-.logo-img {
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
-}
 .logo-text {
   color: #0F172A;
-  letter-spacing: -0.03em;
-  font-size: 1.6rem;
+  letter-spacing: 0.015em;
+  font-size: 1.2rem;
   line-height: 1;
+  text-transform: uppercase;
 }
 .logo-text span:first-child { font-weight: 800; }
-.logo-text span:last-child  { font-weight: 400; color: #64748B; }
+.logo-text span:last-child  { font-weight: 300; color: inherit; }
 
 /* ---- Section: Co zyskasz (6.3) ---- */
 .benefit-section {
@@ -663,31 +759,44 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 @media (max-width: 767px) {
-  /* Nav: floating island na mobile */
+  /* Nav: ten sam kolapsujący pill, mniejsza skala */
   #nav {
-    top: 10px;
+    top: 12px;
+    --nav-h: 68;
+    --nav-px: 14;
+    --nav-logo: 34;
+    --nav-cta-h: 44;
+    --nav-blur: 12;
+  }
+  #nav.scrolled {
+    --nav-h: 56;
+    --nav-px: 12;
+    --nav-logo: 30;
+    --nav-cta-h: 40;
+    --nav-blur: 18;
+    --nav-alpha: 0.88;
+    --nav-squeeze: 8;
   }
   .nav-wrapper {
-    padding: 0 12px;
+    padding: 0 16px;
   }
-  .nav-island {
-    display: none;
+  /* Linki znikają, ale kolumny zostają — .nav-actions ma siedzieć w 3. kolumnie */
+  .nav-bar {
+    grid-template-columns: auto 0px 1fr;
   }
   .nav-links-pill {
     display: none;
   }
-  .btn-nav-brand {
-    display: none;
-  }
   .nav-hamburger {
     display: flex;
+    padding: 8px 6px;
   }
-  .logo-img {
-    width: 40px;
-    height: 40px;
+  .btn-nav-brand {
+    font-size: 0.75rem;
+    padding: 0 14px 0 6px;
   }
   .logo-text {
-    font-size: 1.25rem;
+    font-size: 0.95rem;
   }
 
   /* Hero: tekst nad obrazkiem */
@@ -1754,15 +1863,16 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 .footer-logo-text {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.015em;
   line-height: 1;
+  text-transform: uppercase;
   color: #F8FAFC;
 }
 .footer-logo-text span:last-child {
-  font-weight: 400;
-  color: rgba(148,163,184,0.7);
+  font-weight: 300;
+  color: rgba(248,250,252,0.9);
 }
 
 .footer-brand-tagline {
@@ -4297,21 +4407,6 @@ body.offer-dark .testi-nav-btn--active:hover {
 body.offer-dark .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.2); }
 body.offer-dark .btn-ghost:hover { border-color: #60A5FA; color: #93C5FD; }
 
-/* Nawigacja na ciemnej podstronie: biały pill + ciemne linki (jak index.html),
-   logo jasne na ciemnym tle (nav--light steruje kolorem logotypu). */
-body.offer-dark #nav .nav-island,
-body.offer-dark #nav.scrolled .nav-island {
-  background: rgba(255,255,255,0.92);
-  border-color: rgba(255,255,255,0.7);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.9);
-}
-body.offer-dark #nav.nav--light .nav-links-pill a:not(.is-active) { color: #1E293B; }
-body.offer-dark #nav.nav--light .nav-links-pill a:not(.is-active):hover {
-  background: rgba(37,99,235,0.10);
-  color: var(--color-blue);
-  box-shadow: inset 0 0 0 1px rgba(37,99,235,0.18);
-}
-
 /* Hero na ciemnej podstronie — subtelna siatka (grid) + niebieska poświata (jak w referencji) */
 body.offer-dark .svc-hero {
   position: relative;
@@ -4450,12 +4545,13 @@ body.contact-page {
 
 /* ---- Linia podziału między pasami ---- */
 .contact-rule { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 0; }
+/* Szerokosc = CONTENT BOX kontenera .max-w-container.px-6 (1440 border-box minus 2x24px),
+   policzona calc-iem zamiast paddingiem. Wczesniej: width 100% + padding 48px + content-box
+   = viewport + 48px, czyli 48px poziomego przewijania CALEJ strony na kazdej szerokosci. */
 .contact-rule--wrap {
-  width: 100%;
-  max-width: 1440px;
+  width: calc(100% - 3rem);
+  max-width: calc(1440px - 3rem);
   margin: 0 auto;
-  padding: 0 1.5rem;
-  box-sizing: content-box;
 }
 
 /* ---- Sekcja (kontakt / FAQ) ---- */

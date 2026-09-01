@@ -63,6 +63,18 @@ img/
   oferta-responsywnosc.webp     ← ilustracja usługi Responsywność — monitor + tablet + telefon, żółte strzałki skalowania
   oferta-opieka.webp            ← ilustracja usługi Opieka nad stroną — okno w pętli odświeżania + kłódka + tarcza
   oferta-analityka.webp         ← ilustracja usługi Analityka Google — dashboard z wykresem liniowym + donut
+  proces-hero.webp              ← kadr hero `proces.html` (1254×1254, Higgsfield nano_banana_pro) — FOTOGRAFIA: MacBook na jasnym
+                                   biurku z układem strony w palecie marki (navy/niebieski + żółte CTA), obok otwarty szkicownik
+                                   z odręcznymi wireframe'ami, ołówek i żółte karteczki. Motyw „od szkicu do gotowej strony".
+                                   Kadrowany przez `object-fit: cover` + `object-position: 50% 42%` do 7/5 (mobile 4/3)
+  kontakt-hero.webp             ← kadr hero `kontakt.html` (1254×1254, Higgsfield nano_banana_pro) — FOTOGRAFIA: domowe biurko
+                                   przy oknie, laptop z formularzem kontaktowym (żółty przycisk SEND), telefon z ekranem połączenia,
+                                   kawa i notes, ciepłe światło. Motyw „napisz lub zadzwoń"
+  (oba hero-* : ten sam pipeline co reszta — prompt text-to-image 1:1, wybór z 2 wariantów, potem
+   `cwebp -resize 1254 1254 -q 90 -m 6`. To FOTOGRAFIE, nie płaskie ilustracje — celowo, bo kadr hero
+   `.svc-hero-device` ma radius + cień + `object-fit: cover` i jest zaprojektowany pod zdjęcie, tak jak
+   `szkolaplywaniamockup-laptop.webp` na oferta.html. Drobny tekst na ekranach jest przegenerowany
+   przez model — w docelowym rozmiarze nieczytelny, ale przy powiększeniu widać)
   (wszystkie oferta-*.webp: przegenerowane 14.08.2026 modelem Higgsfield nano_banana_pro w stylu
    zgodnym z proces-*.webp — płaski front-on wektor, grube zaokrąglone kształty, długie miękkie cienie,
    paleta navy #1B2440 / niebieski #2563EB / jasnoniebieski #7EAAF5 / żółty #FBD667 na off-white #F4F7FC,
@@ -96,7 +108,7 @@ PRD_lokalnewww.md
 
 | ID | Klasa/styl sekcji | Status |
 |---|---|---|
-| `#nav` | `.nav-island` — floating pill, białe półprzezroczyste szkło (`rgba(255,255,255,0.28)`), ciemne linki, aktywna strona = niebieski pill (`.is-active` + `aria-current`, ustawiane po URL-u) | ✅ gotowe |
+| `#nav` | `.nav-bar` — jeden floating pill (grid `1fr auto 1fr`), **dwa stany**: hero (80px, szkło `alpha 0.32`, bez cienia) ↔ compact po 60px scrolla (62px, `alpha 0.86`, cień, pill węższy o 2×18px). Wymiary w custom properties animowanych tweenem GSAP. Nad ciemnymi sekcjami ciemne szkło + jasne linki (`.nav--light`); aktywna strona = niebieski pill (`.is-active` + `aria-current`, ustawiane po URL-u). Szczegóły w sekcji „Nawigacja" niżej | ✅ gotowe |
 | `#hero` | tło `img/herov8.png` + overlay `rgba(255,255,255,0.2)`, treść do lewej | ✅ gotowe |
 | `#co-zyskasz` | `.benefit-section` — tło `#F8FAFC`, 3 karty w gridzie | ✅ gotowe |
 | `#uslugi` | `.bento-section` — tło niebieski gradient, 6 kafli | ✅ gotowe |
@@ -107,6 +119,46 @@ PRD_lokalnewww.md
 | `#kontakt` | osobna strona `kontakt.html` (nie sekcja na index) — wszystkie linki „Kontakt" i CTA konsultacji prowadzą do `kontakt.html` | ✅ gotowe |
 | `#footer` | `.footer-section` — tło `#F8FAFC`, logo+nav+social | ✅ gotowe |
 
+
+---
+
+## Nawigacja — dwustanowy floating pill
+
+Nav jest **jednym pillem** (`.nav-bar`) wewnątrz `.nav-wrapper`, wspólnym dla wszystkich stron. Zamiast osobnego „wyspowego" pilla tylko na linkach (dawne `.nav-island`, klasa **usunięta**) cały pasek — logo, linki i CTA — siedzi w jednym zaokrąglonym panelu ze szkłem.
+
+**Layout:** `.nav-bar` to grid `1fr auto 1fr` z jawnym przypisaniem kolumn (`.nav-logo` → 1, `.nav-links-pill` → 2, `.nav-actions` → 3). Dzięki temu linki są wyśrodkowane **w całym pasku**, a nie w przestrzeni między logo a CTA. Jawne `grid-column` jest konieczne: gdy na mobile `.nav-links-pill` dostaje `display: none`, ukryty item wypada z gridu i bez przypisania kolumn `.nav-actions` wskoczyłoby do środkowej kolumny (nachodząc na logo).
+
+**Dwa stany (rdzeń efektu — zmienia się WYSOKOŚĆ, nie tylko tło):**
+
+| | hero (scrollY < 30) | compact (scrollY > 60) |
+|---|---|---|
+| wysokość pilla | 80px (mobile 68) | 62px (mobile 56) |
+| padding poziomy | 22px (mobile 14) | 16px (mobile 12) |
+| logo | 42px (mobile 34) | 34px (mobile 30) |
+| CTA | 52px (mobile 44) | 44px (mobile 40) |
+| tło | `alpha 0.32` | `alpha 0.86` (mobile 0.88) |
+| blur | 12px | 18px |
+| cień | ledwie widoczny (0.035) | `0 10px 40px rgba(15,23,42,0.12)` |
+| szerokość | pełny box kontenera | węższy o 2×18px (mobile 2×8) |
+
+**Jak to działa (`style.css` sekcja „Navigation — dwustanowy floating pill" + blok nawigacji w JS każdej strony):**
+
+- Wszystkie animowane wymiary to **custom properties na `#nav`** (`--nav-h`, `--nav-px`, `--nav-logo`, `--nav-cta-h`, `--nav-link-px`, `--nav-blur`, `--nav-alpha`, `--nav-shadow`, `--nav-squeeze`), używane w CSS przez `calc(var(--nav-h) * 1px)` itd.
+- JS trzyma **jeden tween GSAP** na obiekcie `{ p: 0 }` (`duration 0.55`, `ease power3.out`), który w `onUpdate` lerpuje wszystkie wartości między presetem `hero` a `compact` i wpisuje je inline na `#nav`. Zjazd w dół = `play()`, powrót na górę = `reverse()` **tego samego** tweena — stąd płynne przejście w obie strony, bez skoku klasą.
+- Presety są osobne dla desktopu i mobile (`NAV_STATES.desktop` / `.mobile`), wybierane przez `matchMedia('(max-width: 767px)')` i przemalowywane na `change`.
+- Próg z **histerezą**: kurczy się powyżej 60px, rozwija dopiero poniżej 30px (bez migotania na granicy). Detekcja siedzi w istniejącym `updateNav` (ten sam listener co `nav--light`) — celowo bez ScrollTrigger, żeby nav nie zależał od pluginu i działał identycznie na wszystkich 5 stronach.
+- Gdy tweenem steruje GSAP, `#nav` dostaje klasę **`.nav--gsap`**, która **wyłącza CSS-owe `transition`** na `.nav-bar`, logo i CTA (inaczej transition goniłoby tween).
+- **Fallback bez GSAP / przy `prefers-reduced-motion`:** JS nie wpisuje inline zmiennych; stan ustawia sama klasa `.scrolled` (te same wartości w CSS), a przejście dowozi `transition` na `.nav-bar` (`cubic-bezier(0.215, 0.61, 0.355, 1)` ≈ `power3.out`). Przy `prefers-reduced-motion` transition jest dodatkowo zerowany.
+
+**Paleta (świadome odstępstwo od referencji „luxury real-estate"):** referencja ma ciemne szkło + kremowe CTA. Tu zostaje paleta marki, a szkło **adaptuje się do tła**: domyślnie jasne (`--nav-glass: 255,255,255`) z ciemnymi linkami, a nad ciemnymi sekcjami (`.nav--light`, sterowane `darkSectionIds`) ciemne (`10,16,30`) z jasnymi linkami i białym hamburgerem. Ciemne szkło `0.35` na jasnym hero index.html dawałoby biały tekst na prawie białym tle. Obrys w wariancie jasnym jest **grafitowy** (`rgba(15,23,42,0.07)`), nie biały — biały obrys znika na jasnym hero.
+
+**Uwagi przy zmianach:**
+
+- Logo zjechało z 64px do 42/34px — 64px nie mieści się w 80px pillu. `.logo-text` ma stabilny rozmiar (1.2rem desktop / 0.95rem mobile), żeby przy kolapsie nie skakał layout. Rozmiar zszedł z 1.6/1.15rem razem z przejściem wordmarku na wersaliki (uppercase jest szerszy o ~35% przy tej samej wielkości — patrz „Ważne decyzje projektowe").
+- `.btn-nav-brand` ma teraz **stałą wysokość** z `--nav-cta-h` (padding pionowy usunięty), a kółko ikony `--nav-cta-h − 14`.
+- Linki: `0.9375rem`/`500` (referencja: 14–16px, waga 400–500) zamiast dawnych `1rem`/`600`.
+- CTA jest widoczne do 480px (poniżej `display: none`) — wcześniej znikało już poniżej 768px.
+- Zmiana wartości stanów wymaga edycji **dwóch miejsc**: presetów `NAV_STATES` w JS **każdej z 5 stron** i fallbackowych wartości w CSS (`#nav`, `#nav.scrolled` + ich warianty mobilne).
 ---
 
 ## Szablon podstron — `oferta.html` jest wzorcem
@@ -116,7 +168,7 @@ Projekt **nie ma buildu ani include'ów** — każda podstrona to samodzielny pl
 **Bloki do skopiowania z `oferta.html` (1:1):**
 
 1. **`<head>`** — struktura meta/SEO/fontów/Tailwind/`style.css`. Podmień tylko `<title>`, `<meta name="description">`, `og:*` i `<link rel="canonical">`. Zostaw `gsap-enhance` inline-script, `link` do fontów, Tailwind config i `style.css`.
-2. **Header** — `<nav id="nav">` (logo + `.nav-island` pill + `.nav-actions` CTA/hamburger) **oraz** `#mobile-menu` tuż pod nim. Kopiuj oba razem.
+2. **Header** — `<nav id="nav">` (`.nav-wrapper` > `.nav-bar`: logo + `.nav-links-pill` + `.nav-actions` CTA/hamburger) **oraz** `#mobile-menu` tuż pod nim. Kopiuj oba razem.
 3. **Footer** — `<footer id="footer" class="footer-section">` z całą zawartością (`.footer-top` brand+nav+social, `.footer-bottom`).
 4. **Skrypty na dole** — bloki `<script>` GSAP/ScrollTrigger/Lenis CDN + IIFE animacji + główny `DOMContentLoaded` (nawigacja, hamburger, IntersectionObserver, smooth scroll). Sekcje specyficzne dla treści (np. akordeon `.svc-acc-head`) usuń, jeśli podstrona ich nie ma.
 
@@ -139,7 +191,7 @@ Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca
 
 **Sekcje szablonu (w kolejności):**
 
-1. `#svc-hero .svc-hero.svc-hero--b.svc-hero--case` — **hero „case study" na pełnym niebieskim tle** (wariant wdrożony jako pilot tylko na oferta.html; `proces.html` i `kontakt.html` nadal mają jasny `--b`). **Proporcje wzorowane na `marceldigital.com/case-studies`** (zmierzone w DevTools: H1 102px, kolumny 579/709 px, mockup wychodzący poza kontener, karta wcięta pod mockupem). Layout 2 kolumny (grid `55fr / 45fr`, gap `clamp(2.5rem, 4.5vw, 4rem)`, `align-items: center`; na tablecie `48fr / 52fr`, żeby karta nie robiła się wąska): lewo badge + H1 + lead, prawo `.svc-hero-media` = pierścień + mockup + karta realizacji. Padding sekcji `17.5rem 0 12rem` (tablet `14rem / 8.75rem`, mobile `11rem / 8.5rem` + `gap: 6rem` w kolumnie). **Te wartości to nie "ładne liczby", tylko wynik celu "hero +20% wysokości"** — wysokość sekcji wyznacza kolumna medialna (na 1440: media 598px vs tekst ~247px), więc wzrost trzeba było dołożyć w paddingu. Zmierzone: 894→1070 (+19.7%), 656→788 (+20.1%), 888→1068 (+20.3%). Zmieniając padding, przelicz od nowa — sam `rem` nic nie powie.
+1. `#svc-hero .svc-hero.svc-hero--b.svc-hero--case` — **hero „case study" na pełnym niebieskim tle** (wariant wspólny dla **wszystkich podstron**: `oferta.html`, `proces.html`, `kontakt.html` i `o-mnie.html` — patrz sekcje tych stron; jasny wariant `--b` nie jest już nigdzie używany). **Proporcje wzorowane na `marceldigital.com/case-studies`** (zmierzone w DevTools: H1 102px, kolumny 579/709 px, mockup wychodzący poza kontener, karta wcięta pod mockupem). Layout 2 kolumny (grid `55fr / 45fr`, gap `clamp(2.5rem, 4.5vw, 4rem)`, `align-items: center`; na tablecie `48fr / 52fr`, żeby karta nie robiła się wąska): lewo badge + H1 + lead, prawo `.svc-hero-media` = pierścień + mockup + karta realizacji. Padding sekcji `17.5rem 0 12rem` (tablet `14rem / 8.75rem`, mobile `11rem / 8.5rem` + `gap: 6rem` w kolumnie). **Te wartości to nie "ładne liczby", tylko wynik celu "hero +20% wysokości"** — wysokość sekcji wyznacza kolumna medialna (na 1440: media 598px vs tekst ~247px), więc wzrost trzeba było dołożyć w paddingu. Zmierzone: 894→1070 (+19.7%), 656→788 (+20.1%), 888→1068 (+20.3%). Zmieniając padding, przelicz od nowa — sam `rem` nic nie powie.
    - **Tło:** płaskie `var(--color-blue)`; `::before` (kratka) i `::after` (poświata) wyłączone przez `content: none`.
    - **H1:** dwie linie zamiast `<br>` + akcentu kolorem — `.svc-hero-h1-l1` (`font-weight: 300`) nad `.svc-hero-h1-l2` (`font-weight: 800`), obie białe. **Akcent robi grubość, nie kolor** (na niebieskim tle niebieski akcent byłby niewidoczny), więc `.svc-hero-h1-accent` nie jest tu używany. Rozmiar `clamp(2.35rem, 5vw, 4.5rem)` (72px na 1440), `line-height: 1.08`, `letter-spacing: -0.03em`.
    - **⚠️ Metryka, która decyduje o „powietrzu" w tym hero — `prześwit tekst → pierścień`.** Nie paddingi. Referencja ma tu **201px**, bo „Case Studies" to dwa krótkie słowa i najdłuższa linia zajmuje **65%** kolumny. Nasza fraza ma 18 znaków na linię, więc przy 78px zajmowała **98%** kolumny i zostawiała **18px** do pierścienia — stąd wrażenie ścisku. Wzór: `prześwit = (szer. kolumny − ink najdłuższej linii) + gap − wcięcie pierścienia`. Aktualnie: `(720 − 643) + 67 − 6 ≈ 138px`. **Zanim podbijesz rozmiar H1 albo zmienisz treść, przelicz to** — Inter 300 potrzebuje ok. `8.9 × font-size` px na „Kompleksowa oferta" przy trackingu −0.03em. Sprawdzenie na żywo: zmierz `Range.getBoundingClientRect()` na `.svc-hero-h1-l1` i porównaj z `.svc-hero-ring`. Przy tej treści sufit to ~72px; **większy nagłówek wymaga krótszej frazy, nie innych marginesów.**
@@ -179,13 +231,13 @@ Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca
 
 Plik `kontakt.html` w katalogu głównym (URL `/kontakt`), zbudowany na szablonie podstron (`oferta.html`, patrz sekcja „Szablon podstron"): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. **Wszystkie linki „Kontakt" oraz CTA konsultacji** (`btn-nav-brand`, `btn-footer-cta`, mobile CTA, `svc-cta-btn`, dawne `#kontakt` w sekcji O mnie na index) w `index.html` i `oferta.html` prowadzą teraz do `kontakt.html` (wcześniej martwe `/#kontakt`).
 
-**Motyw: jasny hero + ciemna reszta** — `<body class="contact-page">`, tło body `#080C14`. **Hero to ten sam komponent co na `oferta.html`** — `.svc-hero.svc-hero--b` bez żadnych nadpisań (gradient `#F0F4FF→#fff` + niebieska kratka + poświata, badge + H1 + lead), więc header renderuje się identycznie jak na oferta (jasna pigułka nav, ciemne linki). Poniżej sekcje Kontakt i FAQ ciemne. Layout inspirowany referencją (wielki hero + 2 kolumny dane/formularz + FAQ w akordeonie), przełożony na markę (Inter, niebieski/żółty). Ciemne są dopiero sekcje pod hero (łącznie z granatowym footerem), dlatego nav-JS ma `darkSectionIds = ['kontakt','faq','footer']` (bez hero) — nad hero nav jest domyślny (ciemne linki), niżej przełącza się na jasne.
+**Motyw: jasny hero + ciemna reszta** — `<body class="contact-page">`, tło body `#080C14`. **Hero to ten sam komponent co na `oferta.html`** — `.svc-hero.svc-hero--b` bez żadnych nadpisań (gradient `#F0F4FF→#fff` + niebieska kratka + poświata, badge + H1 + lead), więc header renderuje się identycznie jak na oferta (jasna pigułka nav, ciemne linki). Poniżej sekcje Kontakt i FAQ ciemne. Layout inspirowany referencją (wielki hero + 2 kolumny dane/formularz + FAQ w akordeonie), przełożony na markę (Inter, niebieski/żółty). Ciemne są dopiero sekcje pod hero (łącznie z granatowym footerem), dlatego nav-JS ma `darkSectionIds = ['svc-hero','kontakt','faq','footer']` — **`svc-hero` doszło razem z niebieskim hero** (wcześniej hero było jasne i go tu nie było), więc nav ma jasne linki na całej stronie.
 
 **Sekcje (w kolejności):**
 
-1. `#svc-hero .svc-hero.svc-hero--b` — **pełny reuse hero z `oferta.html`/`proces.html`** (żadnych nadpisań w sekcji „PODSTRONA KONTAKT"): badge `.svc-hero-label--filled` „Kontakt" + `.svc-hero-h1` (akcent `.svc-hero-h1-accent` na słowie „projekcie") + `.svc-hero-b-lead`. Tło, kratka full-bleed i typografia pochodzą z `.svc-hero` / `.svc-hero--b`; `body.contact-page` dopisany do reguły maski kratki obok `body.offer-page` i `body.process-page`. Dawny `.contact-hero*` (wielki uppercase H1) został **usunięty** ze `style.css`.
+1. `#svc-hero .svc-hero.svc-hero--b.svc-hero--case` — **pełny reuse hero „case" z `oferta.html`** (żadnych nadpisań w sekcji „PODSTRONA KONTAKT"): dwuliniowy H1 (`.svc-hero-h1-l1` 300 „Porozmawiajmy" nad `.svc-hero-h1-l2` 800 „o Twoim projekcie") + `.svc-hero-b-lead`, a po prawej `.svc-hero-media` = pierścień + kadr `img/kontakt-hero.webp` + karta „Odpowiadam tego samego dnia". **Bez badge’a i bez akcentu kolorem** — jak na oferta.html akcent robi grubość fontu. Hero jest ciemne → `'svc-hero'` **musi** być w `darkSectionIds`. Zmierzone na 1440: wysokość 1003px (identycznie jak oferta), prześwit H1 → pierścień 125px (linia 2). Dawny `.contact-hero*` (wielki uppercase H1) został **usunięty** ze `style.css`.
 2. `#kontakt .contact-section` — grid 2 kol (`.contact-grid`). Lewo: eyebrow `.contact-eyebrow` („● KONTAKT", kropka przez `::before`) + `.contact-h2` + `.contact-list` z wierszami `.contact-row` (ikona `.contact-row-icon` + tekst, rozdzielone `border-top`; `a.contact-row` klikalne — email `mailto:`, telefon `tel:`, adres statyczny `.contact-row--static`). Prawo: karta `.contact-form-card` (`#0F1626`) z `.contact-form-title` + polami `.contact-field`/`.contact-label`/`.contact-input`/`.contact-textarea` + żółty `.btn-primary.contact-submit` + `.contact-form-note` (status). **Dane fejkowe:** tel `+48 512 340 118`, adres `ul. Kwiatowa 8/3, 30-002 Kraków`; email `kontakt@lokalnewww.pl`.
-3. `<hr class="contact-rule contact-rule--wrap">` — linia podziału w szerokości kontenera.
+3. `<hr class="contact-rule contact-rule--wrap">` — linia podziału w szerokości kontenera. **Szerokość liczona `calc()`-iem** (`width: calc(100% - 3rem)`, `max-width: calc(1440px - 3rem)`), żeby zgadzała się z content-boxem `.max-w-container.px-6`. Wcześniej było `width: 100%` + `padding: 0 1.5rem` + `box-sizing: content-box`, czyli **viewport + 48px → cała strona kontaktu przewijała się poziomo o 48px na każdej szerokości** (naprawione 01.09.2026). Nie wracaj do paddingu na tym elemencie.
 4. `#faq .contact-section.contact-faq` — grid 2 kol: lewo eyebrow „● FAQ" + `.contact-h2`; prawo **akordeon reużyty z oferty** (`.svc-accordion` / `.svc-acc-*`, pierwszy `.is-open`) — ciemne warianty przez `body.contact-page .svc-acc-*`. 6 pytań o tworzenie stron WWW (koszt, czas, treść/zdjęcia, Google, samodzielna edycja, po wdrożeniu). Obsługuje go ten sam handler `.svc-acc-head` co na oferta.html.
 
 **Formularz:** front-end only (brak backendu) — handler `#contact-form` robi `checkValidity()` + pokazuje potwierdzenie w `#contact-form-note` i czyści pola. Do podpięcia realnej wysyłki (mailto/Formspree/endpoint) w przyszłości.
@@ -224,13 +276,13 @@ Plik `o-mnie.html` w katalogu głównym (URL `/o-mnie`), zbudowany na szablonie 
 
 Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. Podlinkowany w nav (pill + mobile menu) i w stopce jako „Proces" na wszystkich stronach — **zastąpił dawny link „Blog", który został usunięty** z całej nawigacji (`index.html`, `oferta.html`, `kontakt.html`, `o-mnie.html`, `proces.html`). Pokazuje proces tworzenia strony WWW od pierwszego kontaktu z klientem po wdrożenie i wsparcie.
 
-**Motyw: jasny, editorial (inspiracja Snøhetta)** — `<body class="process-page">`, `darkSectionIds = []`. Hero jak na oferta (`svc-hero--b`: gradient `#F0F4FF→#fff` + pełnoszerokościowa kratka), więc header renderuje się jako jasna pigułka z ciemnymi linkami. Cała strona jasna, dużo białej przestrzeni, cienkie linie między wierszami. Wizuały kroków to **ilustracje Higgsfield** (`img/proces-0X-*.webp`, `nano_banana_pro`, spójny flat set w palecie marki na off-white — tło grafiki zlewa się z panelem `.proc-step-visual`). Klasy `.proc-step-ghost` / `.proc-step-icon(-*)` + `.proc-step-visual::before` (kratka) pozostały w `style.css` jako **martwy kod** po podmianie ikon na obrazy.
+**Motyw: niebieskie hero + jasna, editorialna reszta (inspiracja Snøhetta)** — `<body class="process-page">`, `darkSectionIds = ['svc-hero']`. Hero jak na oferta — od 01.09.2026 **niebieski `svc-hero--case`** (wcześniej jasny gradient + kratka), więc nad hero nav ma jasne linki (`darkSectionIds = ['svc-hero']`), a niżej wraca do domyślnych. Reszta strony jasna, dużo białej przestrzeni, cienkie linie między wierszami. Wizuały kroków to **ilustracje Higgsfield** (`img/proces-0X-*.webp`, `nano_banana_pro`, spójny flat set w palecie marki na off-white — tło grafiki zlewa się z panelem `.proc-step-visual`). Klasy `.proc-step-ghost` / `.proc-step-icon(-*)` + `.proc-step-visual::before` (kratka) pozostały w `style.css` jako **martwy kod** po podmianie ikon na obrazy.
 
 **Animacje:** tylko `.fade-up` (IntersectionObserver, jak na index.html) — brak dedykowanych animacji GSAP na sekcjach. Skrypt Lenis (smooth scroll) zostaje, ale klasa `.gsap-enhance` jest zdejmowana zawsze, żeby stany startowe `.fade-up` nie były przechwytywane przez CSS pasów oferty.
 
 **Sekcje (w kolejności):**
 
-1. `#svc-hero .svc-hero--b` — hero reuse z oferty: label „Proces" (`svc-hero-label--filled`), H1 „Od pomysłu do gotowej strony" + lead.
+1. `#svc-hero .svc-hero.svc-hero--b.svc-hero--case` — **pełny reuse hero „case" z `oferta.html`** (żadnych nadpisań pod stronę): dwuliniowy H1 (`.svc-hero-h1-l1` 300 „Od pomysłu" nad `.svc-hero-h1-l2` 800 „do gotowej strony") + `.svc-hero-b-lead`, po prawej `.svc-hero-media` = pierścień + kadr `img/proces-hero.webp` + karta „6 kroków, zero niespodzianek". **Bez badge’a i bez akcentu kolorem** (akcent robi grubość fontu). Hero jest ciemne → `darkSectionIds = ['svc-hero']`. Zmierzone na 1440: wysokość 1003px (jak oferta), prześwit H1 → pierścień 130px (linia 2).
 2. `#kroki .proc-steps` — **lista 6 kroków** (styl Snøhetta): nagłówek `.proc-steps-head` + 6× `.proc-step` (grid 3 kol `320px 1fr 360px`: `.proc-step-index` **sam numer** — `.proc-step-num` `clamp(5.5rem, 15vw, 16rem)`, `font-weight 800`, `line-height 0.8`, kolor `--color-blue` przygaszony `opacity: 0.34` (efekt „ghost"); rozmiar dobrany tak, żeby blok numeru miał **~połowę wysokości wiersza** (256px fontu ≈ 205px przy wierszu 410px na desktopie). Tekstowy label pod numerem usunięty · `.proc-step-body` H3+opis+`.proc-step-list` z checkmarkami+`.proc-step-meta` badge czasu · `.proc-step-visual` panel z ilustracją `.proc-step-img` `img/proces-0X-*.webp`). Hover: panel lift (`translateY`) + zoom obrazu (`scale 1.04`). Kroki: 01 Kontakt i konsultacja, 02 Analiza i strategia, 03 Projekt i wycena, 04 Projektowanie i kodowanie, 05 Testy i wdrożenie, 06 Wsparcie i rozwój.
 3. `.svc-cta` (reuse) + `.footer-section` (reuse).
 
@@ -422,15 +474,15 @@ Animacje page-load (hero): klasa `.anim-init` + `.visible` dodawana przez `reque
 
 ## Ważne decyzje projektowe
 
-- Nagłówki hero podstron: **kluczowa fraza w H1 wyróżniona na niebiesko** (`--color-blue`) — `.svc-hero-h1-accent` na `proces.html` („gotowej strony") i `kontakt.html` („projekcie"). **Wyjątek: hero na pełnym niebieskim tle** (`oferta.html`, `o-mnie.html`) — tam akcent robi **grubość fontu** (linia 300 nad linią 800), bo niebieski na niebieskim byłby niewidoczny, a akcent kolorem przenosi się do leadu i jest **żółty**. `index.html` ma własne wyróżnienie żółtym tekstem na granatowym skosie (`.hero-highlight-wrap`).
-- Nav: `.nav-wrapper` ma **ten sam box co sekcje strony** — `max-width: 1440px; margin: 0 auto; padding: 0 24px` (odpowiednik tailwindowego `max-w-container mx-auto px-6`), a `#nav` nie ma własnego paddingu. Dzięki temu logo równa się z lewą krawędzią treści sekcji poniżej, a CTA z prawą. Na mobile padding schodzi do `12px` (w media query na `.nav-wrapper`, nie na `#nav`). Zmiana `max-w-container` w Tailwind config wymaga zmiany `max-width` w `.nav-wrapper`.
+- Nagłówki hero podstron: **wszystkie 4 podstrony mają teraz to samo niebieskie hero `--case`** (`oferta.html`, `proces.html`, `kontakt.html`, `o-mnie.html`), więc akcent w H1 wszędzie robi **grubość fontu** (linia 300 nad linią 800) — niebieski na niebieskim byłby niewidoczny. Akcent kolorem przenosi się do leadu i jest **żółty**. Skutek uboczny ujednolicenia (01.09.2026): `.svc-hero-h1-accent` oraz `.svc-hero-label*` (badge) **nie są już używane w żadnym HTML-u** i zostają w `style.css` jako martwy kod — razem z jasnym wariantem `.svc-hero--b` (gradient + kratka) i regułą maski kratki dla `body.process-page` / `body.contact-page`. `index.html` ma własne wyróżnienie żółtym tekstem na granatowym skosie (`.hero-highlight-wrap`).
+- Nav: `.nav-wrapper` ma **ten sam box co sekcje strony** — `max-width: 1440px; margin: 0 auto; padding: 0 24px` (odpowiednik tailwindowego `max-w-container mx-auto px-6`), a `#nav` nie ma własnego paddingu. Do tego boksu wpisany jest pill `.nav-bar`, więc **krawędzie pilla** równają się z krawędziami treści sekcji poniżej (logo i CTA są dodatkowo wcięte o padding pilla, `--nav-px`). Referencja proponowała `max-width: ~1500px` — zostało 1440px, żeby pill trzymał ten sam box co reszta strony. Na mobile padding schodzi do `16px` (w media query na `.nav-wrapper`, nie na `#nav`). Zmiana `max-w-container` w Tailwind config wymaga zmiany `max-width` w `.nav-wrapper`.
 - Hero: treść do lewej, kontener `w-full` — bez wewnętrznego `max-width` żeby H1 mieścił się w jednej linii
 - Hero highlight (`dla lokalnych biznesów`) — navy tło skewX(-6deg), animacja clip-path od lewej
 - Bento: białe kafelki na niebieskim gradiencie (nie ciemne jak w PRD)
 - Co zyskasz: jasne tło (nie ciemne jak w PRD) — karty z okrągłymi strzałkami
 - Sekcja O mnie: zdjęcie z `opacity: 0.88` żeby miękko wtapiało się w navy tło
 - Footer: ciemne tło `var(--color-navy)` (#1A2540) — spójność z sekcją O mnie, tekst dostosowany do ciemnego tła
-- Logo: `img/logopin3Dv1.png` (64×64px nav, 40×40px footer) + tekst `lokalne` (800) + `www.pl` (400, muted)
+- Logo (wordmark): `img/logopin3Dv1.png` (64×64px nav, 40×40px footer) + tekst w **wersalikach** — `LOKALNE` (800) + `WWW.PL` (300), **oba w tym samym kolorze**, `letter-spacing: 0.015em`. Kontrast robi wyłącznie grubość fontu, nie kolor (wcześniej druga część była szara `#64748B`/muted). Wersaliki wymusza CSS (`text-transform: uppercase` na `.logo-text` i `.footer-logo-text`), HTML zostaje pisany małymi literami — dzięki temu zmiana propaguje się na wszystkie 5 stron ze wspólnego `style.css`. W wariancie `nav--light` i w stopce druga część jest jasna z `opacity` ~0.9, nie przygaszona kolorem.
 
 ---
 

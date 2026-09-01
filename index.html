@@ -76,39 +76,39 @@
 <nav id="nav">
   <div class="nav-wrapper">
 
-    <!-- Logo — poza pillem -->
-    <a href="/" class="nav-logo">
-      <img src="img/logopin3Dv1.webp" alt="lokalnewww.pl — pin logo" class="logo-img">
-      <span class="logo-text">
-        <span>lokalne</span><span>www.pl</span>
-      </span>
-    </a>
+    <!-- Floating pill: grid 1fr auto 1fr → brand / linki / CTA.
+         Wysokość i „szkło" pilla animuje GSAP (stan hero ↔ stan compact). -->
+    <div class="nav-bar">
 
-    <!-- Pill z linkami -->
-    <div class="nav-island">
+      <a href="/" class="nav-logo">
+        <img src="img/logopin3Dv1.webp" alt="lokalnewww.pl — pin logo" class="logo-img">
+        <span class="logo-text">
+          <span>lokalne</span><span>www.pl</span>
+        </span>
+      </a>
+
       <div class="nav-links-pill">
         <a href="oferta.html">Oferta</a>
         <a href="o-mnie.html">O mnie</a>
         <a href="proces.html">Proces</a>
         <a href="kontakt.html">Kontakt</a>
       </div>
-    </div>
 
-    <!-- CTA + hamburger — poza pillem -->
-    <div class="nav-actions">
-      <a href="kontakt.html" class="btn-nav-brand">
-        <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
-        Bezpłatna konsultacja
-      </a>
-      <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu">
-        <span class="ham-line"></span>
-        <span class="ham-line"></span>
-        <span class="ham-line"></span>
-      </button>
-    </div>
+      <div class="nav-actions">
+        <a href="kontakt.html" class="btn-nav-brand">
+          <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+          Bezpłatna konsultacja
+        </a>
+        <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu">
+          <span class="ham-line"></span>
+          <span class="ham-line"></span>
+          <span class="ham-line"></span>
+        </button>
+      </div>
 
+    </div>
   </div>
 </nav>
 
@@ -1120,10 +1120,81 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  const updateNav = () => {
-    nav.classList.toggle('scrolled', window.scrollY > 80);
+  // --- Dwa stany floating pilla -------------------------------------------
+  // „hero" (wysoki, mocno przezroczysty) ↔ „compact" (niższy, gęstsze szkło).
+  // Wszystkie wymiary to custom properties na #nav; jeden tween GSAP
+  // interpoluje progres 0→1 i przemalowuje je w onUpdate, więc powrót na górę
+  // strony to zwykły reverse TEGO SAMEGO tweena (płynnie w obie strony).
+  // Bez GSAP / przy prefers-reduced-motion stan ustawia klasa .scrolled,
+  // a przejście dowozi CSS transition na .nav-bar (patrz style.css).
+  const navBreak     = window.matchMedia('(max-width: 767px)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const useGsapNav   = typeof gsap !== 'undefined' && !reduceMotion;
 
-    const navMidY = 50;
+  const NAV_STATES = {
+    desktop: {
+      hero:    { h: 80, px: 22, logo: 42, cta: 52, link: 22, blur: 12, alpha: 0.32, shadow: 0, squeeze: 0 },
+      compact: { h: 62, px: 16, logo: 34, cta: 44, link: 18, blur: 18, alpha: 0.86, shadow: 1, squeeze: 18 }
+    },
+    mobile: {
+      hero:    { h: 68, px: 14, logo: 34, cta: 44, link: 22, blur: 12, alpha: 0.32, shadow: 0, squeeze: 0 },
+      compact: { h: 56, px: 12, logo: 30, cta: 40, link: 18, blur: 18, alpha: 0.88, shadow: 1, squeeze: 8 }
+    }
+  };
+
+  const navProgress = { p: 0 };
+  const paintNav = () => {
+    const s = NAV_STATES[navBreak.matches ? 'mobile' : 'desktop'];
+    const p = navProgress.p;
+    const mix = (a, b) => a + (b - a) * p;
+    const st = nav.style;
+    st.setProperty('--nav-h',       mix(s.hero.h,       s.compact.h));
+    st.setProperty('--nav-px',      mix(s.hero.px,      s.compact.px));
+    st.setProperty('--nav-logo',    mix(s.hero.logo,    s.compact.logo));
+    st.setProperty('--nav-cta-h',   mix(s.hero.cta,     s.compact.cta));
+    st.setProperty('--nav-link-px', mix(s.hero.link,    s.compact.link));
+    st.setProperty('--nav-blur',    mix(s.hero.blur,    s.compact.blur));
+    st.setProperty('--nav-alpha',   mix(s.hero.alpha,   s.compact.alpha));
+    st.setProperty('--nav-shadow',  mix(s.hero.shadow,  s.compact.shadow));
+    st.setProperty('--nav-squeeze', mix(s.hero.squeeze, s.compact.squeeze));
+  };
+
+  let navTween = null;
+  if (useGsapNav) {
+    nav.classList.add('nav--gsap');   // wyłącza CSS transition — stanem steruje GSAP
+    navTween = gsap.to(navProgress, {
+      p: 1,
+      duration: 0.55,
+      ease: 'power3.out',
+      paused: true,
+      onUpdate: paintNav
+    });
+    paintNav();
+    navBreak.addEventListener('change', paintNav);
+  }
+
+  let navCompact = false;
+  const setNavCompact = (on) => {
+    if (on === navCompact) return;
+    navCompact = on;
+    nav.classList.toggle('scrolled', on);
+    if (navTween) { on ? navTween.play() : navTween.reverse(); }
+  };
+  // Wejście na stronę już przewiniętą — bez animacji, od razu docelowy stan
+  if (window.scrollY > 60) {
+    navCompact = true;
+    nav.classList.add('scrolled');
+    if (navTween) navTween.progress(1);
+  }
+
+  const updateNav = () => {
+    // Histereza: kurczy się powyżej 60px, rozwija dopiero poniżej 30px —
+    // bez migotania przy scrollowaniu tuż na granicy.
+    const y = window.scrollY;
+    if (y > 60)      setNavCompact(true);
+    else if (y < 30) setNavCompact(false);
+
+    const navMidY = 60;
     const overDark = darkSectionIds.some(id => {
       const s = document.getElementById(id);
       if (!s) return false;
