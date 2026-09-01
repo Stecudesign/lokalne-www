@@ -4619,161 +4619,72 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
    Hero „Cześć" + portret (wzór: screen 1) + misja/statystyka + numerowana lista (wzór: screen 2)
    ============================================================ */
 
-/* ---- Hero: jasny motyw + kratka (jak oferta), 2 kolumny: tekst / portret ---- */
-.me-hero {
-  position: relative;
-  overflow: hidden;
-  padding: 7rem 0 1rem;
-  background: linear-gradient(180deg, #F0F4FF 0%, #FFFFFF 100%);
-}
-.me-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
-  background-size: 54px 54px;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 82%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 82%, transparent 100%);
-}
-.me-hero-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 2rem;
-  align-items: stretch;
-  min-height: 440px;
-}
-.me-hero-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.me-hero-stats {
-  display: flex;
-  gap: 3rem;
-}
-.me-stat { display: flex; flex-direction: column; }
-.me-stat-num {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.me-stat-num sup {
-  font-size: 0.55em;
-  font-weight: 700;
-  color: var(--color-blue);
-  top: -0.7em;
-  margin-right: 1px;
-}
-.me-stat-label {
-  margin-top: 0.4rem;
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.01em;
-}
-.me-hello {
-  font-size: clamp(1.9rem, 3.8vw, 3.1rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  color: var(--color-text-primary);
-  margin: 0;
-}
-/* wyróżnienie kluczowej frazy w H1 — jak .svc-hero-h1-accent na pozostałych podstronach */
-.me-hello-accent { color: var(--color-blue); }
-.me-hero-tag {
-  margin: 1.25rem 0 0;
-  font-size: 1.0625rem;
-  line-height: 1.6;
-  color: var(--color-text-secondary);
-  max-width: 34rem;
-}
-.me-hero-cta {
-  margin-top: 2rem;
-  align-self: flex-start;
-}
-.me-scroll {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: auto;            /* dosuwa „Przewiń niżej" do dołu kolumny */
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text-muted);
-  text-decoration: none;
-  transition: color 0.18s ease;
-}
-.me-scroll:hover { color: var(--color-blue); }
-.me-scroll-icon { display: inline-flex; animation: me-bounce 1.8s ease-in-out infinite; }
-@keyframes me-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+/* ---- Hero: wariant „case" przeniesiony 1:1 z oferta.html (pełne niebieskie tło) ----
+   Te same klasy i ta sama struktura co na oferta.html
+   (.svc-hero.svc-hero--b.svc-hero--case → badge + dwuliniowy H1 + lead po lewej,
+   pierścień + kadr + karta po prawej). Różni się tylko zawartość kolumny medialnej:
+   zamiast mockupu strony jest wycinek postaci.
+   Sekcja jest ciemna → 'me-hero' MUSI być w darkSectionIds w nav-JS o-mnie.html. */
 
-.me-hero-photo {
-  position: relative;
-  border-radius: 22px;
-  overflow: hidden;
-  background: #EEF2FB;
-  box-shadow: var(--shadow-lg);
+/* Cap H1 wynika z prześwitu do pierścienia, tak jak na oferta.html (patrz CLAUDE.md).
+   Linia 2 „Tworzę strony WWW" to 17 znaków × ~0.59em ink (Inter 800, tracking −0.03em; „WWW" jest
+   szerokie) = ~10.03em; przy kolumnie 687px i foncie 57.6px daje 578px ink i ~116px prześwitu
+   do pierścienia. Zmierzone w DevTools (Range.getBoundingClientRect), nie szacowane.
+   Dłuższa fraza (testowane „Projektuję strony WWW") zostawiała tylko ~58px — krótsza fraza,
+   nie mniejszy margines. */
+body.aboutme-page .svc-hero--case .svc-hero-h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); }
+/* akcent w leadzie na żółto — na niebieskim tle niebieski akcent byłby niewidoczny */
+body.aboutme-page .svc-hero-b-lead strong {
+  font-weight: 600;
+  color: var(--color-yellow);
 }
-.me-hero-photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  box-shadow: inset 0 0 0 1px rgba(15,23,42,0.06);
-  pointer-events: none;
-}
-.me-hero-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 20%;
-  display: block;
-}
-/* wariant „wycinek" (bg-removed PNG z alfą) — pływa na kratce hero, bez ramki/karty */
-.me-hero-photo--cutout {
-  background: transparent;
-  box-shadow: none;
+
+/* ---- Portret w kolumnie medialnej ----
+   Sam wycinek (RGBA) na niebieskim tle — bez panelu, karty i ramki. Kontener zeruje
+   wszystko, co .svc-hero-device dodaje dla kadru ze zdjęciem (tło, radius, cień,
+   overflow), bo tu nie ma czego kadrować.
+   KONTRAST: bluza postaci jest ciemniejszym niebieskim niż tło hero, więc sylwetkę
+   trzyma miękki ciemny cień (dwa drop-shadow: szeroki „na podłogę" + krótki przy
+   krawędziach). Bez niego postać wtapia się w tło — sprawdź to przy każdej podmianie zdjęcia.
+   Ramka obrazu ma proporcje ORYGINAŁU (2274/2766), więc przy object-fit: contain
+   sylwetka wypełnia ją bez marginesów i to wysokość tej ramki wyznacza wysokość hero. */
+.svc-hero-device--portrait {
+  width: 124%;
+  margin-left: -24%;     /* rośnie w lewo — w prawo wyszłaby poza viewport przy 1440 */
+  background: none;
   border-radius: 0;
+  box-shadow: none;
   overflow: visible;
-  height: 850px;              /* kadr — bez tego portret rozpycha hero na całą wys. obrazu */
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
 }
-.me-hero-photo--cutout::after { content: none; }
-.me-hero-photo--cutout img {
-  object-fit: contain;
-  object-position: top left;
-  transform: scale(0.86);
-  transform-origin: top left;
-  filter: drop-shadow(0 26px 44px rgba(15,23,42,0.16));
-  /* delikatny overlay — miękkie wygaszenie dolnej krawędzi (wtapia wycinek w sekcję) */
-  -webkit-mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
-          mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+/* KADR: pokazujemy górne 90% oryginału — niżej zaczyna się ręka w kieszeni (~92%)
+   i spodnie (~93%), a iPad kończy się na ~88%, więc 90% zostawia mu 2% zapasu.
+   Zmierzone linijką procentową na oryginale; zmiana zdjęcia => zmierz od nowa.
+   aspect-ratio = 2274 / (2766 × 0.90); cover + object-position: top obcina sam dół
+   (object-fit kadruje sam z siebie, więc kontener nie potrzebuje overflow: hidden). */
+.svc-hero-device--portrait img {
+  aspect-ratio: 2274 / 2489;
+  object-fit: cover;
+  object-position: 50% 0;
+  border-radius: 0;
+  filter:
+    drop-shadow(0 34px 46px rgba(6,17,45,0.42))
+    drop-shadow(0 4px 10px rgba(6,17,45,0.32));
 }
-/* delikatny overlay koloru na sylwetce — używa PNG jako maski, subtelny chłodny gradient */
-.me-hero-photo--cutout::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(37,99,235,0.10) 0%, transparent 42%, transparent 78%, rgba(240,244,255,0.55) 100%);
-  -webkit-mask-image: url('img/pawel_nobackgroundv1.png');
-          mask-image: url('img/pawel_nobackgroundv1.png');
-  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-  -webkit-mask-position: top left; mask-position: top left;
-  -webkit-mask-size: contain; mask-size: contain;
-  transform: scale(0.86);
-  transform-origin: top left;
+/* Linia cięcia siada dokładnie na dolnej krawędzi sekcji (padding-bottom: 0 + align-self),
+   więc przycięta sylwetka czyta się jak kadr, a nie jak przypadkowe ucięcie.
+   Cień poniżej przycina overflow: hidden z .svc-hero. */
+body.aboutme-page .svc-hero-media { align-self: end; }
+/* Na >=1920px root rośnie do 18px, więc 3.6rem = 64.8px, a kolumna tekstu ma tam ~683px —
+   linia 2 miałaby ~650px ink (95% kolumny) i dociskałaby się do pierścienia.
+   Cap w px, bo to ograniczenie GEOMETRYCZNE (długość frazy), nie skala typografii. */
+@media (min-width: 1920px) {
+  body.aboutme-page .svc-hero--case .svc-hero-h1 { font-size: clamp(2.2rem, 4vw, 57px); }
 }
+
+/* Wysokość hero: sekcję wyznacza ramka portretu (~860px na 1440) dosunięta do dolnej krawędzi,
+   więc jest tylko górny padding. Cel: ta sama wysokość co hero na oferta.html (~1003px na 1440).
+   Zmiana szerokości portretu zmienia wysokość ramki => przelicz padding, nie zgaduj. */
+body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 
 /* ---- Misja: akapit + (karta statystyki | zdjęcie) ---- */
 .me-mission { padding: 6rem 0; }
@@ -5023,15 +4934,21 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 
 /* ---- Responsywność podstrony O mnie ---- */
 @media (max-width: 1023px) {
-  .me-hero-grid { min-height: unset; }
+  body.aboutme-page .svc-hero--case { padding: 6.5rem 0 0; }
+  .svc-hero-device--portrait { width: 116%; margin-left: -16%; }
+}
+/* Na tablecie kolumna tekstu (48fr) ma ~316–430px, a linia 2 potrzebuje ~10.03em ink.
+   3.6vw trzyma ją na ~88% szerokości kolumny w całym zakresie 768–1023px. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  body.aboutme-page .svc-hero--case .svc-hero-h1 { font-size: clamp(1.6rem, 3.6vw, 3.6rem); }
 }
 @media (max-width: 767px) {
-  .me-hero { padding: 8rem 0 3rem; }
-  .me-hero-grid { grid-template-columns: 1fr; gap: 2.25rem; }
-  .me-hero-stats { gap: 2rem; }
-  .me-hello { font-size: clamp(1.75rem, 7.5vw, 2.5rem); margin-top: 0; }
-  .me-hero-photo { aspect-ratio: 4 / 5; }
-  .me-hero-photo--cutout { height: auto; aspect-ratio: 4 / 5; }
+  /* na mobile kolumna = pełna szerokość (~272–719px): 7.6vw utrzymuje linię 2 w jednym wierszu */
+  body.aboutme-page .svc-hero--case .svc-hero-h1 { font-size: clamp(1.5rem, 7.6vw, 3rem); }
+  /* portret na całą szerokość kolumny; gap mniejszy, bo pod tekstem nie ma już karty */
+  body.aboutme-page .svc-hero--case { padding: 7.5rem 0 0; }
+  body.aboutme-page .svc-hero--case .svc-hero-b-row { gap: 2.5rem; }
+  .svc-hero-device--portrait { width: 100%; margin-left: 0; }
   .me-mission { padding: 3.5rem 0; }
   .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
   .me-mission-lower { margin-top: 2rem; }
