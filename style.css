@@ -73,17 +73,17 @@ body {
 .anim-delay-4 { transition-delay: 400ms; }
 .anim-delay-5 { transition-delay: 520ms; }
 
-/* ---- Navigation — dwustanowy floating pill ----------------------------------
-   Stan 1 (góra strony, scrollY ~0–30): pasek WYSOKI i mocno przezroczysty —
-   wtapia się w hero, tło prześwituje.
-   Stan 2 (po ~60px scrolla): pasek FIZYCZNIE SIĘ KURCZY (80 → 62px), szkło
-   gęstnieje, dochodzi delikatny cień, pill zwęża się o kilkanaście px.
-
-   Wszystkie animowane wymiary jadą z custom properties na #nav. Steruje nimi
-   jeden tween GSAP (progres 0→1 + lerp, blok „nawigacja" w JS każdej strony),
-   który dokłada na #nav klasę .nav--gsap wyłączającą transition (żeby CSS nie
-   gonił tweena). Bez GSAP / przy prefers-reduced-motion wartości ustawia sama
-   klasa .scrolled, a przejście dowozi transition na .nav-bar.
+/* ---- Navigation — floating pill o STAŁYM rozmiarze --------------------------
+   Wysokość/padding/logo/CTA (`--nav-h`, `--nav-px`, `--nav-logo`, `--nav-cta-h`,
+   `--nav-link-px`) są takie same przez całą stronę — jak w sekcji hero na samej
+   górze — nav się już NIE kurczy przy scrollu (usunięte 15.09.2026, patrz
+   „Ważne decyzje projektowe"). Jedyne, co się animuje, to SZKŁO: nad sekcją
+   hero pill jest przezroczysty (glassmorphism), po jej opuszczeniu gęstnieje.
+   Steruje tym jeden tween GSAP na `--nav-glass-p` (blok „nawigacja" w JS każdej
+   strony), który dokłada na #nav klasę `.nav--gsap` wyłączającą CSS transition
+   (żeby nie gonił tweena). Bez GSAP / przy `prefers-reduced-motion` gęstość
+   szkła ustawia sama klasa `.nav--solid`, a przejście dowozi transition na
+   `.nav-bar`.
 
    Odstępstwo od referencji (luxury real-estate): paleta zostaje marki —
    szkło jasne + ciemne linki, a nad ciemnymi sekcjami (.nav--light)
@@ -99,13 +99,14 @@ body {
   z-index: 50;
   background: transparent;
 
-  /* ROZMIAR — stan „hero" (desktop); przełącza się progiem scrolla (60/30 px) */
+  /* ROZMIAR — stały, taki sam jak w sekcji hero na całej długości strony
+     (od 15.09.2026 nav się już nie kurczy przy scrollu — patrz „Ważne
+     decyzje projektowe"). */
   --nav-h: 80;          /* wysokość pilla w px */
   --nav-px: 22;         /* padding poziomy w pillu */
   --nav-logo: 42;       /* bok logotypu */
   --nav-cta-h: 52;      /* wysokość CTA */
   --nav-link-px: 22;    /* padding poziomy linku */
-  --nav-squeeze: 0;     /* zwężenie pilla po scrollu */
 
   /* SZKŁO — jedyna animowana wartość to --nav-glass-p (0 = stan hero,
      1 = stan po opuszczeniu hero). Reszta to WARTOŚCI BRZEGOWE obu stanów,
@@ -132,16 +133,6 @@ body {
   --nav-sh-a-solid: 0.12;
 }
 
-/* Fallback bez GSAP + prefers-reduced-motion — ROZMIAR z samej klasy */
-#nav.scrolled {
-  --nav-h: 62;
-  --nav-px: 16;
-  --nav-logo: 34;
-  --nav-cta-h: 44;
-  --nav-link-px: 18;
-  --nav-squeeze: 18;
-}
-
 /* Fallback bez GSAP + prefers-reduced-motion — SZKŁO z samej klasy.
    Klasa dokładana dopiero gdy nav opuści sekcję hero (patrz nav-JS). */
 #nav.nav--solid {
@@ -161,6 +152,25 @@ body {
   --nav-hl-a-solid: 0.12;
   --nav-sh-a-hero:  0.16;
   --nav-sh-a-solid: 0.22;
+}
+
+/* Nav nad hero PODSTRON — biały pill od razu, nie tylko glassmorphism.
+   Na index.html hero jest już jasne, więc tint 0.30 nad nim czyta się jako
+   biały (patrz --nav-a-hero na #nav). Na podstronach hero jest niebieskie
+   (.svc-hero--case), a że svc-hero/me-hero NIE są w darkSectionIds (patrz
+   CLAUDE.md „Nawigacja nad hero podstron"), nav zostaje w tym samym jasnym
+   wariancie — bez podbicia alphy tint 0.30 przez niebieskie tło dawał wyraźnie
+   niebieskawy pill, nie biały. `body[class] #nav` łapie każdą podstronę
+   (offer-page/process-page/contact-page/aboutme-page mają klasę na <body>,
+   index.html nie ma żadnej) — nowa podstrona nie wymaga osobnej reguły,
+   dopóki trzyma tę konwencję. Nie koliduje z .nav--light: ten wariant włącza
+   się dopiero PO hero (patrz darkSectionIds), więc token --nav-a-hero z tej
+   reguły nigdy nie jest wtedy odczytywany. */
+body[class] #nav {
+  --nav-a-hero: 0.94;
+  --nav-line-a-hero: 0.10;
+  --nav-hl-a-hero: 0.45;
+  --nav-sh-a-hero: 0.09;
 }
 
 /* Pill jest SZERSZY niż kontener treści (1440px) — boczny margines ~7.5vw,
@@ -186,7 +196,6 @@ body {
   align-items: center;
   height: calc(var(--nav-h) * 1px);
   padding-inline: calc(var(--nav-px) * 1px);
-  margin-inline: calc(var(--nav-squeeze) * 1px);
   border-radius: 999px;
   /* Interpolacja hero → solid: jedna liczba (--nav-glass-p) miesza wartości
      brzegowe zdefiniowane na #nav / #nav.nav--light */
@@ -204,19 +213,16 @@ body {
   box-shadow:
     0 10px 40px rgba(15, 23, 42, var(--nav-mix-sh)),
     inset 0 1px 0 rgba(255, 255, 255, var(--nav-mix-hl));
-  will-change: height, background-color;
-  /* fallback bez GSAP: rozmiar z lekkim naddatkiem (overshoot w cubic-bezier),
-     szkło zwykłym ease — odpowiednik dwóch tweenów z nav-JS */
+  will-change: background-color;
+  /* fallback bez GSAP: szkło przejściem zwykłym ease (odpowiednik tweena
+     szkła z nav-JS) — wysokość/padding są teraz stałe, nic ich nie animuje */
   transition:
-    height 0.5s cubic-bezier(0.34, 1.42, 0.5, 1),
-    padding 0.5s cubic-bezier(0.34, 1.42, 0.5, 1),
-    margin 0.5s cubic-bezier(0.34, 1.42, 0.5, 1),
     background-color 0.45s ease,
     border-color 0.45s ease,
     box-shadow 0.45s ease,
     backdrop-filter 0.45s ease;
 }
-/* Gdy stanem steruje GSAP, transition tylko by go rozmywał */
+/* Gdy tweenem szkła steruje GSAP, transition tylko by go rozmywał */
 #nav.nav--gsap .nav-bar { transition: none; }
 
 /* Szkło w hero jest rzadkie (tint 0.22–0.30), więc pod linkami dalej przebija
@@ -245,11 +251,7 @@ body {
   width: calc(var(--nav-logo, 42) * 1px);
   height: calc(var(--nav-logo, 42) * 1px);
   flex-shrink: 0;
-  transition:
-    width 0.5s cubic-bezier(0.34, 1.42, 0.5, 1),
-    height 0.5s cubic-bezier(0.34, 1.42, 0.5, 1);
 }
-#nav.nav--gsap .logo-img { transition: none; }
 
 .nav-actions {
   grid-column: 3;
@@ -294,10 +296,8 @@ body {
   color: #1E293B;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
-              padding 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
-#nav.nav--gsap .nav-links-pill a { transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
 .nav-links-pill a:hover {
   background: rgba(37,99,235,0.10);
   color: var(--color-blue);
@@ -343,10 +343,6 @@ body {
   text-decoration: none;
   box-shadow: 0 2px 8px rgba(250,204,21,0.28);
   white-space: nowrap;
-  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease,
-              height 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-#nav.nav--gsap .btn-nav-brand {
   transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 .btn-nav-brand:hover {
@@ -354,21 +350,15 @@ body {
   transform: scale(1.03);
   box-shadow: 0 4px 18px rgba(250,204,21,0.45);
 }
-/* Kółko z ikoną kurczy się razem z CTA */
+/* Kółko z ikoną, rozmiar stały (14px mniejsze od CTA) */
 #nav .btn-nav-brand .btn-cta-icon {
   width: calc((var(--nav-cta-h) - 14) * 1px);
   height: calc((var(--nav-cta-h) - 14) * 1px);
-  transition:
-    width 0.55s cubic-bezier(0.215, 0.61, 0.355, 1),
-    height 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-#nav.nav--gsap .btn-nav-brand .btn-cta-icon { transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-bar,
-  .logo-img,
-  .btn-nav-brand,
-  #nav .btn-nav-brand .btn-cta-icon { transition: none; }
+  .btn-nav-brand { transition: none; }
 }
 /* Poniżej 480px CTA ustępuje miejsca logo + hamburgerowi */
 @media (max-width: 479px) {
@@ -819,22 +809,13 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 @media (max-width: 767px) {
-  /* Nav: ten sam kolapsujący pill, mniejsza skala */
+  /* Nav: sam pill, mniejsza skala; rozmiar stały (patrz #nav na desktopie) */
   #nav {
     top: 12px;
     --nav-h: 68;
     --nav-px: 14;
     --nav-logo: 34;
     --nav-cta-h: 44;
-  }
-  #nav.scrolled {
-    --nav-h: 56;
-    --nav-px: 12;
-    --nav-logo: 30;
-    --nav-cta-h: 40;
-    --nav-squeeze: 8;
-  }
-  #nav {
     --nav-a-solid: 0.88;
   }
   .nav-wrapper {
