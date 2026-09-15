@@ -606,10 +606,10 @@
       height: 80px;
       padding-inline: 22px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.32);
-      backdrop-filter: blur(12px) saturate(180%);
-      border: 1px solid rgba(15,23,42,0.07);
-      box-shadow: 0 10px 40px rgba(15,23,42,0.035), inset 0 1px 0 rgba(255,255,255,0.77);
+      background: rgba(255,255,255,0.30);
+      backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(15,23,42,0.09);
+      box-shadow: 0 10px 40px rgba(15,23,42,0.05), inset 0 1px 0 rgba(255,255,255,0.55);
     }
     .nav-bar-demo--compact {
       height: 62px;
@@ -617,7 +617,8 @@
       margin-inline: 18px;
       background: rgba(255,255,255,0.86);
       backdrop-filter: blur(18px) saturate(180%);
-      box-shadow: 0 10px 40px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.22);
+      border-color: rgba(15,23,42,0.07);
+      box-shadow: 0 10px 40px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.30);
     }
     .nav-bar-demo--dark {
       background: rgba(10,16,30,0.86);
@@ -1458,7 +1459,7 @@
     <section class="ds-section" id="navigation">
       <p class="ds-section-label">Komponenty</p>
       <h2 class="ds-section-title">Nawigacja</h2>
-      <p class="ds-section-desc">Jeden floating pill <strong>.nav-bar</strong> (grid 1fr auto 1fr — linki wyśrodkowane w całym pasku) z <strong>dwoma stanami</strong>: hero (80px, szkło alpha 0.32, blur 12px, bez cienia) i compact po ~60px scrolla (62px, alpha 0.86, blur 18px, cień, pill węższy o 2×18px). Wymiary to custom properties na #nav animowane jednym tweenem GSAP (0.55s, power3.out) — powrót na górę to reverse tego samego tweena. Nad ciemnymi sekcjami szkło zmienia się w ciemne (.nav--light).</p>
+      <p class="ds-section-desc">Jeden floating pill <strong>.nav-bar</strong> (grid 1fr auto 1fr — linki wyśrodkowane w całym pasku), szerszy od kontenera treści: <strong>~85% szerokości okna</strong> (margines boczny 7,5vw, max-width wrappera 2000px). Ma <strong>dwie niezależne osie stanu</strong>. <em>Rozmiar</em> przełącza próg scrolla (80px → 62px po ~60px, pill węższy o 2×18px) — zjazd w dół <code>power3.out</code> 0,42s, powrót na samą górę sprężysty <code>back.out(2.4)</code> 0,8s (pill chwilowo przeskakuje ~83px). <em>Szkło</em> ma własny próg: nad sekcją hero pill ma <strong>glassmorphism</strong> — blur 16px przy niskim ticie (0.30 jasny / 0.22 przydymiony w <code>.nav--light</code>), jasny hairline i inset highlight u góry; gęstnieje (alpha 0.86, blur 18px, mocniejszy cień) dopiero gdy dolna krawędź hero minie środek paska — w tym samym momencie co przełączenie <code>.nav--light</code>. Klasa <code>.nav--solid</code> niesie stan szkła, <code>.scrolled</code> stan rozmiaru.</p>
 
       <div class="nav-demo-wrap">
         <div class="nav-bar-demo">
@@ -1475,7 +1476,7 @@
             <button class="btn-nav-brand"><span class="btn-cta-icon btn-cta-icon--sm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Konsultacja</button>
           </div>
         </div>
-        <p style="font-size:0.75rem;color:#64748B;margin:12px 0 20px;text-align:center">Stan 1 — hero (góra strony): wysoki, przezroczysty, tło prześwituje</p>
+        <p style="font-size:0.75rem;color:#64748B;margin:12px 0 20px;text-align:center">Stan 1 — nad hero: wysoki, glassmorphism (blur 16px, tint 0.30, hairline + inset highlight); trwa przez całą sekcję hero, niezależnie od tego, ile już przescrollowano</p>
 
         <div class="nav-bar-demo nav-bar-demo--compact">
           <a href="#" class="nav-logo-demo">
@@ -1491,7 +1492,7 @@
             <button class="btn-nav-brand" style="height:44px"><span class="btn-cta-icon btn-cta-icon--sm" style="width:30px;height:30px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>Konsultacja</button>
           </div>
         </div>
-        <p style="font-size:0.75rem;color:#64748B;margin:12px 0 20px;text-align:center">Stan 2 — compact (po scrollu): niższy, gęstsze szkło, cień, węższy pill</p>
+        <p style="font-size:0.75rem;color:#64748B;margin:12px 0 20px;text-align:center">Stan 2 — po opuszczeniu hero: niższy (próg scrolla) + gęstsze szkło, mocniejszy cień i węższy pill (próg hero)</p>
 
         <div class="nav-bar-demo nav-bar-demo--compact nav-bar-demo--dark">
           <a href="#" class="nav-logo-demo">
@@ -1515,8 +1516,8 @@
           <thead><tr><th>Element</th><th>Nazwa</th><th>Opis</th></tr></thead>
           <tbody>
             <tr><td>#nav</td><td>Kontener nav</td><td>position: fixed, top: 24px (mobile 12px), z-index: 50; nosi custom properties stanu</td></tr>
-            <tr><td>.nav-wrapper</td><td>Box kontenera</td><td>max-width: 1440px, padding: 0 24px — pill równa się z krawędziami sekcji</td></tr>
-            <tr><td>.nav-bar</td><td>Floating pill</td><td>grid 1fr auto 1fr, border-radius 999px, glassmorphism, animowana wysokość 80 ↔ 62px</td></tr>
+            <tr><td>.nav-wrapper</td><td>Box kontenera</td><td>max-width: 2000px, padding: 0 clamp(24px, 7.5vw, 150px) — pill jest SZERSZY niż treść sekcji (~85% okna); tablet 3.5vw, mobile 16px</td></tr>
+            <tr><td>.nav-bar</td><td>Floating pill</td><td>grid 1fr auto 1fr, border-radius 999px, animowana wysokość 80 ↔ 62px; szkło (tło/obrys/highlight/cień/blur) liczone calc()-iem z jednej liczby --nav-glass-p</td></tr>
             <tr><td>.nav-logo</td><td>Brand</td><td>grid-column 1, logo 42 ↔ 34px, tekst o stałym rozmiarze (bez skoku layoutu)</td></tr>
             <tr><td>.nav-links-pill</td><td>Linki</td><td>grid-column 2, 0.9375rem/500, gap 2px; aktywna strona = niebieski pill</td></tr>
             <tr><td>.nav-actions</td><td>CTA + hamburger</td><td>grid-column 3, CTA 52 ↔ 44px (znika poniżej 480px)</td></tr>

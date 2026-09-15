@@ -122,35 +122,47 @@ PRD_lokalnewww.md
 
 ---
 
-## Nawigacja — dwustanowy floating pill
+## Nawigacja — floating pill o dwóch niezależnych osiach stanu
 
 Nav jest **jednym pillem** (`.nav-bar`) wewnątrz `.nav-wrapper`, wspólnym dla wszystkich stron. Zamiast osobnego „wyspowego" pilla tylko na linkach (dawne `.nav-island`, klasa **usunięta**) cały pasek — logo, linki i CTA — siedzi w jednym zaokrąglonym panelu ze szkłem.
 
 **Layout:** `.nav-bar` to grid `1fr auto 1fr` z jawnym przypisaniem kolumn (`.nav-logo` → 1, `.nav-links-pill` → 2, `.nav-actions` → 3). Dzięki temu linki są wyśrodkowane **w całym pasku**, a nie w przestrzeni między logo a CTA. Jawne `grid-column` jest konieczne: gdy na mobile `.nav-links-pill` dostaje `display: none`, ukryty item wypada z gridu i bez przypisania kolumn `.nav-actions` wskoczyłoby do środkowej kolumny (nachodząc na logo).
 
-**Dwa stany (rdzeń efektu — zmienia się WYSOKOŚĆ, nie tylko tło):**
+**Szerokość: pill jest SZERSZY niż treść sekcji.** `.nav-wrapper` to `max-width: 2000px` + `padding: 0 clamp(24px, 7.5vw, 150px)` — pasek zajmuje **~85% szerokości okna** (proporcja z referencji „luxury real-estate"; na 1800px: 135 → 1651, czyli praktycznie do prawej krawędzi mockupu wychodzącego poza kontener hero). Tablet/mały laptop (768–1279px) ma węższy margines `clamp(20px, 3.5vw, 46px)`, mobile 16px. **Logo nie równa się już z H1** — to świadome zerwanie z dawną regułą „krawędzie pilla = krawędzie sekcji" (patrz „Ważne decyzje projektowe").
 
-| | hero (scrollY < 30) | compact (scrollY > 60) |
+**Dwie NIEZALEŻNE osie stanu — rozmiar i szkło mają osobne progi, osobne tweeny i osobne klasy.**
+
+| | oś ROZMIARU (`.scrolled`) | oś SZKŁA (`.nav--solid`) |
 |---|---|---|
-| wysokość pilla | 80px (mobile 68) | 62px (mobile 56) |
-| padding poziomy | 22px (mobile 14) | 16px (mobile 12) |
-| logo | 42px (mobile 34) | 34px (mobile 30) |
-| CTA | 52px (mobile 44) | 44px (mobile 40) |
-| tło | `alpha 0.32` | `alpha 0.86` (mobile 0.88) |
-| blur | 12px | 18px |
-| cień | ledwie widoczny (0.035) | `0 10px 40px rgba(15,23,42,0.12)` |
-| szerokość | pełny box kontenera | węższy o 2×18px (mobile 2×8) |
+| próg | scrollY > 60 (rozwija < 30) | dolna krawędź **hero** minie `navMidY = 60` (histereza 40px) |
+| wysokość pilla | 80px → 62px (mobile 68 → 56) | — |
+| padding poziomy | 22px → 16px (mobile 14 → 12) | — |
+| logo | 42px → 34px (mobile 34 → 30) | — |
+| CTA | 52px → 44px (mobile 44 → 40) | — |
+| szerokość | pełny box → węższy o 2×18px (mobile 2×8) | — |
+| tło | — | `0.30` → `0.86` (wariant `nav--light`: `0.22` → `0.86`, mobile solid 0.88) |
+| blur + saturate | — | `16px / 160%` → `18px / 180%` |
+| obrys | — | `0.09` → `0.07` (`nav--light`: biały `0.20` → `0.14`) |
+| inset highlight | — | `0.55` → `0.30` (`nav--light`: `0.18` → `0.12`) |
+| cień | — | `0.05` → `0.12` (`nav--light`: `0.16` → `0.22`) |
+
+**W hero pill ma glassmorphism, nie jest przezroczysty** (tak było przez chwilę 01.09.2026 — porzucone): **mocny blur już w stanie hero** (16px) przy **niskim ticie** (0.30 jasny / 0.22 przydymiony), plus **świetlisty hairline** (w `nav--light` biały 0.20) i **wewnętrzny highlight** na górnej krawędzi. To ten blur, nie tło, robi tu efekt szkła — dlatego nie da się go obniżyć bez utraty efektu. Może się w tym stanie skurczyć (scroll wewnątrz wysokiego hero) i dalej mieć rzadkie szkło. **Gęstnieje dopiero po opuszczeniu sekcji hero**, w tym samym momencie co przełączenie `nav--light` (ten sam `navMidY`), więc gęstość szkła i kolor linków zmieniają się razem. Hero każdej strony JS znajduje przez `document.querySelector('#hero, #svc-hero, #me-hero')`.
 
 **Jak to działa (`style.css` sekcja „Navigation — dwustanowy floating pill" + blok nawigacji w JS każdej strony):**
 
-- Wszystkie animowane wymiary to **custom properties na `#nav`** (`--nav-h`, `--nav-px`, `--nav-logo`, `--nav-cta-h`, `--nav-link-px`, `--nav-blur`, `--nav-alpha`, `--nav-shadow`, `--nav-squeeze`), używane w CSS przez `calc(var(--nav-h) * 1px)` itd.
-- JS trzyma **jeden tween GSAP** na obiekcie `{ p: 0 }` (`duration 0.55`, `ease power3.out`), który w `onUpdate` lerpuje wszystkie wartości między presetem `hero` a `compact` i wpisuje je inline na `#nav`. Zjazd w dół = `play()`, powrót na górę = `reverse()` **tego samego** tweena — stąd płynne przejście w obie strony, bez skoku klasą.
-- Presety są osobne dla desktopu i mobile (`NAV_STATES.desktop` / `.mobile`), wybierane przez `matchMedia('(max-width: 767px)')` i przemalowywane na `change`.
-- Próg z **histerezą**: kurczy się powyżej 60px, rozwija dopiero poniżej 30px (bez migotania na granicy). Detekcja siedzi w istniejącym `updateNav` (ten sam listener co `nav--light`) — celowo bez ScrollTrigger, żeby nav nie zależał od pluginu i działał identycznie na wszystkich 5 stronach.
-- Gdy tweenem steruje GSAP, `#nav` dostaje klasę **`.nav--gsap`**, która **wyłącza CSS-owe `transition`** na `.nav-bar`, logo i CTA (inaczej transition goniłoby tween).
-- **Fallback bez GSAP / przy `prefers-reduced-motion`:** JS nie wpisuje inline zmiennych; stan ustawia sama klasa `.scrolled` (te same wartości w CSS), a przejście dowozi `transition` na `.nav-bar` (`cubic-bezier(0.215, 0.61, 0.355, 1)` ≈ `power3.out`). Przy `prefers-reduced-motion` transition jest dodatkowo zerowany.
+- Rozmiar to **custom properties na `#nav`** wpisywane inline przez JS: `--nav-h`, `--nav-px`, `--nav-logo`, `--nav-cta-h`, `--nav-link-px`, `--nav-squeeze` (używane w CSS przez `calc(var(--nav-h) * 1px)`).
+- **Szkło animuje JEDNA liczba — `--nav-glass-p` (0 = hero, 1 = po hero).** Reszta to *wartości brzegowe* obu stanów w CSS: `--nav-a-hero/-solid` (alpha tła), `--nav-line-a-hero/-solid` (obrys), `--nav-hl-a-hero/-solid` (inset highlight), `--nav-sh-a-hero/-solid` (cień); blur i saturate liczone wprost z `--nav-glass-p`. `.nav-bar` miesza je czterema `calc()`-ami (`--nav-mix-a`, `--nav-mix-line`, `--nav-mix-hl`, `--nav-mix-sh`). **Skutek: wariant `nav--light` ma własne brzegi bez dotykania JS** — inaczej ciemny tint musiałby interpolować RGB przez szarość i przy zmianie stanu mignąłby brudnym kolorem. Kolor obrysu jest rozbity na `--nav-line` (rgb) + alpha; dawne `--nav-border`, `--nav-alpha`, `--nav-shadow` i `--nav-blur` **już nie istnieją**.
+- **Dodając nowy wariant kolorystyczny nav-a nadpisujesz tylko pary `*-hero` / `*-solid` na `#nav.twoja-klasa`** — JS zostaje nietknięty.
+- **Dwa osobne tweeny GSAP**, każdy na swoim obiekcie: `navProgress { p }` (rozmiar, `paintNavSize`) i `navGlass { g }` (szkło, `paintNavGlass`). Nie są to tweeny `paused` + `reverse()` jak wcześniej — każde przejście tworzy **nowy tween** (poprzedni `kill()`), bo ease jest **inny w każdą stronę**.
+- **Ease rozmiaru — to jest ta „dynamiczna" animacja:** zjazd w dół `power3.out`, `duration 0.42` (snappy), powrót na samą górę `back.out(2.4)`, `duration 0.8` — `p` schodzi poniżej 0, więc pill **przeskakuje ponad docelową wysokość** (zmierzone: 83,2px przy docelowych 80) i sprężyście wraca. `--nav-squeeze` jest przycięty `Math.max(-4, …)`, żeby naddatek nie rozpychał pilla poza `.nav-wrapper`.
+- **Ease szkła:** `power2.out`, `duration 0.45`, bez naddatku — overshoot na tle/blurze wyglądałby jak błąd renderowania. `g` jest dodatkowo klamrowane do `[0, 1]`, bo `--nav-glass-p` poza tym zakresem dałby ujemną alphę.
+- Presety są osobne dla desktopu i mobile (`NAV_STATES` dla rozmiaru, `NAV_GLASS` dla szkła), wybierane przez `matchMedia('(max-width: 767px)')` i przemalowywane na `change`.
+- Oba progi mają **histerezę**: rozmiar kurczy się powyżej 60px i rozwija poniżej 30px; szkło włącza się gdy dół hero ≤ 60px i gaśnie dopiero powyżej 100px. Detekcja siedzi w istniejącym `updateNav` (ten sam listener co `nav--light`) — celowo bez ScrollTrigger, żeby nav nie zależał od pluginu i działał identycznie na wszystkich 5 stronach.
+- Gdy tweenami steruje GSAP, `#nav` dostaje klasę **`.nav--gsap`**, która **wyłącza CSS-owe `transition`** na `.nav-bar`, logo i CTA (inaczej transition goniłoby tween).
+- **Fallback bez GSAP / przy `prefers-reduced-motion`:** JS nie wpisuje inline zmiennych; stan ustawiają same klasy `.scrolled` (rozmiar) i `.nav--solid` (szkło), a przejście dowozi `transition` na `.nav-bar` — rozmiar `cubic-bezier(0.34, 1.42, 0.5, 1)` (naddatek jak `back.out`), szkło zwykłym `ease`. Przy `prefers-reduced-motion` transition jest dodatkowo zerowany.
+- **Czytelność w stanie hero:** tint 0.22–0.30 dalej przepuszcza tło sekcji, więc `#nav:not(.nav--solid)` dokłada delikatny `text-shadow` na logo i linki — jasną poświatę w wariancie domyślnym (na `index.html` pod „Kontakt" przewija się ciemny mockup telefonu), ciemną w `nav--light`.
 
-**Paleta (świadome odstępstwo od referencji „luxury real-estate"):** referencja ma ciemne szkło + kremowe CTA. Tu zostaje paleta marki, a szkło **adaptuje się do tła**: domyślnie jasne (`--nav-glass: 255,255,255`) z ciemnymi linkami, a nad ciemnymi sekcjami (`.nav--light`, sterowane `darkSectionIds`) ciemne (`10,16,30`) z jasnymi linkami i białym hamburgerem. Ciemne szkło `0.35` na jasnym hero index.html dawałoby biały tekst na prawie białym tle. Obrys w wariancie jasnym jest **grafitowy** (`rgba(15,23,42,0.07)`), nie biały — biały obrys znika na jasnym hero.
+**Paleta (świadome odstępstwo od referencji „luxury real-estate"):** referencja ma ciemne szkło + kremowe CTA. Tu zostaje paleta marki, a szkło **adaptuje się do tła**: domyślnie jasne (`--nav-glass: 255,255,255`) z ciemnymi linkami, a nad ciemnymi sekcjami (`.nav--light`, sterowane `darkSectionIds`) ciemne (`10,16,30`) z jasnymi linkami i białym hamburgerem. Ciemne szkło `0.35` na jasnym hero index.html dawałoby biały tekst na prawie białym tle. Obrys w wariancie jasnym jest **grafitowy** (`--nav-line: 15,23,42`, alpha 0.07), nie biały — biały obrys znika na jasnym hero. Nad samym hero obrysu nie ma wcale (`--nav-glass-p: 0`).
 
 **Uwagi przy zmianach:**
 
@@ -158,7 +170,8 @@ Nav jest **jednym pillem** (`.nav-bar`) wewnątrz `.nav-wrapper`, wspólnym dla 
 - `.btn-nav-brand` ma teraz **stałą wysokość** z `--nav-cta-h` (padding pionowy usunięty), a kółko ikony `--nav-cta-h − 14`.
 - Linki: `0.9375rem`/`500` (referencja: 14–16px, waga 400–500) zamiast dawnych `1rem`/`600`.
 - CTA jest widoczne do 480px (poniżej `display: none`) — wcześniej znikało już poniżej 768px.
-- Zmiana wartości stanów wymaga edycji **dwóch miejsc**: presetów `NAV_STATES` w JS **każdej z 5 stron** i fallbackowych wartości w CSS (`#nav`, `#nav.scrolled` + ich warianty mobilne).
+- Zmiana wartości stanów wymaga edycji **dwóch miejsc**: presetów `NAV_STATES` / `NAV_GLASS` w JS **każdej z 5 stron** i fallbackowych wartości w CSS (`#nav`, `#nav.scrolled`, `#nav.nav--solid` + ich warianty mobilne). Cały blok nav-JS jest **bajt w bajt identyczny we wszystkich 5 plikach** — zmieniaj go skryptem, nie ręcznie.
+- Nowa podstrona musi mieć hero o id `hero`, `svc-hero` albo `me-hero` — inaczej `navHero` będzie `null` i szkło spadnie na fallback „scrollY > 60" (czyli tło pojawi się już wewnątrz hero).
 ---
 
 ## Szablon podstron — `oferta.html` jest wzorcem
@@ -475,7 +488,8 @@ Animacje page-load (hero): klasa `.anim-init` + `.visible` dodawana przez `reque
 ## Ważne decyzje projektowe
 
 - Nagłówki hero podstron: **wszystkie 4 podstrony mają teraz to samo niebieskie hero `--case`** (`oferta.html`, `proces.html`, `kontakt.html`, `o-mnie.html`), więc akcent w H1 wszędzie robi **grubość fontu** (linia 300 nad linią 800) — niebieski na niebieskim byłby niewidoczny. Akcent kolorem przenosi się do leadu i jest **żółty**. Skutek uboczny ujednolicenia (01.09.2026): `.svc-hero-h1-accent` oraz `.svc-hero-label*` (badge) **nie są już używane w żadnym HTML-u** i zostają w `style.css` jako martwy kod — razem z jasnym wariantem `.svc-hero--b` (gradient + kratka) i regułą maski kratki dla `body.process-page` / `body.contact-page`. `index.html` ma własne wyróżnienie żółtym tekstem na granatowym skosie (`.hero-highlight-wrap`).
-- Nav: `.nav-wrapper` ma **ten sam box co sekcje strony** — `max-width: 1440px; margin: 0 auto; padding: 0 24px` (odpowiednik tailwindowego `max-w-container mx-auto px-6`), a `#nav` nie ma własnego paddingu. Do tego boksu wpisany jest pill `.nav-bar`, więc **krawędzie pilla** równają się z krawędziami treści sekcji poniżej (logo i CTA są dodatkowo wcięte o padding pilla, `--nav-px`). Referencja proponowała `max-width: ~1500px` — zostało 1440px, żeby pill trzymał ten sam box co reszta strony. Na mobile padding schodzi do `16px` (w media query na `.nav-wrapper`, nie na `#nav`). Zmiana `max-w-container` w Tailwind config wymaga zmiany `max-width` w `.nav-wrapper`.
+- Nav: `.nav-wrapper` **NIE trzyma już boksu sekcji** (`max-width: 1440px; padding: 0 24px`). Od 01.09.2026 jest to `max-width: 2000px; padding: 0 clamp(24px, 7.5vw, 150px)` — pill zajmuje ~85% szerokości okna, tak jak w referencji, i sięga w prawo mniej więcej do krawędzi mockupu wychodzącego poza kontener hero. **Skutek: logo nie równa się już z H1 sekcji poniżej** i to jest zamierzone; dawna reguła „krawędzie pilla = krawędzie treści" nie obowiązuje. Zmiana `max-w-container` w Tailwind config **nie** wymaga już zmiany `.nav-wrapper`.
+- Nav nad hero ma **glassmorphism**, a nie płaskie szkło jak wcześniej: dawny stan hero to było `alpha 0.32` + `blur 12` bez wyraźnego obrysu, czyli mleczna plama. Teraz efekt niesie **blur 16px przy ticie 0.22–0.30** plus jasny hairline i inset highlight — pasek czyta się jak tafla szkła, a nie jak półprzezroczysty prostokąt. Gęstnieje dopiero po opuszczeniu sekcji hero (patrz „Nawigacja"). Konsekwencja: na `index.html` przez całą wysokość hero (~100vh) przewija się pod paskiem mockup telefonu — widać go rozmytego przez szkło, a czytelność linków dodatkowo wspiera `text-shadow` w `#nav:not(.nav--solid)`.
 - Hero: treść do lewej, kontener `w-full` — bez wewnętrznego `max-width` żeby H1 mieścił się w jednej linii
 - Hero highlight (`dla lokalnych biznesów`) — navy tło skewX(-6deg), animacja clip-path od lewej
 - Bento: białe kafelki na niebieskim gradiencie (nie ciemne jak w PRD)
