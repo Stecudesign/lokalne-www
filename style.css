@@ -5010,7 +5010,10 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   display: grid;
   grid-template-columns: 0.8fr 1.7fr;
   gap: 3.5rem;
-  align-items: end;
+  /* stretch (nie end) - lista ma zaczynac sie na gorze zdjecia i siegac jego dolu.
+     Wysokosc wiersza narzuca zdjecie (aspect z atrybutow width/height obrazka),
+     bo intrinsic wysokosc listy jest od niego nizsza. */
+  align-items: stretch;
 }
 .me-sol-photo {
   border-radius: 22px;
@@ -5028,11 +5031,22 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   object-position: 50% 50%;
   display: block;
 }
-.me-sol-list { list-style: none; margin: 0; padding: 0; }
+.me-sol-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Kolumna flex + `flex: 1` na wierszach = kazdy wiersz dostaje rowna czesc
+     wysokosci zdjecia, zamiast sie zbijac do wysokosci tekstu. */
+  display: flex;
+  flex-direction: column;
+}
 .me-sol-row {
   display: flex;
   align-items: center;
   gap: 1.25rem;
+  /* flex: 1 rozciaga wiersz; padding zostaje jako minimum, gdy kolumny sie
+     rozjezdzaja (mobile 1-kolumnowy) i nie ma czego rozdzielac */
+  flex: 1;
   padding: 1.4rem 0.25rem;
   border-top: 1px solid var(--color-border);
   transition: padding-left 0.2s ease;
@@ -5040,15 +5054,16 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 .me-sol-row:last-child { border-bottom: 1px solid var(--color-border); }
 .me-sol-num {
   flex-shrink: 0;
-  width: 2.5rem;
-  font-size: 0.95rem;
+  width: 2.9rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
 }
 .me-sol-title {
   flex: 1;
-  font-size: 1.0625rem;
+  font-size: 1.25rem;
+  line-height: 1.4;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--color-text-secondary);
