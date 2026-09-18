@@ -268,12 +268,12 @@
       </div>
 
       <ol class="me-sol-list fade-up" style="transition-delay:100ms">
-        <li class="me-sol-row">
+        <li class="me-sol-row me-sol-row--active">
           <span class="me-sol-num">01.</span>
           <span class="me-sol-title">Indywidualny design skrojony na miarę</span>
           <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
         </li>
-        <li class="me-sol-row me-sol-row--active">
+        <li class="me-sol-row">
           <span class="me-sol-num">02.</span>
           <span class="me-sol-title">Widoczność w Google i SEO lokalne</span>
           <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
@@ -418,6 +418,50 @@
 
   // Reveal .fade-up obsługuje IntersectionObserver poniżej — zdejmij klasę, treść zostaje widoczna
   if (!hasGSAP || reduceMotion) { root.classList.remove('gsap-enhance'); }
+})();
+</script>
+
+<!-- ============================================================
+     Sekcja „jak pracuję" — wyróżnienie wędrujące po liście wraz ze scrollem
+     ============================================================ -->
+<script>
+(function () {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const list = document.querySelector('.me-sol-list');
+  if (!list) return;
+
+  const rows = Array.prototype.slice.call(list.querySelectorAll('.me-sol-row'));
+  if (rows.length < 2) return;
+
+  // Bez GSAP albo przy prefers-reduced-motion nie robimy nic — zostaje statyczne
+  // wyróżnienie na „01." wpisane w HTML. To jest celowy fallback, nie brak obsługi.
+  if (!(window.gsap && window.ScrollTrigger) || reduceMotion) return;
+
+  window.gsap.registerPlugin(window.ScrollTrigger);
+
+  const ACTIVE = 'me-sol-row--active';
+  let current = rows.findIndex(function (r) { return r.classList.contains(ACTIVE); });
+
+  const setActive = function (i) {
+    if (i === current) return;                 // bez tego przepisywalibyśmy klasę co klatkę scrolla
+    if (current > -1) rows[current].classList.remove(ACTIVE);
+    rows[i].classList.add(ACTIVE);
+    current = i;
+  };
+
+  window.ScrollTrigger.create({
+    trigger: '.me-sol-grid',
+    start: 'top 75%',        // sekcja wchodzi w dolną ćwiartkę ekranu
+    end: 'bottom 45%',       // ~800px scrolla na 5 punktów = ok. 160px na punkt
+    onUpdate: function (self) {
+      const i = Math.floor(self.progress * rows.length);
+      setActive(Math.max(0, Math.min(rows.length - 1, i)));
+    },
+    // onUpdate nie odpala się poza zakresem trigger'a — bez tego wyróżnienie
+    // zostawałoby tam, gdzie zastał je szybki scroll przez sekcję
+    onLeave:     function () { setActive(rows.length - 1); },
+    onLeaveBack: function () { setActive(0); }
+  });
 })();
 </script>
 

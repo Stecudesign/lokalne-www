@@ -5059,6 +5059,10 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   font-weight: 600;
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
+  /* tabular-nums + transition: wyroznienie wedruje po liscie wraz ze scrollem
+     (IIFE w omnie.html), wiec numer musi zmieniac kolor plynnie i nie moze
+     zmieniac szerokosci przy przeskoku */
+  transition: color 0.18s ease;
 }
 .me-sol-title {
   flex: 1;
