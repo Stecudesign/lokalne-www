@@ -144,8 +144,7 @@
 <section id="me-mission" class="me-mission">
   <div class="max-w-container mx-auto px-6">
 
-    <div class="me-mission-top fade-up">
-      <span class="me-eyebrow">O mnie</span>
+    <div class="me-mission-top">
       <p class="me-mission-text">
         Moją <strong>misją</strong> jest pomóc <strong>lokalnym firmom</strong> zaistnieć w internecie.
         Tworzę strony, które nie tylko dobrze wyglądają, ale realnie <strong>przyciągają klientów</strong> —
@@ -418,6 +417,72 @@
 
   // Reveal .fade-up obsługuje IntersectionObserver poniżej — zdejmij klasę, treść zostaje widoczna
   if (!hasGSAP || reduceMotion) { root.classList.remove('gsap-enhance'); }
+})();
+</script>
+
+<!-- ============================================================
+     Sekcja misji — reveal wipe: słowa rozjaśniają się kolejno wraz ze scrollem
+     ============================================================ -->
+<script>
+(function () {
+  const el = document.querySelector('.me-mission-text');
+  if (!el) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Bez GSAP albo przy prefers-reduced-motion NIE dzielimy tekstu i nie ruszamy opacity —
+  // akapit zostaje w pełni czytelny. Stan początkowy (przygaszone słowa) celowo NIE siedzi
+  // w CSS: gdyby CDN z GSAP nie odpowiedział, tekst zostałby na zawsze wyszarzony.
+  if (!(window.gsap && window.ScrollTrigger) || reduceMotion) return;
+
+  window.gsap.registerPlugin(window.ScrollTrigger);
+
+  // Podział na słowa musi przejść po WĘZŁACH TEKSTOWYCH, nie po innerHTML —
+  // w akapicie są <strong>, które trzeba zachować (inaczej zgubilibyśmy wyróżnienia).
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+  const textNodes = [];
+  let node;
+  while ((node = walker.nextNode())) textNodes.push(node);
+
+  textNodes.forEach(function (tn) {
+    if (!tn.nodeValue.trim()) return;
+    const frag = document.createDocumentFragment();
+    // split z grupą przechwytującą zachowuje spacje jako osobne tokeny,
+    // dzięki czemu odstępy i łamanie wierszy zostają bez zmian
+    tn.nodeValue.split(/(\s+)/).forEach(function (tok) {
+      if (!tok) return;
+      if (/^\s+$/.test(tok)) {
+        frag.appendChild(document.createTextNode(tok));
+      } else {
+        const w = document.createElement('span');
+        w.className = 'rw-word';
+        w.textContent = tok;
+        frag.appendChild(w);
+      }
+    });
+    tn.parentNode.replaceChild(frag, tn);
+  });
+
+  const words = el.querySelectorAll('.rw-word');
+  if (!words.length) return;
+
+  // duration > stagger => kilka słów rozjaśnia się naraz, więc czyta się to
+  // jak miękka fala, a nie jak zapalanie pojedynczych żarówek
+  window.gsap.fromTo(words,
+    { opacity: 0.12 },
+    {
+      opacity: 1,
+      ease: 'none',
+      duration: 1.2,
+      stagger: 0.4,
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 78%',
+        end: 'bottom 20%',   // ~750px scrolla na 31 slow; przy 55% wipe konczyl sie po 388px i byl zbyt gwaltowny
+        scrub: 0.4
+      }
+    }
+  );
 })();
 </script>
 

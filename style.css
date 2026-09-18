@@ -4848,6 +4848,12 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   background: var(--color-blue);
 }
 .me-mission-text {
+  /* Eyebrow "O mnie" zostal usuniety (18.09.2026), wiec akapit jest jedynym
+     dzieckiem .me-mission-top. Bez jawnego grid-column auto-placement wrzucilby
+     go do pierwszej kolumny (0.7fr) i tekst zrobilby sie waski.
+     UWAGA: oba breakpointy ponizej przestawiaja grid na 1 kolumne i MUSZA
+     resetowac to na grid-column: 1, bo inaczej powstaje kolumna implicit. */
+  grid-column: 2;
   margin: 0;
   font-size: clamp(1.35rem, 2.4vw, 2.05rem);
   font-weight: 500;
@@ -5106,6 +5112,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   .svc-hero-device--portrait { width: 100%; margin-left: 0; }
   .me-mission { padding: 3.5rem 0; }
   .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
+  .me-mission-text { grid-column: 1; }
   .me-mission-lower { margin-top: 2rem; }
   .me-why { padding: 1rem 0 4rem; }
   .me-why-head { margin-bottom: 2.5rem; }
@@ -5117,6 +5124,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
+  .me-mission-text { grid-column: 1; }
   .me-why-grid { grid-template-columns: repeat(2, 1fr); }
   .me-sol-grid { gap: 2.25rem; }
 }
