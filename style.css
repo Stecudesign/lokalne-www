@@ -1460,7 +1460,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   display: block;
   width: 78%;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 20px rgba(15,23,42,0.13));
 }
 
 /* --- Stats widget (tile 3 Analityka) --- */
@@ -4752,7 +4751,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
 
 
 /* ============================================================
-   PODSTRONA O MNIE (o-mnie.html, <body class="aboutme-page">)
+   PODSTRONA O MNIE (omnie.html, <body class="aboutme-page">)
    Hero „Cześć" + portret (wzór: screen 1) + misja/statystyka + numerowana lista (wzór: screen 2)
    ============================================================ */
 
@@ -4761,7 +4760,7 @@ body.contact-page .svc-acc-item.is-open .svc-acc-title { color: #93C5FD; }
    (.svc-hero.svc-hero--b.svc-hero--case → badge + dwuliniowy H1 + lead po lewej,
    pierścień + kadr + karta po prawej). Różni się tylko zawartość kolumny medialnej:
    zamiast mockupu strony jest wycinek postaci.
-   Sekcja jest ciemna → 'me-hero' MUSI być w darkSectionIds w nav-JS o-mnie.html. */
+   Sekcja jest ciemna → 'me-hero' MUSI być w darkSectionIds w nav-JS omnie.html. */
 
 /* Cap H1 wynika z prześwitu do pierścienia, tak jak na oferta.html (patrz CLAUDE.md).
    Linia 2 „Tworzę strony WWW" to 17 znaków × ~0.59em ink (Inter 800, tracking −0.03em; „WWW" jest

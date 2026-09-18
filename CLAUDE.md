@@ -18,18 +18,38 @@ Design system marki: `.claude/skills/design.md` — czytaj przed każdą pracą 
 index.html      ← cała strona (landing page)
 oferta.html     ← strona Oferta (root, URL /oferta) — usługi w akordeonie, motyw ciemny
 kontakt.html    ← strona Kontakt (root, URL /kontakt) — ciemny motyw: hero + dane/formularz + FAQ (akordeon)
-o-mnie.html     ← strona O mnie (root, URL /o-mnie) — jasny motyw: hero „Cześć"+portret, misja+statystyka, numerowana lista
+omnie.html      ← strona O mnie (root, URL /omnie) — jasny motyw: hero „Cześć"+portret, misja+statystyka, numerowana lista
+o-mnie.html     ← PRZEKIEROWANIE na omnie.html, nie prawdziwa strona (18.09.2026 plik zmienił nazwę z o-mnie.html na omnie.html).
+                  GitHub Pages to hosting statyczny — nie ma przekierowań 301 po stronie serwera, więc stary adres musi zostać
+                  jako plik z meta refresh + location.replace() (zachowuje hash i query) i canonical na nowy URL. Celowo BEZ
+                  noindex — ten sygnał mógłby zostać odniesiony do celu przekierowania. Usuń dopiero, gdy stary adres zniknie
+                  z indeksu Google i z linków zewnętrznych
 proces.html     ← strona Proces (root, URL /proces) — jasny motyw editorial (styl Snøhetta): hero + lista 6 kroków z ilustracjami
-style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html, o-mnie.html i proces.html
+style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html, omnie.html i proces.html
 img/
   logopin3Dv1.png          ← logo pin 3D (64×64)
   herov8.png               ← tło hero (desktop)
   herov8mobile.png         ← tło hero (mobile)
   lenovoomniev2.png        ← zdjęcie właściciela (sekcja O mnie)
-  bento-stronyinternetowe.png
-  bento-seo.png
-  obslugawww.png
-  responsywnauslugav3.png       ← mockup urządzeń (tile-4 Responsywność)
+  bento-stronyinternetowe.webp  ← ilustracja kafla „Strony internetowe" (tile-2) — laptop z edytorem kodu. WZORZEC STYLU seta bento
+  bento-seo.webp                ← ilustracja kafla „SEO" (tile-1) — telefon z wynikami wyszukiwania. WZORZEC STYLU seta bento
+  responsywnauslugav3.webp      ← ilustracja kafla „Responsywność" (tile-4) — monitor + tablet + telefon, żółta strzałka skalowania
+  opiekawww.webp                ← ilustracja kafla „Opieka nad stroną" (tile-5) — okno przeglądarki w żółtej pętli odświeżania + kłódka/tarcza/klucz
+  googleanalytics.webp          ← ilustracja kafla „Analityka Google" (tile-6) — tablet z wykresem liniowym i donutem
+  (cały set bento-*: miękki render 3D na CZYSTO BIAŁYM tle, matowe zaokrąglone bryły, delikatny cień kontaktowy,
+   granatowe ekrany #1B2440 z ABSTRAKCYJNYMI blokami zamiast tekstu (niebieski #2563EB / jasnoniebieski #7EAAF5 /
+   żółty #FBD667 / jasnoszary #E7ECF4), wokół obiektu 2–3 lewitujące białe „badge’e" z ikoną. ZERO liter i cyfr.
+   `responsywnauslugav3` / `opiekawww` / `googleanalytics` przegenerowane 15.09.2026 modelem Higgsfield `gpt_image_2_5`
+   (4:3, quality high, 2k, background opaque) — wcześniej były to gęste zrzuty interfejsów z realnym tekstem, które
+   odstawały od `bento-seo` / `bento-stronyinternetowe`. Prompt = wspólny blok stylu + opis motywu; kopiuj ten blok
+   przy kolejnych podmianach w secie.
+   ⚠️ KADROWANIE: panele `.bento2-t4/t5/t6-visual` mają `overflow: hidden` i pokazują tylko GÓRNE ~60–65% obrazka.
+   Dlatego każdy plik jest 1448×1086 z treścią wpasowaną w górne 60% kadru (margines górny 4%, treść max 56% wysokości
+   i 90% szerokości, wyśrodkowana w poziomie) — biały dół jest celowo pusty i i tak zostaje przycięty. Model zwraca
+   render z dużym zapasem bieli, więc po generacji trzeba go przeramkować: policz bbox pikseli odbiegających od bieli
+   (próg 246) i przeskaluj go na canvas 1448×1086 wg powyższych proporcji (PowerShell + System.Drawing wystarczy,
+   w projekcie nie ma ImageMagick ani PIL). Podmieniając obrazek trzymaj ten sam układ, inaczej dolna część
+   ilustracji zostanie ucięta w kaflu)
   szkolaplywaniamockup.webp     ← mockup laptop + telefon (karta 5 slidera #realizacje na index.html)
   szkolaplywaniamockup-laptop.webp ← UŻYWANY w hero oferta.html: ten sam kadr co wyżej, ale bez telefonu — laptop (MacBook Pro)
                                    na słupku startowym, basen w tle. 1254×1254, krok pośredni pipeline’u opisanego niżej
@@ -60,9 +80,13 @@ img/
   oferta-strony.webp            ← UŻYWANA w sekcji „Strony internetowe" — ilustracja (okno przeglądarki + stos podstron + żółte CTA),
                                    spójna z resztą setu oferta-*; przywrócona po epizodzie z fotografią (patrz oferta-strony-foto.webp)
   oferta-design.webp            ← ilustracja usługi Indywidualny design — artboard z kształtami + ramka zaznaczenia z uchwytami + kursor + paleta swatchy (motyw narzędzia projektowego, bez pędzla). WYJĄTEK w secie: nie z Higgsfield — ręcznie rysowany SVG wyrenderowany do webp (źródło: `img/src/oferta-design.svg`, render: Chrome → PNG 1800×1344 → `cwebp -resize 1200 896 -q 92 -m 6`). Edycja = popraw SVG i przerenderuj
-  oferta-responsywnosc.webp     ← ilustracja usługi Responsywność — monitor + tablet + telefon, żółte strzałki skalowania
-  oferta-opieka.webp            ← ilustracja usługi Opieka nad stroną — okno w pętli odświeżania + kłódka + tarcza
-  oferta-analityka.webp         ← ilustracja usługi Analityka Google — dashboard z wykresem liniowym + donut
+  oferta-responsywnosc.webp     ← ilustracja usługi Responsywność — monitor + tablet + telefon, żółte strzałki skalowania.
+                                   Przegenerowana 15.09.2026 modelem Higgsfield `gpt_image_2_5` (nie `nano_banana_pro` jak reszta
+                                   seta) — poprzednia wersja zbytnio odstawała stylem od `oferta-seo.webp`/`oferta-strony.webp`
+  oferta-opieka.webp            ← ilustracja usługi Opieka nad stroną — okno w pętli odświeżania + kłódka + tarcza.
+                                   Przegenerowana 15.09.2026, jak wyżej (`gpt_image_2_5`)
+  oferta-analityka.webp         ← ilustracja usługi Analityka Google — dashboard z wykresem liniowym + donut.
+                                   Przegenerowana 15.09.2026, jak wyżej (`gpt_image_2_5`)
   proces-hero.webp              ← kadr hero `proces.html` (1254×1254, Higgsfield nano_banana_pro) — FOTOGRAFIA: MacBook na jasnym
                                    biurku z układem strony w palecie marki (navy/niebieski + żółte CTA), obok otwarty szkicownik
                                    z odręcznymi wireframe'ami, ołówek i żółte karteczki. Motyw „od szkicu do gotowej strony".
@@ -78,18 +102,24 @@ img/
   (wszystkie oferta-*.webp: przegenerowane 14.08.2026 modelem Higgsfield nano_banana_pro w stylu
    zgodnym z proces-*.webp — płaski front-on wektor, grube zaokrąglone kształty, długie miękkie cienie,
    paleta navy #1B2440 / niebieski #2563EB / jasnoniebieski #7EAAF5 / żółty #FBD667 na off-white #F4F7FC,
-   bez tekstu; 1200×896, 4:3. Poprzedni set był izometryczny/line-art na kremowym tle)
-  pawel_nobackgroundv1.png      ← zdjęcie hero (o-mnie.html) — wycinek bez tła (RGBA), postać z iPadem; 2274×2766 = wersja 2× (retina) pliku poniżej.
-                                   UWAGA przy podmianie: postać ma NIEBIESKĄ bluzę o luminancji bliskiej `--color-blue` — w niebieskim hero o-mnie
+   bez tekstu; 1200×896, 4:3. Poprzedni set był izometryczny/line-art na kremowym tle.
+   `oferta-responsywnosc.webp`, `oferta-opieka.webp`, `oferta-analityka.webp` doregenerowane 15.09.2026
+   modelem `gpt_image_2_5` — ten sam styl i paleta, ale odstawały jakością wykonania od `oferta-seo.webp`/
+   `oferta-strony.webp`; pipeline: `gpt_image_2_5` text-to-image `aspect_ratio 4:3`, `quality high`,
+   `resolution 2k`, `background opaque` → `cwebp -resize 1200 896 -q 92 -m 6`. Prompt zawsze zaczyna się
+   od wspólnego bloku stylu (kształty/cień/paleta/tło/brak tekstu/margines ~70%×65%), a kończy opisem
+   motywu — kopiuj ten wspólny blok przy kolejnych podmianach w tym secie, żeby nowe grafiki się nie rozjechały)
+  pawel_nobackgroundv1.png      ← zdjęcie hero (omnie.html) — wycinek bez tła (RGBA), postać z iPadem; 2274×2766 = wersja 2× (retina) pliku poniżej.
+                                   UWAGA przy podmianie: postać ma NIEBIESKĄ bluzę o luminancji bliskiej `--color-blue` — w niebieskim hero omnie
                                    leży wprost na tle i od tła oddziela ją wyłącznie podwójny `drop-shadow` (`.svc-hero-device--portrait img`).
                                    Inny wycinek = sprawdź kontrast sylwetki na `#2563EB`, zanim podmienisz. Maska w `.me-hero-photo--cutout::before`
                                    już nie istnieje (stary jasny hero usunięty)
   pawel_nobackground.png        ← oryginał wycinka 1137×1383 (już nieużywany)
   omnie-bgremoved2.png          ← wcześniejszy wariant wycinka (już nieużywany)
   omnie-bgremoved.png           ← wcześniejszy wariant wycinka (już nieużywany)
-  omnie-koduje.webp             ← koduje stronę w domowym biurze nocą (o-mnie.html, sekcja misji, 16:9, Higgsfield nano_banana_pro) — klimat: ciepłe światło, kod + preview na monitorze, roślina
+  omnie-koduje.webp             ← koduje stronę w domowym biurze nocą (omnie.html, sekcja misji, 16:9, Higgsfield nano_banana_pro) — klimat: ciepłe światło, kod + preview na monitorze, roślina
   omnie-praca.webp              ← wcześniejsze „przy pracy" przy laptopie (już nieużywane w sekcji misji)
-  omnie_kodowanie.png           ← przy biurku od tyłu, kod na dwóch ekranach, niebieski neon fotela (o-mnie.html, sekcja „jak pracuję", 2244×2804) — UWAGA: 6,4 MB, do konwersji na webp
+  omnie_kodowanie.png           ← przy biurku od tyłu, kod na dwóch ekranach, niebieski neon fotela (omnie.html, sekcja „jak pracuję", 2244×2804) — UWAGA: 6,4 MB, do konwersji na webp
   omnie-portret.webp            ← wcześniejszy close-up portret (już nieużywany)
   proces-01-konsultacja.webp    ← ilustracja kroku 01 (proces.html, Higgsfield nano_banana_pro) — konsultacja: laptop z rozmową + dymek czatu
   proces-02-analiza.webp        ← ilustracja kroku 02 — analiza/strategia: lupa nad wykresem + checklista
@@ -115,7 +145,7 @@ PRD_lokalnewww.md
 | `#realizacje` | `.portfolio-section` — tło `#080C14`, slider transform-driven (GSAP `x`/translate3d) 5 kart, coverflow (karta najbliżej środka = `scale 1`/`opacity 1`, pozostałe `0.96`/`0.62` — podświetlenie przechodzi przez kolejne kafelki w trakcie przesuwania), pierwsza karta wyrównana do lewej krawędzi nagłówka, na ekranie 3 karty + fragment 4., prev/next + drag/touch (Pointer Events) + wolny autoplay z pauzą na hover | ✅ gotowe |
 | `#proces` | `.process-section` — tło `#F8FAFC` (jasne), 4 kroki z numerami | ✅ gotowe |
 | `#wyrozniam-sie` | `.usp-section` — tło `#fff`, 2×2 grid kart | ✅ gotowe |
-| `#o-mnie` | mini-sekcja na index (`#o-mnie-v2 .about2-section`, tło `#1A2540`) + osobna strona `o-mnie.html`; wszystkie linki „O mnie" w nav/footer prowadzą do `o-mnie.html` | ✅ gotowe |
+| `#o-mnie` | mini-sekcja na index (`#o-mnie-v2 .about2-section`, tło `#1A2540`) + osobna strona `omnie.html`; wszystkie linki „O mnie" w nav/footer prowadzą do `omnie.html` | ✅ gotowe |
 | `#kontakt` | osobna strona `kontakt.html` (nie sekcja na index) — wszystkie linki „Kontakt" i CTA konsultacji prowadzą do `kontakt.html` | ✅ gotowe |
 | `#footer` | `.footer-section` — tło `#F8FAFC`, logo+nav+social | ✅ gotowe |
 
@@ -158,7 +188,7 @@ Nav jest **jednym pillem** (`.nav-bar`) wewnątrz `.nav-wrapper`, wspólnym dla 
 
 **Paleta (świadome odstępstwo od referencji „luxury real-estate"):** referencja ma ciemne szkło + kremowe CTA. Tu zostaje paleta marki, a szkło **adaptuje się do tła**: domyślnie jasne (`--nav-glass: 255,255,255`) z ciemnymi linkami, a nad ciemnymi sekcjami (`.nav--light`, sterowane `darkSectionIds`) ciemne (`10,16,30`) z jasnymi linkami i białym hamburgerem. Ciemne szkło `0.35` na jasnym hero index.html dawałoby biały tekst na prawie białym tle. Obrys w wariancie jasnym jest **grafitowy** (`--nav-line: 15,23,42`, alpha 0.07), nie biały — biały obrys znika na jasnym hero. Nad samym hero obrysu nie ma wcale (`--nav-glass-p: 0`).
 
-**Nawigacja nad hero podstron ma ten sam jasny wariant co na `index.html`, ale w wersji BIAŁEJ, nie przymglonej (od 15.09.2026).** Hero na `oferta.html`, `proces.html`, `kontakt.html` i `o-mnie.html` jest niebieskie (`.svc-hero--case`), ale `svc-hero`/`me-hero` **nie są** w `darkSectionIds` — nav zostaje w domyślnym jasnym wariancie (ciemne logo/linki) zamiast przełączać się na `nav--light` (ciemne szkło, białe linki). Wcześniej każda podstrona z niebieskim hero dokładała je do `darkSectionIds`, żeby linki były czytelne na niebieskim tle — to nadal działało, ale dawało podstronom inny nav niż na stronie głównej.
+**Nawigacja nad hero podstron ma ten sam jasny wariant co na `index.html`, ale w wersji BIAŁEJ, nie przymglonej (od 15.09.2026).** Hero na `oferta.html`, `proces.html`, `kontakt.html` i `omnie.html` jest niebieskie (`.svc-hero--case`), ale `svc-hero`/`me-hero` **nie są** w `darkSectionIds` — nav zostaje w domyślnym jasnym wariancie (ciemne logo/linki) zamiast przełączać się na `nav--light` (ciemne szkło, białe linki). Wcześniej każda podstrona z niebieskim hero dokładała je do `darkSectionIds`, żeby linki były czytelne na niebieskim tle — to nadal działało, ale dawało podstronom inny nav niż na stronie głównej.
   - **Sam jasny wariant to za mało nad niebieskim tłem.** Domyślny tint hero to `--nav-a-hero: 0.30` — nad białym hero index.html to wystarcza (tło i tak jest jasne), ale nad niebieskim `.svc-hero--case` dawało wyraźnie niebieskawy, przezroczysty pill, nie biały. Dlatego jest **osobny override tylko dla podstron**: `body[class] #nav { --nav-a-hero: 0.94; --nav-line-a-hero: 0.10; --nav-hl-a-hero: 0.45; --nav-sh-a-hero: 0.09; }` (sekcja „Navigation" w `style.css`, tuż po `#nav.nav--light`) — pill jest biały **już w stanie hero**, nie tylko po jego opuszczeniu. `body[class]` łapie każdą podstronę automatycznie: `offer-page`/`process-page`/`contact-page`/`aboutme-page` mają klasę na `<body>`, `index.html` ma `<body>` bez żadnej klasy, więc selektor go nie dotyka i strona główna zachowuje dawny przymglony wygląd. **Nowa podstrona nie wymaga osobnej reguły**, dopóki jej `<body>` ma jakąkolwiek klasę (konwencja z sekcji „Szablon podstron").
   - Nie koliduje to z `.nav--light`: ten wariant włącza się dopiero **po** opuszczeniu hero (bo `svc-hero`/`me-hero` nie ma w `darkSectionIds`), więc token `--nav-a-hero` z override'u nigdy nie jest odczytywany w tym samym momencie co tokeny `.nav--light`.
   - Pod hero, nad realnie ciemnymi sekcjami (np. `kontakt`/`faq`/`footer` na `kontakt.html`, `svc-strony`/`svc-design`/`svc-opieka` na `oferta.html`) `nav--light` włącza się jak wcześniej — te id zostały w `darkSectionIds`. Zmierzone w DevTools na `kontakt.html`: hero `rgba(255,255,255,0.94)` → po hero `rgba(10,16,30,0.86)` (`nav--light`) → powrót na górę znów `0.94`.
@@ -204,7 +234,7 @@ Plik `oferta.html` w katalogu głównym (URL `/oferta`). Jedna strona opisująca
 
 **Sekcje szablonu (w kolejności):**
 
-1. `#svc-hero .svc-hero.svc-hero--b.svc-hero--case` — **hero „case study" na pełnym niebieskim tle** (wariant wspólny dla **wszystkich podstron**: `oferta.html`, `proces.html`, `kontakt.html` i `o-mnie.html` — patrz sekcje tych stron; jasny wariant `--b` nie jest już nigdzie używany). **Proporcje wzorowane na `marceldigital.com/case-studies`** (zmierzone w DevTools: H1 102px, kolumny 579/709 px, mockup wychodzący poza kontener, karta wcięta pod mockupem). Layout 2 kolumny (grid `55fr / 45fr`, gap `clamp(2.5rem, 4.5vw, 4rem)`, `align-items: center`; na tablecie `48fr / 52fr`, żeby karta nie robiła się wąska): lewo badge + H1 + lead, prawo `.svc-hero-media` = pierścień + mockup + karta realizacji. Padding sekcji `17.5rem 0 12rem` (tablet `14rem / 8.75rem`, mobile `11rem / 8.5rem` + `gap: 6rem` w kolumnie). **Te wartości to nie "ładne liczby", tylko wynik celu "hero +20% wysokości"** — wysokość sekcji wyznacza kolumna medialna (na 1440: media 598px vs tekst ~247px), więc wzrost trzeba było dołożyć w paddingu. Zmierzone: 894→1070 (+19.7%), 656→788 (+20.1%), 888→1068 (+20.3%). Zmieniając padding, przelicz od nowa — sam `rem` nic nie powie.
+1. `#svc-hero .svc-hero.svc-hero--b.svc-hero--case` — **hero „case study" na pełnym niebieskim tle** (wariant wspólny dla **wszystkich podstron**: `oferta.html`, `proces.html`, `kontakt.html` i `omnie.html` — patrz sekcje tych stron; jasny wariant `--b` nie jest już nigdzie używany). **Proporcje wzorowane na `marceldigital.com/case-studies`** (zmierzone w DevTools: H1 102px, kolumny 579/709 px, mockup wychodzący poza kontener, karta wcięta pod mockupem). Layout 2 kolumny (grid `55fr / 45fr`, gap `clamp(2.5rem, 4.5vw, 4rem)`, `align-items: center`; na tablecie `48fr / 52fr`, żeby karta nie robiła się wąska): lewo badge + H1 + lead, prawo `.svc-hero-media` = pierścień + mockup + karta realizacji. Padding sekcji `17.5rem 0 12rem` (tablet `14rem / 8.75rem`, mobile `11rem / 8.5rem` + `gap: 6rem` w kolumnie). **Te wartości to nie "ładne liczby", tylko wynik celu "hero +20% wysokości"** — wysokość sekcji wyznacza kolumna medialna (na 1440: media 598px vs tekst ~247px), więc wzrost trzeba było dołożyć w paddingu. Zmierzone: 894→1070 (+19.7%), 656→788 (+20.1%), 888→1068 (+20.3%). Zmieniając padding, przelicz od nowa — sam `rem` nic nie powie.
    - **Tło:** płaskie `var(--color-blue)`; `::before` (kratka) i `::after` (poświata) wyłączone przez `content: none`.
    - **H1:** dwie linie zamiast `<br>` + akcentu kolorem — `.svc-hero-h1-l1` (`font-weight: 300`) nad `.svc-hero-h1-l2` (`font-weight: 800`), obie białe. **Akcent robi grubość, nie kolor** (na niebieskim tle niebieski akcent byłby niewidoczny), więc `.svc-hero-h1-accent` nie jest tu używany. Rozmiar `clamp(2.35rem, 5vw, 4.5rem)` (72px na 1440), `line-height: 1.08`, `letter-spacing: -0.03em`.
    - **⚠️ Metryka, która decyduje o „powietrzu" w tym hero — `prześwit tekst → pierścień`.** Nie paddingi. Referencja ma tu **201px**, bo „Case Studies" to dwa krótkie słowa i najdłuższa linia zajmuje **65%** kolumny. Nasza fraza ma 18 znaków na linię, więc przy 78px zajmowała **98%** kolumny i zostawiała **18px** do pierścienia — stąd wrażenie ścisku. Wzór: `prześwit = (szer. kolumny − ink najdłuższej linii) + gap − wcięcie pierścienia`. Aktualnie: `(720 − 643) + 67 − 6 ≈ 138px`. **Zanim podbijesz rozmiar H1 albo zmienisz treść, przelicz to** — Inter 300 potrzebuje ok. `8.9 × font-size` px na „Kompleksowa oferta" przy trackingu −0.03em. Sprawdzenie na żywo: zmierz `Range.getBoundingClientRect()` na `.svc-hero-h1-l1` i porównaj z `.svc-hero-ring`. Przy tej treści sufit to ~72px; **większy nagłówek wymaga krótszej frazy, nie innych marginesów.**
@@ -259,9 +289,9 @@ Plik `kontakt.html` w katalogu głównym (URL `/kontakt`), zbudowany na szabloni
 
 ---
 
-## Strona O mnie (`o-mnie.html`)
+## Strona O mnie (`omnie.html`)
 
-Plik `o-mnie.html` w katalogu głównym (URL `/o-mnie`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. **Wszystkie linki „O mnie"** w nav i footer (`index.html`, `oferta.html`, `kontakt.html`, `o-mnie.html`) prowadzą do `o-mnie.html` (wcześniej `/#o-mnie` → mini-sekcja na stronie głównej, która dalej istnieje jako `#o-mnie-v2`, ale nie jest już celem nav).
+Plik `omnie.html` w katalogu głównym (URL `/omnie`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. **Wszystkie linki „O mnie"** w nav i footer (`index.html`, `oferta.html`, `kontakt.html`, `omnie.html`) prowadzą do `omnie.html` (wcześniej `/#o-mnie` → mini-sekcja na stronie głównej, która dalej istnieje jako `#o-mnie-v2`, ale nie jest już celem nav).
 
 **Motyw: niebieskie hero „case" + jasna reszta** — `<body class="aboutme-page">`. Hero korzysta z klas `oferta.html` (`.svc-hero.svc-hero--b.svc-hero--case`, pełne niebieskie tło), ale jest **rozebrany do dwóch elementów**: dwuliniowy H1 + lead po lewej, przycięty wycinek postaci po prawej. **Nie ma badge’a, CTA, pierścienia, kadru ani karty realizacji** — wszystkie usunięte z HTML. Hero jest niebieskie, ale `darkSectionIds = []` — nad hero nav ma jasny wariant jak na `index.html`, a że reszta strony jest jasna, nav zostaje jasny na całej stronie. Reszta strony jasna. Persona: **Paweł, freelancer od stron dla lokalnych firm**. Sekcje pod hero wzorowane na referencjach (misja + „dlaczego ja" + numerowana lista), przełożone na markę (Inter, niebieski/żółty).
 
@@ -287,7 +317,7 @@ Plik `o-mnie.html` w katalogu głównym (URL `/o-mnie`), zbudowany na szablonie 
 
 ## Strona Proces (`proces.html`)
 
-Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. Podlinkowany w nav (pill + mobile menu) i w stopce jako „Proces" na wszystkich stronach — **zastąpił dawny link „Blog", który został usunięty** z całej nawigacji (`index.html`, `oferta.html`, `kontakt.html`, `o-mnie.html`, `proces.html`). Pokazuje proces tworzenia strony WWW od pierwszego kontaktu z klientem po wdrożenie i wsparcie.
+Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. Podlinkowany w nav (pill + mobile menu) i w stopce jako „Proces" na wszystkich stronach — **zastąpił dawny link „Blog", który został usunięty** z całej nawigacji (`index.html`, `oferta.html`, `kontakt.html`, `omnie.html`, `proces.html`). Pokazuje proces tworzenia strony WWW od pierwszego kontaktu z klientem po wdrożenie i wsparcie.
 
 **Motyw: niebieskie hero + jasna, editorialna reszta (inspiracja Snøhetta)** — `<body class="process-page">`, `darkSectionIds = []`. Hero jak na oferta — od 01.09.2026 **niebieski `svc-hero--case`** (wcześniej jasny gradient + kratka); od 15.09.2026 nav nad nim ma jasny wariant jak na `index.html` (patrz „Nawigacja nad hero podstron"), a że cała reszta strony jest jasna, `darkSectionIds` zostaje pustą tablicą. Reszta strony jasna, dużo białej przestrzeni, cienkie linie między wierszami. Wizuały kroków to **ilustracje Higgsfield** (`img/proces-0X-*.webp`, `nano_banana_pro`, spójny flat set w palecie marki na off-white — tło grafiki zlewa się z panelem `.proc-step-visual`). Klasy `.proc-step-ghost` / `.proc-step-icon(-*)` + `.proc-step-visual::before` (kratka) pozostały w `style.css` jako **martwy kod** po podmianie ikon na obrazy.
 
@@ -349,7 +379,7 @@ Dwie pułapki przy dotykaniu tej reguły:
 
 **Kafle wyróżnione bento** — `.bento2-t1-text .bento2-title` i `.bento2-tile-2 .bento2-title` mają `clamp(1.5rem, 2.2vw, 2rem)` (mobile `1.6rem`). To celowa hierarchia wewnątrz bento grid (2 kafle wiodące + 4 zwykłe), nie odstępstwo do naprawy.
 
-**Świadome odstępstwa** (statement headings, nie zwykłe H2 sekcji): `.contact-h2` `clamp(2rem, 4.5vw, 3.25rem)`, `.me-why-h2` `clamp(1.9rem, 4vw, 3rem)`, `.svc-cta-h2` `clamp(1.75rem, 3vw, 2.5rem)`, `.svc-block-h3` `clamp(1.5rem, 2.5vw, 2rem)`, `.svc-hero--case .svc-hero-h1` `clamp(2.35rem, 5vw, 4.5rem)` (hero „case study" na oferta.html — celowo dominujący nagłówek w stylu referencji marceldigital.com; górna granica wynika z długości frazy, patrz sekcja o hero) i jego wariant na `o-mnie.html` `clamp(2.2rem, 4vw, 3.6rem)` (dłuższa fraza w linii 2 — patrz sekcja o hero O mnie).
+**Świadome odstępstwa** (statement headings, nie zwykłe H2 sekcji): `.contact-h2` `clamp(2rem, 4.5vw, 3.25rem)`, `.me-why-h2` `clamp(1.9rem, 4vw, 3rem)`, `.svc-cta-h2` `clamp(1.75rem, 3vw, 2.5rem)`, `.svc-block-h3` `clamp(1.5rem, 2.5vw, 2rem)`, `.svc-hero--case .svc-hero-h1` `clamp(2.35rem, 5vw, 4.5rem)` (hero „case study" na oferta.html — celowo dominujący nagłówek w stylu referencji marceldigital.com; górna granica wynika z długości frazy, patrz sekcja o hero) i jego wariant na `omnie.html` `clamp(2.2rem, 4vw, 3.6rem)` (dłuższa fraza w linii 2 — patrz sekcja o hero O mnie).
 
 ---
 
@@ -392,9 +422,9 @@ Grid: 6 kolumn, 3 rzędy (`minmax(160px, auto)` / `minmax(130px, auto)` / `auto`
 - tile-1: `1/3 × 1/3` (duży, tekst + obraz dół)
 - tile-2: `3/7 × 1` (szeroki, obraz `.bento2-tile2-deco` absolute)
 - tile-3: `3/5 × 2` (gradient niebieski)
-- tile-4: `5/7 × 2` — **Responsywność** — tekst góra + `.bento2-t4-visual` (panel dół, `height: 190px`, `overflow: hidden`, `background: #fff`) z obrazem `img/responsywnauslugav3.png`
-- tile-5: `1/4 × 3` (tekst góra + `.bento2-t5-visual` panel dół)
-- tile-6: `4/7 × 3`
+- tile-4: `5/7 × 2` — **Responsywność** — tekst góra + `.bento2-t4-visual` (panel dół, `height: 186px`, `overflow: hidden`, `background: #fff`) z obrazem `img/responsywnauslugav3.webp` (`width: 100%`)
+- tile-5: `1/4 × 3` — **Opieka nad stroną** — tekst góra + `.bento2-t5-visual` (panel dół, `height: 221px`) z `img/opiekawww.webp` (`width: 78%`). **`width` nie jest kosmetyką** — wraz z wysokością panelu decyduje, czy cała ilustracja mieści się w widocznym wycinku (patrz nota o kadrowaniu przy secie `bento-*`); 78% ustala, że górne 60% pliku trafia dokładnie w 221px panelu. Dawny `filter: drop-shadow` zdjęty 15.09.2026 — nowy render ma własny cień, a filtr rysował cień białego prostokąta bitmapy
+- tile-6: `4/7 × 3` — **Analityka Google** — tekst góra + `.bento2-t6-visual` (panel dół, `height: 283px`) z `img/googleanalytics.webp` (`width: 92%`)
 
 Wzorzec tile z obrazem dolnym (tile-4, tile-5): `padding: 28px 28px 0`, `.bento2-copy { flex: 0 0 auto }`, visual panel bleeding edge-to-edge przez ujemne marginesy `-28px`.
 
@@ -487,7 +517,7 @@ Animacje page-load (hero): klasa `.anim-init` + `.visible` dodawana przez `reque
 
 ## Ważne decyzje projektowe
 
-- Nagłówki hero podstron: **wszystkie 4 podstrony mają teraz to samo niebieskie hero `--case`** (`oferta.html`, `proces.html`, `kontakt.html`, `o-mnie.html`), więc akcent w H1 wszędzie robi **grubość fontu** (linia 300 nad linią 800) — niebieski na niebieskim byłby niewidoczny. Akcent kolorem przenosi się do leadu i jest **żółty**. Skutek uboczny ujednolicenia (01.09.2026): `.svc-hero-h1-accent` oraz `.svc-hero-label*` (badge) **nie są już używane w żadnym HTML-u** i zostają w `style.css` jako martwy kod — razem z jasnym wariantem `.svc-hero--b` (gradient + kratka) i regułą maski kratki dla `body.process-page` / `body.contact-page`. `index.html` ma własne wyróżnienie żółtym tekstem na granatowym skosie (`.hero-highlight-wrap`).
+- Nagłówki hero podstron: **wszystkie 4 podstrony mają teraz to samo niebieskie hero `--case`** (`oferta.html`, `proces.html`, `kontakt.html`, `omnie.html`), więc akcent w H1 wszędzie robi **grubość fontu** (linia 300 nad linią 800) — niebieski na niebieskim byłby niewidoczny. Akcent kolorem przenosi się do leadu i jest **żółty**. Skutek uboczny ujednolicenia (01.09.2026): `.svc-hero-h1-accent` oraz `.svc-hero-label*` (badge) **nie są już używane w żadnym HTML-u** i zostają w `style.css` jako martwy kod — razem z jasnym wariantem `.svc-hero--b` (gradient + kratka) i regułą maski kratki dla `body.process-page` / `body.contact-page`. `index.html` ma własne wyróżnienie żółtym tekstem na granatowym skosie (`.hero-highlight-wrap`).
 - Nav: `.nav-wrapper` **NIE trzyma już boksu sekcji** (`max-width: 1440px; padding: 0 24px`). Od 01.09.2026 jest to `max-width: 2000px; padding: 0 clamp(24px, 7.5vw, 150px)` — pill zajmuje ~85% szerokości okna, tak jak w referencji, i sięga w prawo mniej więcej do krawędzi mockupu wychodzącego poza kontener hero. **Skutek: logo nie równa się już z H1 sekcji poniżej** i to jest zamierzone; dawna reguła „krawędzie pilla = krawędzie treści" nie obowiązuje. Zmiana `max-w-container` w Tailwind config **nie** wymaga już zmiany `.nav-wrapper`.
 - Nav nad hero ma **glassmorphism**, a nie płaskie szkło jak wcześniej: dawny stan hero to było `alpha 0.32` + `blur 12` bez wyraźnego obrysu, czyli mleczna plama. Teraz efekt niesie **blur 16px przy ticie 0.22–0.30** plus jasny hairline i inset highlight — pasek czyta się jak tafla szkła, a nie jak półprzezroczysty prostokąt. Gęstnieje dopiero po opuszczeniu sekcji hero (patrz „Nawigacja"). Konsekwencja: na `index.html` przez całą wysokość hero (~100vh) przewija się pod paskiem mockup telefonu — widać go rozmytego przez szkło, a czytelność linków dodatkowo wspiera `text-shadow` w `#nav:not(.nav--solid)`.
 - Nav **przestał się kurczyć przy scrollu (15.09.2026, na życzenie)** — wcześniej pill fizycznie zmniejszał wysokość z 80px do 62px (mobile 68→56) po ~60px scrolla, z osobnym tweenem GSAP i sprężystym `back.out` przy powrocie na górę. Cały ten mechanizm (`NAV_STATES`, `paintNavSize`, `sizeTween`, `setNavCompact`, klasa `.scrolled` jako nośnik rozmiaru) został **usunięty**, nie tylko wyłączony — `--nav-h`/`--nav-px`/`--nav-logo`/`--nav-cta-h`/`--nav-link-px` są teraz stałymi wartościami w CSS, identycznymi z dawnym stanem „hero". Jedyna rzecz, która nadal się animuje przy scrollu, to **gęstość szkła** (`--nav-glass-p`, klasa `.nav--solid`) — ten mechanizm jest osobny i nietknięty. `--nav-squeeze` (zwężanie pilla w stanie compact) zniknęło razem z rozmiarem — nie ma już czego zwężać.
