@@ -1,0 +1,41 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-09-25T12:54:55.007Z",
+        "reason": "PRD_lokalnewww.md §4.2 i CLAUDE.md: Inter to zapisany font marki"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-25T12:55:03.268Z",
+        "reason": "Claude: jedyne trafienie to linia osi czasu w #proces (.process-line-*), 2px łącznik, nie akcent karty"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-25T12:55:03.395Z",
+        "reason": "Claude: trafienia to nav pill (padding --nav-px 22/14px) i pełnokadrowe zdjęcia kart portfolio — celowe"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "omnie.html"
+        ],
+        "createdAt": "2026-09-25T13:57:47.417Z",
+        "reason": "Claude verified both hits: .nav-bar has padding via --nav-px (detector misreads CSS var); #me-hero padding-bottom:0 is the intentional portrait cut line"
+      }
+    ]
+  }
+}

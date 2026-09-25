@@ -6,7 +6,7 @@
 
   <!-- Progressive enhancement: ukryj animowane elementy sekcji „proces" tylko gdy JS działa.
        Bez JS / gdy GSAP nie wstanie — klasa nie zostaje/jest zdejmowana i treść jest widoczna. -->
-  <script>document.documentElement.classList.add('gsap-enhance');</script>
+  <script>document.documentElement.classList.add('js', 'gsap-enhance');</script>
 
   <!-- SEO -->
   <title>Strony WWW dla lokalnych firm | lokalnewww.pl</title>
@@ -29,27 +29,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy: '#1A2540',
-            'navy-mid': '#243155',
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          maxWidth: {
-            container: '1440px',
-          }
-        }
-      }
-    }
-  </script>
 
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
@@ -80,8 +59,8 @@
          Wysokość i „szkło" pilla animuje GSAP (stan hero ↔ stan compact). -->
     <div class="nav-bar">
 
-      <a href="index.html" class="nav-logo">
-        <img src="img/logopin3Dv1.webp" alt="lokalnewww.pl — pin logo" class="logo-img">
+      <a href="index.html" class="nav-logo" aria-label="lokalnewww.pl — strona główna">
+        <img src="img/logopin3Dv1.webp" alt="" class="logo-img" width="325" height="305">
         <span class="logo-text">
           <span>lokalne</span><span>www.pl</span>
         </span>
@@ -101,7 +80,7 @@
           </span>
           Bezpłatna konsultacja
         </a>
-        <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu">
+        <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
           <span class="ham-line"></span>
           <span class="ham-line"></span>
           <span class="ham-line"></span>
@@ -138,7 +117,13 @@
 <section id="hero" class="relative bg-white overflow-hidden">
 
   <!-- Główny element wizualny (desktop): dłoń z telefonem — animowany wejściem GSAP -->
-  <img src="img/heronewv3a.webp" alt="Przykładowa strona WWW na smartfonie" class="hero-desktop-visual" aria-hidden="true">
+  <!-- Dwa kadry hero (desktop / mobile) siedzą w różnych miejscach DOM, więc każdy ma
+       własny <picture>. Na „cudzym" breakpoincie <source> podstawia 1-pikselowy GIF —
+       display:none nie blokuje pobierania, a tak każde urządzenie ściąga tylko swój kadr. -->
+  <picture class="hero-picture">
+    <source media="(max-width: 767px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+    <img src="img/heronewv3a.webp" alt="" class="hero-desktop-visual" width="3344" height="1882" fetchpriority="high">
+  </picture>
 
   <div class="hero-content relative w-full max-w-container mx-auto px-6">
     <div class="hero-text">
@@ -156,7 +141,7 @@
 
       <!-- Subheadline -->
       <p class="anim-init anim-delay-2 hero-sub text-lg mb-10">
-        Projektuję i wdrażam strony, które przyciągają klientów&nbsp; -
+        Projektuję i wdrażam strony, które przyciągają klientów&nbsp;—
         szybkie, nowoczesne i dopasowane do&nbsp;Twojego biznesu.
       </p>
 
@@ -174,7 +159,10 @@
     </div>
   </div>
 
-  <img src="img/heronewv3mobile.webp" alt="Przykładowa strona WWW na smartfonie" class="hero-mobile-img">
+  <picture class="hero-picture">
+    <source media="(min-width: 768px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+    <img src="img/heronewv3mobile.webp" alt="Przykładowa strona WWW na smartfonie" class="hero-mobile-img" width="1882" height="3344" fetchpriority="high">
+  </picture>
 
 </section>
 
@@ -206,7 +194,7 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
           </div>
         </div>
-        <p class="benefit-desc">Twoja strona pracuje nawet gdy Ty śpisz - klienci znajdą Cię o każdej porze, bez Twojego udziału.</p>
+        <p class="benefit-desc">Twoja strona pracuje, nawet gdy śpisz. Klienci znajdą Cię o każdej porze, bez Twojego udziału.</p>
       </div>
 
       <div class="benefit-card fade-up" style="transition-delay:200ms;">
@@ -216,7 +204,7 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
           </div>
         </div>
-        <p class="benefit-desc">Pojawiasz się gdy ktoś szuka Twojej usługi lub produktu w okolicy - to klienci z konkretnym zamiarem.</p>
+        <p class="benefit-desc">Pojawiasz się, gdy ktoś w okolicy szuka Twojej usługi lub produktu. To klienci z konkretnym zamiarem.</p>
       </div>
 
       <div class="benefit-card fade-up" style="transition-delay:300ms;">
@@ -244,7 +232,7 @@
     <div class="text-center mb-14 fade-up">
       <span class="services-label">Usługi</span>
       <h2 class="services-h2">Wszystko, czego potrzebuje Twoja firma.</h2>
-      <p class="services-sub">Od projektu po wdrożenie - kompleksowa obsługa w jednym miejscu.</p>
+      <p class="services-sub">Od projektu po wdrożenie — kompleksowa obsługa w jednym miejscu.</p>
     </div>
 
     <div class="bento2-grid">
@@ -255,12 +243,12 @@
             <h3 class="bento2-title">SEO</h3>
             <p class="bento2-desc">Podstawowa optymalizacja pod Google już na etapie budowy strony. Dbam o poprawną strukturę nagłówków, szybkie działanie, responsywność i treści, które pomagają stronie lepiej pracować w wynikach wyszukiwania.</p>
             <a href="oferta.html#svc-seo" class="bento2-more">
-              Zobacz szczegóły
+              Zobacz szczegóły<span class="sr-only">: SEO</span>
               <span class="bento2-more-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
           </div>
           <div class="bento2-t1-visual">
-            <img src="img/bento-seo.webp" alt="" loading="lazy">
+            <img src="img/bento-seo.webp" alt="" loading="lazy" width="1448" height="1086">
           </div>
         </div>
 
@@ -270,20 +258,20 @@
             <h3 class="bento2-title">Strony internetowe</h3>
             <p class="bento2-desc">Projektuję strony, które dobrze wyglądają, są czytelne na każdym urządzeniu i pomagają klientom szybciej podjąć decyzję o kontakcie.</p>
             <a href="oferta.html#svc-strony" class="bento2-more">
-              Zobacz szczegóły
+              Zobacz szczegóły<span class="sr-only">: Strony internetowe</span>
               <span class="bento2-more-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
           </div>
-          <img src="img/bento-stronyinternetowe.webp" alt="" class="bento2-tile2-deco" loading="lazy">
+          <img src="img/bento-stronyinternetowe.webp" alt="" class="bento2-tile2-deco" loading="lazy" width="1448" height="1086">
         </div>
 
         <!-- B · Tile 3 — Indywidualny design -->
         <div class="bento2-tile bento2-tile-3">
           <div class="bento2-copy">
             <h3 class="bento2-title">Indywidualny design</h3>
-            <p class="bento2-desc">Projekt dopasowany do marki, a nie gotowy szablon „jak każdy". Moje projekty to nowoczesny UX i design, dzięki któremu zdobędziesz nowych klientów</p>
+            <p class="bento2-desc">Projekt dopasowany do marki, a nie gotowy szablon „jak każdy”. Moje projekty to nowoczesny UX i design, dzięki któremu zdobędziesz nowych klientów.</p>
             <a href="oferta.html#svc-design" class="bento2-more">
-              Zobacz szczegóły
+              Zobacz szczegóły<span class="sr-only">: Indywidualny design</span>
               <span class="bento2-more-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
           </div>
@@ -295,12 +283,12 @@
             <h3 class="bento2-title">Responsywność</h3>
             <p class="bento2-desc">Tworzę strony, które wyglądają dobrze na telefonie, tablecie i komputerze.</p>
             <a href="oferta.html#svc-responsywnosc" class="bento2-more">
-              Zobacz szczegóły
+              Zobacz szczegóły<span class="sr-only">: Responsywność</span>
               <span class="bento2-more-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
           </div>
           <div class="bento2-t4-visual">
-            <img src="img/responsywnauslugav3.webp" alt="" class="bento2-tile4-deco" loading="lazy">
+            <img src="img/responsywnauslugav3.webp" alt="" class="bento2-tile4-deco" loading="lazy" width="1448" height="1086">
           </div>
         </div>
 
@@ -308,14 +296,14 @@
         <div class="bento2-tile bento2-tile-5">
           <div class="bento2-copy">
             <h3 class="bento2-title">Opieka nad stroną</h3>
-            <p class="bento2-desc">Masz już stronę ale nie masz czasu żeby się nią zająć? Pomogę Ci w aktualizacjach, poprawkach i rozwóju istniejących stron.</p>
+            <p class="bento2-desc">Masz już stronę, ale nie masz czasu, żeby się nią zająć? Pomogę Ci w aktualizacjach, poprawkach i rozwóju istniejących stron.</p>
             <a href="oferta.html#svc-opieka" class="bento2-more">
-              Zobacz szczegóły
+              Zobacz szczegóły<span class="sr-only">: Opieka nad stroną</span>
               <span class="bento2-more-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
           </div>
           <div class="bento2-t5-visual">
-            <img src="img/opiekawww.webp" alt="" loading="lazy">
+            <img src="img/opiekawww.webp" alt="" loading="lazy" width="1448" height="1086">
           </div>
         </div>
 
@@ -323,14 +311,14 @@
         <div class="bento2-tile bento2-tile-6">
           <div class="bento2-copy">
             <h3 class="bento2-title">Analityka Google</h3>
-            <p class="bento2-desc">Podpinam Google Analytics do mierzenie ruchu na stronie - dzięki temu będziesz wiedział więcej o swoich klientach.</p>
+            <p class="bento2-desc">Podpinam Google Analytics do mierzenia ruchu na stronie, dzięki czemu dowiesz się więcej o swoich klientach.</p>
             <a href="oferta.html#svc-analityka" class="bento2-more">
-              Zobacz szczegóły
+              Zobacz szczegóły<span class="sr-only">: Analityka Google</span>
               <span class="bento2-more-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
           </div>
           <div class="bento2-t6-visual">
-            <img src="img/googleanalytics.webp" alt="" loading="lazy">
+            <img src="img/googleanalytics.webp" alt="" loading="lazy" width="1448" height="1086">
           </div>
         </div>
 
@@ -352,6 +340,11 @@
         <h2 class="portfolio-h2">Projekty, które<br>pokazują mój styl pracy.</h2>
       </div>
       <div class="portfolio-nav-btns">
+        <!-- Pauza autoplay (WCAG 2.2.2) — pokazywana przez JS tylko, gdy autoplay działa -->
+        <button class="portfolio-nav-btn portfolio-nav-btn--ghost" id="portfolio-toggle" aria-label="Zatrzymaj automatyczne przewijanie" hidden>
+          <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+        </button>
         <button class="portfolio-nav-btn" id="portfolio-prev" aria-label="Poprzedni projekt">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
@@ -368,7 +361,7 @@
       <!-- Karta 1 -->
       <article class="portfolio-card">
         <div class="portfolio-card-inner">
-          <img src="img/barbermockup.webp" alt="Salon fryzjerski Barber — strona WWW" loading="lazy" draggable="false">
+          <img src="img/barbermockup.webp" alt="Salon fryzjerski Barber — strona WWW" loading="lazy" draggable="false" width="1254" height="1254">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
           <div class="portfolio-card-content">
             <h3 class="portfolio-card-name">Barber</h3>
@@ -379,7 +372,7 @@
       <!-- Karta 2 -->
       <article class="portfolio-card">
         <div class="portfolio-card-inner">
-          <img src="img/sewisbmwmockup.webp" alt="Serwis BMW — strona WWW" loading="lazy" draggable="false">
+          <img src="img/sewisbmwmockup.webp" alt="Serwis BMW — strona WWW" loading="lazy" draggable="false" width="1254" height="1254">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
           <div class="portfolio-card-content">
             <h3 class="portfolio-card-name">Serwis BMW</h3>
@@ -390,7 +383,7 @@
       <!-- Karta 3 -->
       <article class="portfolio-card">
         <div class="portfolio-card-inner">
-          <img src="img/fizjomockup.webp" alt="Gabinet fizjoterapii — strona WWW" loading="lazy" draggable="false">
+          <img src="img/fizjomockup.webp" alt="Gabinet fizjoterapii — strona WWW" loading="lazy" draggable="false" width="1254" height="1254">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
           <div class="portfolio-card-content">
             <h3 class="portfolio-card-name">Gabinet Fizjoterapii</h3>
@@ -401,7 +394,7 @@
       <!-- Karta 4 -->
       <article class="portfolio-card">
         <div class="portfolio-card-inner">
-          <img src="img/burgerowniamockup.webp" alt="Burgerownia — strona WWW" loading="lazy" draggable="false">
+          <img src="img/burgerowniamockup.webp" alt="Burgerownia — strona WWW" loading="lazy" draggable="false" width="1254" height="1254">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
           <div class="portfolio-card-content">
             <h3 class="portfolio-card-name">Burgerownia</h3>
@@ -412,7 +405,7 @@
       <!-- Karta 5 -->
       <article class="portfolio-card">
         <div class="portfolio-card-inner">
-          <img src="img/szkolaplywaniamockup.webp" alt="Szkoła pływania Aqua — strona WWW z rezerwacjami" loading="lazy" draggable="false">
+          <img src="img/szkolaplywaniamockup.webp" alt="Szkoła pływania Aqua — strona WWW z rezerwacjami" loading="lazy" draggable="false" width="1254" height="1254">
           <div class="portfolio-card-overlay" aria-hidden="true"></div>
           <div class="portfolio-card-content">
             <h3 class="portfolio-card-name">Szkoła Pływania</h3>
@@ -439,7 +432,7 @@
         <div class="fade-up">
           <span class="usp-label">Dlaczego ja?</span>
           <h2 class="usp-h2">Bezpośrednia współpraca, lepszy efekt</h2>
-          <p class="usp-sub">Pracujesz ze mną 1:1 - dzięki temu szybciej podejmujemy decyzje i łatwiej dopracowujemy szczegóły.</p>
+          <p class="usp-sub">Pracujesz ze mną 1:1, więc szybciej podejmujemy decyzje i łatwiej dopracowujemy szczegóły.</p>
         </div>
 
         <div class="usp-grid">
@@ -447,13 +440,13 @@
           <div class="usp-item fade-up" style="transition-delay:80ms">
             <span class="usp-num">01</span>
             <h3 class="usp-title">Szybka realizacja</h3>
-            <p class="usp-desc">Pierwsza wersja w do 14 dni roboczych. Działam sprawnie, bo Twój czas jest cenny.</p>
+            <p class="usp-desc">Pierwsza wersja strony w maksymalnie 14 dni roboczych. Działam sprawnie, bo Twój czas jest cenny.</p>
           </div>
 
           <div class="usp-item fade-up" style="transition-delay:180ms">
             <span class="usp-num">02</span>
             <h3 class="usp-title">Wiesz, kto pracuje nad Twoją stroną</h3>
-            <p class="usp-desc">Nie trafiasz do anonimowego zespołu ani działu obsługi. Rozmawiasz ze mną na każdym etapie - od pierwszej rozmowy po publikację strony.</p>
+            <p class="usp-desc">Nie trafiasz do anonimowego zespołu ani działu obsługi. Rozmawiasz ze mną na każdym etapie: od pierwszej rozmowy po publikację strony.</p>
           </div>
 
           <div class="usp-item fade-up" style="transition-delay:280ms">
@@ -473,7 +466,13 @@
 
       <!-- Prawa kolumna — video -->
       <div class="usp-photo fade-up" style="transition-delay:200ms">
-        <video src="img/aboutmevideo.mp4" class="usp-photo-img" autoplay muted loop playsinline></video>
+        <!-- Bez atrybutu autoplay: odtwarzanie włącza JS, tylko gdy wideo jest na ekranie
+             i użytkownik nie ma prefers-reduced-motion. Przycisk pozwala je zatrzymać (WCAG 2.2.2). -->
+        <video src="img/aboutmevideo.mp4" class="usp-photo-img" muted loop playsinline preload="none" poster="img/aboutmevideo-poster.webp" width="720" height="1280" aria-hidden="true"></video>
+        <button type="button" class="usp-video-toggle" aria-label="Odtwórz wideo" hidden>
+          <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+        </button>
       </div>
 
     </div>
@@ -567,7 +566,7 @@
         <div class="process-ghost" aria-hidden="true">04</div>
         <div class="process-body">
           <h3 class="process-title">Wdrożenie i wsparcie</h3>
-          <p class="process-desc">Uruchamiam stronę i uczę jak z niej korzystać. Jestem dostępny po wdrożeniu.</p>
+          <p class="process-desc">Uruchamiam stronę i uczę, jak z niej korzystać. Jestem dostępny po wdrożeniu.</p>
         </div>
       </div>
 
@@ -652,9 +651,9 @@
 <!-- ============================================================
      Biblioteki animacji: GSAP + ScrollTrigger + Lenis (smooth scroll)
      ============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
 <!-- ============================================================
      Animacja sekcji „proces": progress timeline reveal (GSAP)
@@ -1000,16 +999,30 @@
   }
 
   // --- Autoplay (bardzo wolny, pauza na hover / interakcji) ---
-  let autoId = null, autoEnabled = false;
+  // userPaused — użytkownik wyłączył autoplay przyciskiem (trwałe do ponownego kliknięcia);
+  // hovered / focused — chwilowa pauza, gdy kursor albo focus klawiatury jest w sekcji.
+  let autoId = null, autoEnabled = false, userPaused = false, hovered = false, focused = false;
+  const toggleBtn = document.getElementById('portfolio-toggle');
   function autoNext() {
     goTo(activeIdx >= last ? 0 : activeIdx + 1, 1.2);   // po ostatniej wróć płynnie na start
   }
   function startAutoplay() {
     stopAutoplay();
-    if (!autoEnabled || minX >= 0) return;
+    if (!autoEnabled || minX >= 0 || userPaused || hovered || focused) return;
     autoId = window.setInterval(() => { if (!document.hidden) autoNext(); }, 5000);
   }
   function stopAutoplay() { if (autoId) { clearInterval(autoId); autoId = null; } }
+  function syncToggle() {
+    if (!toggleBtn) return;
+    toggleBtn.hidden = !autoEnabled || minX >= 0;
+    toggleBtn.classList.toggle('is-paused', userPaused);
+    toggleBtn.setAttribute('aria-label', userPaused ? 'Wznów automatyczne przewijanie' : 'Zatrzymaj automatyczne przewijanie');
+  }
+  if (toggleBtn) toggleBtn.addEventListener('click', () => {
+    userPaused = !userPaused;
+    syncToggle();
+    startAutoplay();
+  });
 
   // --- Przyciski ---
   if (prevBtn) prevBtn.addEventListener('click', () => { goTo(activeIdx - 1); startAutoplay(); });
@@ -1049,9 +1062,18 @@
   // blokuj „ducha" kliknięcia po przeciągnięciu
   slider.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
 
-  // Pauza autoplay na hover
-  slider.addEventListener('mouseenter', stopAutoplay);
-  slider.addEventListener('mouseleave', startAutoplay);
+  // Pauza autoplay na hover oraz gdy focus klawiatury jest w sekcji
+  slider.addEventListener('mouseenter', () => { hovered = true;  stopAutoplay(); });
+  slider.addEventListener('mouseleave', () => { hovered = false; startAutoplay(); });
+  // tylko focus z klawiatury — klik myszą też daje focus, a hover obsłużono wyżej
+  section.addEventListener('focusin', (e) => {
+    if (!e.target.matches(':focus-visible')) return;
+    focused = true; stopAutoplay();
+  });
+  section.addEventListener('focusout', (e) => {
+    if (section.contains(e.relatedTarget)) return;
+    focused = false; startAutoplay();
+  });
 
   // --- Reveal wejścia sekcji (ScrollTrigger) ---
   const label   = section.querySelector('.portfolio-label');
@@ -1067,6 +1089,7 @@
       curX = 0; activeIdx = -1;
       setActive(0);                // efekt startuje na pierwszej karcie
       autoEnabled = true;
+      syncToggle();
       startAutoplay();
     }
   });
@@ -1091,9 +1114,48 @@
     rt = setTimeout(() => {
       measure();
       goTo(Math.max(0, activeIdx), 0);   // przelicz pozycję aktywnej karty po zmianie szerokości
+      syncToggle();
       startAutoplay();
     }, 150);
   });
+})();
+</script>
+
+<!-- ============================================================
+     Wideo w sekcji „wyróżniam się": odtwarzane tylko na ekranie,
+     nigdy przy prefers-reduced-motion, z przyciskiem pauzy (WCAG 2.2.2).
+     ============================================================ -->
+<script>
+(function () {
+  const video = document.querySelector('#wyrozniam-sie .usp-photo-img');
+  const btn   = document.querySelector('#wyrozniam-sie .usp-video-toggle');
+  if (!video || !btn) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let userPaused = reduceMotion;   // przy reduce-motion start wyłącznie z przycisku
+  let inView = false;
+
+  function sync() {
+    const playing = !video.paused;
+    btn.classList.toggle('is-paused', !playing);
+    btn.setAttribute('aria-label', playing ? 'Zatrzymaj wideo' : 'Odtwórz wideo');
+  }
+  function update() {
+    if (inView && !userPaused) video.play().catch(() => {});
+    else video.pause();
+  }
+
+  video.addEventListener('play', sync);
+  video.addEventListener('pause', sync);
+  btn.addEventListener('click', () => { userPaused = !video.paused; update(); });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; update(); }, { threshold: 0.25 }).observe(video);
+  } else {
+    inView = true; update();
+  }
+  btn.hidden = false;
+  sync();
 })();
 </script>
 
@@ -1193,12 +1255,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn     = document.querySelector('[data-menu-close]');
   const menuLinks    = document.querySelectorAll('[data-menu-link]');
 
-  const openMenu  = () => { mobileMenu.classList.add('open');    document.body.style.overflow = 'hidden'; };
-  const closeMenu = () => { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; };
+  // Menu to modalny dialog: focus wchodzi do środka i w nim zostaje (Tab/Shift+Tab),
+  // Esc zamyka, a po zamknięciu focus wraca na hamburger.
+  const menuFocusables = () => mobileMenu.querySelectorAll('a[href], button:not([disabled])');
+  const openMenu = () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    toggle?.setAttribute('aria-expanded', 'true');
+    closeBtn?.focus();
+  };
+  const closeMenu = ({ restoreFocus = true } = {}) => {
+    if (!mobileMenu.classList.contains('open')) return;
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+    toggle?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) toggle?.focus();
+  };
 
   toggle?.addEventListener('click', openMenu);
-  closeBtn?.addEventListener('click', closeMenu);
-  menuLinks.forEach(l => l.addEventListener('click', closeMenu));
+  closeBtn?.addEventListener('click', () => closeMenu());
+  menuLinks.forEach(l => l.addEventListener('click', () => closeMenu({ restoreFocus: false })));
+  mobileMenu?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); closeMenu(); return; }
+    if (e.key !== 'Tab') return;
+    const items = menuFocusables();
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
 
   // 3. IntersectionObserver — animacje scroll
   const observer = new IntersectionObserver((entries) => {

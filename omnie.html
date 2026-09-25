@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Progresywne wzbogacenie animacjami — klasa zdejmowana przez JS gdy brak GSAP / reduce-motion -->
-  <script>document.documentElement.classList.add('gsap-enhance');</script>
+  <script>document.documentElement.classList.add('js', 'gsap-enhance');</script>
 
   <!-- SEO -->
   <title>O mnie — Paweł, twórca stron dla lokalnych firm | lokalnewww.pl</title>
@@ -24,20 +24,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { navy: '#1A2540', 'navy-mid': '#243155' },
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-          maxWidth: { container: '1440px' }
-        }
-      }
-    }
-  </script>
-
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -54,8 +40,8 @@
          Wysokość i „szkło" pilla animuje GSAP (stan hero ↔ stan compact). -->
     <div class="nav-bar">
 
-      <a href="index.html" class="nav-logo">
-        <img src="img/logopin3Dv1.webp" alt="lokalnewww.pl — pin logo" class="logo-img">
+      <a href="index.html" class="nav-logo" aria-label="lokalnewww.pl — strona główna">
+        <img src="img/logopin3Dv1.webp" alt="" class="logo-img">
         <span class="logo-text">
           <span>lokalne</span><span>www.pl</span>
         </span>
@@ -75,7 +61,7 @@
           </span>
           Bezpłatna konsultacja
         </a>
-        <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu">
+        <button data-menu-toggle class="nav-hamburger" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
           <span class="ham-line"></span>
           <span class="ham-line"></span>
           <span class="ham-line"></span>
@@ -107,7 +93,7 @@
 
 
 <!-- ============================================================
-     HERO — niebieski „case", jak na oferta.html: nagłówek + portret w ramce
+     HERO — niebieski „case", jak na oferta.html: nagłówek + wycinek postaci (bez ramki)
      ============================================================ -->
 <section id="me-hero" class="svc-hero svc-hero--b svc-hero--case">
   <div class="max-w-container mx-auto px-6">
@@ -120,7 +106,7 @@
             <span class="svc-hero-h1-l2">Tworzę strony WWW</span>
           </h1>
           <p class="svc-hero-b-lead">
-            Pomagam lokalnym firmom zaistnieć w sieci - tworzę strony,
+            Pomagam lokalnym firmom zaistnieć w sieci – tworzę strony,
             które <strong>przyciągają klientów</strong>. Bez stresu, w ustalonym terminie
             i z dbałością o każdy detal.
           </p>
@@ -128,7 +114,10 @@
 
         <div class="svc-hero-media">
           <div class="svc-hero-device svc-hero-device--portrait">
-            <img src="img/pawel_nobackgroundv1.png" alt="Paweł — twórca stron internetowych dla lokalnych firm, prezentujący projekt na iPadzie" width="2274" height="2766">
+            <img src="img/pawel-portret-1100.webp"
+                 srcset="img/pawel-portret-700.webp 700w, img/pawel-portret-1100.webp 1100w, img/pawel-portret-1600.webp 1600w"
+                 sizes="(max-width: 767px) calc(100vw - 3rem), (max-width: 1023px) 58vw, min(56vw, 800px)"
+                 alt="Paweł — twórca stron internetowych dla lokalnych firm, prezentujący projekt na iPadzie" width="1600" height="1946" fetchpriority="high">
           </div>
         </div>
 
@@ -139,7 +128,7 @@
 
 
 <!-- ============================================================
-     MISJA — akapit + karta ze statystyką + zdjęcie (wzór: screen 2)
+     MISJA — akapit (reveal słów przy scrollu) + szerokie zdjęcie
      ============================================================ -->
 <section id="me-mission" class="me-mission">
   <div class="max-w-container mx-auto px-6">
@@ -212,7 +201,7 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </span>
         <h3 class="me-why-card-title">Terminowość</h3>
-        <p class="me-why-card-desc">Realizuję projekt w ustalonym terminie i na bieżąco informuję Cię o postępach prac, żebyś zawsze wiedział, na jakim etapie jesteśmy.</p>
+        <p class="me-why-card-desc">Realizuję projekt w ustalonym terminie i na bieżąco informuję Cię o postępach prac, żeby zawsze było jasne, na jakim etapie jesteśmy.</p>
       </article>
 
       <article class="me-why-card fade-up" style="transition-delay:180ms">
@@ -253,7 +242,7 @@
 
 
 <!-- ============================================================
-     JAK PRACUJĘ — numerowana lista + zdjęcie (wzór: screen 2)
+     JAK PRACUJĘ — numerowana lista linków do usług + zdjęcie
      ============================================================ -->
 <section id="me-approach" class="me-sol">
   <div class="max-w-container mx-auto px-6">
@@ -263,34 +252,47 @@
     <div class="me-sol-grid">
 
       <div class="me-sol-photo fade-up">
-        <img src="img/omnie_kodowanie.png" alt="Paweł przy pracy — kodowanie strony na dwóch ekranach w domowym biurze" width="2244" height="2804" loading="lazy">
+        <img src="img/omnie-kodowanie-1000.webp"
+             srcset="img/omnie-kodowanie-600.webp 600w, img/omnie-kodowanie-1000.webp 1000w"
+             sizes="(max-width: 767px) 320px, 34vw"
+             alt="Paweł przy pracy — kodowanie strony na dwóch ekranach w domowym biurze" width="1000" height="1250" loading="lazy" decoding="async">
       </div>
 
       <ol class="me-sol-list fade-up" style="transition-delay:100ms">
         <li class="me-sol-row me-sol-row--active">
-          <span class="me-sol-num">01.</span>
-          <span class="me-sol-title">Indywidualny design skrojony na miarę</span>
-          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <a class="me-sol-link" href="oferta.html#svc-design">
+            <span class="me-sol-num">01.</span>
+            <span class="me-sol-title">Indywidualny design skrojony na miarę</span>
+            <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          </a>
         </li>
         <li class="me-sol-row">
-          <span class="me-sol-num">02.</span>
-          <span class="me-sol-title">Widoczność w Google i SEO lokalne</span>
-          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <a class="me-sol-link" href="oferta.html#svc-seo">
+            <span class="me-sol-num">02.</span>
+            <span class="me-sol-title">Widoczność w Google i SEO lokalne</span>
+            <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          </a>
         </li>
         <li class="me-sol-row">
-          <span class="me-sol-num">03.</span>
-          <span class="me-sol-title">Szybkość i pełna responsywność</span>
-          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <a class="me-sol-link" href="oferta.html#svc-responsywnosc">
+            <span class="me-sol-num">03.</span>
+            <span class="me-sol-title">Szybkość i pełna responsywność</span>
+            <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          </a>
         </li>
         <li class="me-sol-row">
-          <span class="me-sol-num">04.</span>
-          <span class="me-sol-title">Opieka i wsparcie po wdrożeniu</span>
-          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <a class="me-sol-link" href="oferta.html#svc-opieka">
+            <span class="me-sol-num">04.</span>
+            <span class="me-sol-title">Opieka i wsparcie po wdrożeniu</span>
+            <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          </a>
         </li>
         <li class="me-sol-row">
-          <span class="me-sol-num">05.</span>
-          <span class="me-sol-title">Jeden kontakt i jasna komunikacja</span>
-          <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <a class="me-sol-link" href="kontakt.html">
+            <span class="me-sol-num">05.</span>
+            <span class="me-sol-title">Jeden kontakt i jasna komunikacja</span>
+            <span class="me-sol-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          </a>
         </li>
       </ol>
 
@@ -389,9 +391,9 @@
 <!-- ============================================================
      Biblioteki animacji: GSAP + ScrollTrigger + Lenis (smooth scroll)
      ============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1/bundled/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
 <!-- ============================================================
      Lenis smooth scroll (spięty z GSAP tickerem, jeśli dostępny)
@@ -469,7 +471,7 @@
   // duration > stagger => kilka słów rozjaśnia się naraz, więc czyta się to
   // jak miękka fala, a nie jak zapalanie pojedynczych żarówek
   window.gsap.fromTo(words,
-    { opacity: 0.12 },
+    { opacity: 0.22 },   // 0.22, nie 0.12 — nierozjaśnione słowa mają dać się przeczytać, gdy ktoś przestanie scrollować
     {
       opacity: 1,
       ease: 'none',
@@ -478,7 +480,7 @@
       scrollTrigger: {
         trigger: el,
         start: 'top 78%',
-        end: 'bottom 20%',   // ~750px scrolla na 31 slow; przy 55% wipe konczyl sie po 388px i byl zbyt gwaltowny
+        end: 'bottom 40%',   // fala kończy się, gdy akapit jest jeszcze w strefie czytania; przy 20% ostatnie słowa były przygaszone w trakcie lektury, a 55% dawało zbyt gwałtowny wipe
         scrub: 0.4
       }
     }
@@ -626,12 +628,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = document.querySelector('[data-menu-close]');
   const menuLinks = document.querySelectorAll('[data-menu-link]');
 
-  const openMenu  = () => { mobileMenu.classList.add('open');    document.body.style.overflow = 'hidden'; };
-  const closeMenu = () => { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; };
+  // Menu to modalny dialog: focus wchodzi do środka i w nim zostaje (Tab/Shift+Tab),
+  // Esc zamyka, a po zamknięciu focus wraca na hamburger.
+  const menuFocusables = () => mobileMenu.querySelectorAll('a[href], button:not([disabled])');
+  const openMenu = () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    toggle?.setAttribute('aria-expanded', 'true');
+    closeBtn?.focus();
+  };
+  const closeMenu = ({ restoreFocus = true } = {}) => {
+    if (!mobileMenu.classList.contains('open')) return;
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+    toggle?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) toggle?.focus();
+  };
 
   toggle?.addEventListener('click', openMenu);
-  closeBtn?.addEventListener('click', closeMenu);
-  menuLinks.forEach(l => l.addEventListener('click', closeMenu));
+  closeBtn?.addEventListener('click', () => closeMenu());
+  menuLinks.forEach(l => l.addEventListener('click', () => closeMenu({ restoreFocus: false })));
+  mobileMenu?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); closeMenu(); return; }
+    if (e.key !== 'Tab') return;
+    const items = menuFocusables();
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
 
   // 3. IntersectionObserver — animacje scroll
   const observer = new IntersectionObserver((entries) => {
