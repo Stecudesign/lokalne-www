@@ -3383,7 +3383,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 .me-why-h2-accent { color: var(--color-blue); }
 .me-why-sub {
   margin: 1rem 0 0;
-  font-size: 1.05rem;
+  font-size: 1.0625rem; /* standard leadu pod H2 */
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -3398,12 +3398,8 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   background: #fff;
   border: 1px solid rgba(15,23,42,0.06);
   border-radius: 22px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-.me-why-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(15,23,42,0.12);
+  /* bez hovera (26.09.2026): karty nie są linkami, a lift + cień sugerowały klikalność —
+     tak jak na index.html (benefit) i proces.html */
 }
 /* Monochromatyczne, liniowe ikony — bez tła, jeden stonowany kolor, cienki stroke */
 .me-why-icon {
@@ -3412,14 +3408,12 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   justify-content: center;
   margin-bottom: 1.5rem;
   color: var(--color-navy);
-  transition: transform 0.3s ease;
 }
 .me-why-icon svg {
   width: 28px;
   height: 28px;
   stroke-width: 1.5;
 }
-.me-why-card:hover .me-why-icon { transform: scale(1.08); }
 /* warianty kolorów zneutralizowane — ikony są monochromatyczne */
 .me-why-icon--amber,
 .me-why-icon--navy,
@@ -3441,11 +3435,14 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 
 /* ---- Jak pracuję: numerowana lista + zdjęcie ---- */
 .me-sol { padding: 2rem 0 6rem; }
+/* Ten sam stopień co .me-why-h2 (świadome odstępstwo „statement heading”, patrz CLAUDE.md) —
+   wcześniej 3.4rem, czyli większy od każdego H2 w serwisie bez uzasadnienia */
 .me-sol-h2 {
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-size: clamp(1.9rem, 4vw, 3rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.06;
+  line-height: 1.08;
+  text-wrap: balance;
   color: var(--color-text-primary);
   margin: 0 0 3rem;
 }
@@ -3580,6 +3577,11 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   .me-sol { padding: 1rem 0 4rem; }
   .me-sol-grid { grid-template-columns: 1fr; gap: 2rem; }
   .me-sol-photo { max-width: 320px; aspect-ratio: 4 / 5; }
+  /* twarde <br> w H2 ustawiają łamanie pod desktop; na wąskim ekranie pierwsza linia
+     i tak się zawija, więc zostawały poszarpane 3–4 wiersze — tu łamie balance */
+  body.aboutme-page .me-sol-h2 br,
+  body.aboutme-page .svc-cta-h2 br { display: none; }
+  body.aboutme-page .svc-cta-h2 { text-wrap: balance; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
