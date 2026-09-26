@@ -18,6 +18,7 @@
   <meta property="og:description" content="Strony internetowe, indywidualny design, SEO, responsywność, opieka nad stroną i analityka Google — kompleksowa obsługa dla lokalnych firm.">
   <meta property="og:url" content="https://lokalnewww.pl/oferta">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +30,7 @@
 </head>
 <body class="offer-page">
 
+<a href="#main" class="skip-link">Przejdź do treści</a>
 
 <!-- ============================================================
      NAWIGACJA
@@ -95,20 +97,22 @@
 <!-- ============================================================
      HERO — niebieski, 2 kolumny: nagłówek + realizacja w ramce
      ============================================================ -->
+<main id="main" tabindex="-1">
 <section id="svc-hero" class="svc-hero svc-hero--b svc-hero--case">
   <div class="max-w-container mx-auto px-6">
-    <div class="svc-hero-inner fade-up">
+    <!-- bez .fade-up: H1 i kadr (LCP) mają być widoczne od pierwszego renderu,
+         a nie czekać na DOMContentLoaded, czyli na skrypty z CDN -->
+    <div class="svc-hero-inner">
       <div class="svc-hero-b-row">
 
         <div class="svc-hero-b-main">
-    
           <h1 class="svc-hero-h1">
             <span class="svc-hero-h1-l1">Kompleksowa oferta</span>
             <span class="svc-hero-h1-l2">dla lokalnych firm</span>
           </h1>
           <p class="svc-hero-b-lead">
-            Tworzę nowoczesne strony: od projektu i designu,
-            przez widoczność w Google, po wsparcie po wdrożeniu.
+            Tworzę nowoczesne strony: od projektu i&nbsp;designu,
+            przez widoczność w&nbsp;Google, po wsparcie po wdrożeniu.
           </p>
         </div>
 
@@ -125,11 +129,14 @@
                     stroke-linecap="round" stroke-dasharray="452 114" transform="rotate(108 100 100)"/>
           </svg>
           <div class="svc-hero-device">
-            <img src="img/szkolaplywaniamockup-laptop.webp" alt="Przykładowy projekt strony dla szkoły pływania na ekranie laptopa" width="1254" height="1254">
+            <img src="img/szkolaplywaniamockup-laptop-800.webp"
+                 srcset="img/szkolaplywaniamockup-laptop-800.webp 800w, img/szkolaplywaniamockup-laptop.webp 1254w"
+                 sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 46vw, 640px"
+                 alt="Przykładowy projekt strony dla szkoły pływania na ekranie laptopa" width="1254" height="1254" fetchpriority="high">
           </div>
           <div class="svc-hero-case">
             <p class="svc-hero-case-title">Od szkicu do gotowej strony</p>
-            <p class="svc-hero-case-desc">Projekt, wdrożenie, widoczność w Google i opieka po starcie. Wszystko u jednej osoby.</p>
+            <p class="svc-hero-case-desc">Projekt, wdrożenie, widoczność w&nbsp;Google i&nbsp;opieka po starcie. Wszystko u&nbsp;jednej osoby.</p>
           </div>
         </div>
 
@@ -144,24 +151,24 @@
     <div class="svc-block fade-up">
       <div class="svc-block-text">
         <h2 class="svc-block-h3">Strony internetowe</h2>
-        <p class="svc-block-desc">Projektuję strony, które dobrze wyglądają, są czytelne na każdym urządzeniu i pomagają klientom szybciej podjąć decyzję o kontakcie: od prostej wizytówki po rozbudowaną ofertę usług.</p>
+        <p class="svc-block-desc">Projektuję strony, które dobrze wyglądają, są czytelne na każdym urządzeniu i&nbsp;pomagają klientom szybciej podjąć decyzję o&nbsp;kontakcie: od prostej wizytówki po rozbudowaną ofertę usług.</p>
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
             <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Strona firmowa lub wizytówka</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Przejrzysta strona, która przedstawia Twoją firmę, usługi i dane kontaktowe. Idealna na start i do budowania wiarygodności.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Przejrzysta strona, która przedstawia Twoją firmę, usługi i&nbsp;dane kontaktowe. Idealna na start i&nbsp;do budowania wiarygodności.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Landing page</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
             <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Jedna, skoncentrowana strona nastawiona na konkretny cel: telefon, zapytanie lub rezerwację.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Przyciski i formularze kontaktu</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Wyraźne przyciski CTA i prosty formularz, dzięki którym łatwo zamienić odwiedzającego w klienta.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Przyciski i&nbsp;formularze kontaktu</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Wyraźne przyciski CTA i&nbsp;prosty formularz, dzięki którym łatwo zamienić odwiedzającego w&nbsp;klienta.</p></div></div>
           </div>
         </div>
       </div>
       <div class="svc-block-visual">
-        <img src="img/oferta-strony.webp" alt="Nowoczesna strona internetowa dla lokalnej firmy" class="svc-block-img" loading="lazy" width="1200" height="896">
+        <img src="img/oferta-strony.webp" alt="" class="svc-block-img" loading="lazy" width="1200" height="896">
       </div>
     </div>
   </div>
@@ -172,25 +179,25 @@
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block svc-block--rev fade-up">
       <div class="svc-block-text">
-        <h2 class="svc-block-h3">SEO — widoczność w Google</h2>
-        <p class="svc-block-desc">Podstawowa optymalizacja pod Google już na etapie budowy strony. Dbam o to, żeby strona nie tylko dobrze wyglądała, ale też realnie pracowała na Twoich nowych klientów.</p>
+        <h2 class="svc-block-h3">SEO — widoczność w&nbsp;Google</h2>
+        <p class="svc-block-desc">Podstawowa optymalizacja pod Google już na etapie budowy strony. Dbam o&nbsp;to, żeby strona nie tylko dobrze wyglądała, ale też realnie pracowała na Twoich nowych klientów.</p>
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
             <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Optymalizacja techniczna</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Poprawna struktura nagłówków H1–H3, przyjazne adresy URL oraz mapa strony, które ułatwiają Google zrozumienie i indeksowanie Twojej witryny.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Poprawna struktura nagłówków H1–H3, przyjazne adresy URL oraz mapa strony, które ułatwiają Google zrozumienie i&nbsp;indeksowanie Twojej witryny.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Szybkość i Core Web Vitals</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Optymalizuję wagę grafik i kod, aby strona ładowała się błyskawicznie. To jeden z czynników, które Google bierze pod uwagę w rankingu.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Szybkość i&nbsp;Core Web Vitals</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Optymalizuję wagę grafik i&nbsp;kod, aby strona ładowała się błyskawicznie. To jeden z&nbsp;czynników, które Google bierze pod uwagę w&nbsp;rankingu.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">SEO lokalne</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Ustawiam stronę pod frazy z Twojego miasta i okolicy oraz przygotowuję ją pod wizytówkę Google, żeby klienci z regionu trafiali właśnie do Ciebie.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Ustawiam stronę pod frazy z&nbsp;Twojego miasta i&nbsp;okolicy oraz przygotowuję ją pod wizytówkę Google, żeby klienci z&nbsp;regionu trafiali właśnie do Ciebie.</p></div></div>
           </div>
         </div>
       </div>
       <div class="svc-block-visual">
-        <img src="img/oferta-seo.webp" alt="SEO — optymalizacja strony pod Google" class="svc-block-img" loading="lazy" width="1200" height="896">
+        <img src="img/oferta-seo.webp" alt="" class="svc-block-img" loading="lazy" width="1200" height="896">
       </div>
     </div>
   </div>
@@ -202,24 +209,24 @@
     <div class="svc-block fade-up">
       <div class="svc-block-text">
         <h2 class="svc-block-h3">Indywidualny design</h2>
-        <p class="svc-block-desc">Projekt dopasowany do marki, a nie gotowy szablon „jak każdy”. Nowoczesny UX i design, dzięki któremu wyróżnisz się na tle konkurencji i zdobędziesz nowych klientów.</p>
+        <p class="svc-block-desc">Projekt dopasowany do marki, a&nbsp;nie gotowy szablon „jak każdy”. Nowoczesny UX i&nbsp;design, dzięki któremu wyróżnisz się na tle konkurencji i&nbsp;zdobędziesz nowych klientów.</p>
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
             <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Projekt szyty na miarę</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Żadnych gotowych szablonów „jak każdy”. Układ i styl dopasowuję do Twojej marki, branży i klientów.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Żadnych gotowych szablonów „jak każdy”. Układ i&nbsp;styl dopasowuję do Twojej marki, branży i&nbsp;klientów.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Nowoczesny UX</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Logiczna nawigacja, czytelne sekcje i intuicyjna ścieżka do kontaktu, tak aby klient nie musiał się zastanawiać, co dalej.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Logiczna nawigacja, czytelne sekcje i&nbsp;intuicyjna ścieżka do kontaktu, tak aby klient nie musiał się zastanawiać, co dalej.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Spójna identyfikacja</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Kolory, typografia i elementy graficzne tworzą spójny, profesjonalny wizerunek na całej stronie.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Kolory, typografia i&nbsp;elementy graficzne tworzą spójny, profesjonalny wizerunek na całej stronie.</p></div></div>
           </div>
         </div>
       </div>
       <div class="svc-block-visual">
-        <img src="img/oferta-design.webp" alt="Projektowanie indywidualnego designu strony internetowej" class="svc-block-img" loading="lazy" width="1200" height="896">
+        <img src="img/oferta-design.webp" alt="" class="svc-block-img" loading="lazy" width="1200" height="896">
       </div>
     </div>
   </div>
@@ -231,24 +238,24 @@
     <div class="svc-block svc-block--rev fade-up">
       <div class="svc-block-text">
         <h2 class="svc-block-h3">Responsywność</h2>
-        <p class="svc-block-desc">Tworzę strony, które wyglądają dobrze na telefonie, tablecie i komputerze. Bez wyjątków i bez kompromisów. Najważniejsze informacje są zawsze łatwo dostępne na małym ekranie.</p>
+        <p class="svc-block-desc">Tworzę strony, które wyglądają dobrze na telefonie, tablecie i&nbsp;komputerze. Bez wyjątków i&nbsp;bez kompromisów. Najważniejsze informacje są zawsze łatwo dostępne na małym ekranie.</p>
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
             <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Telefon, tablet, komputer</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Strona wygląda i działa dobrze na każdym ekranie — bez ściskania, przewijania w bok i drobnego, nieczytelnego tekstu.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Strona wygląda i&nbsp;działa dobrze na każdym ekranie — bez ściskania, przewijania w&nbsp;bok i&nbsp;drobnego, nieczytelnego tekstu.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Podejście mobile-first</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Projektuję z myślą o telefonie, z którego korzysta większość Twoich klientów, a dopiero potem o większych ekranach.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Projektuję z&nbsp;myślą o&nbsp;telefonie, z&nbsp;którego korzysta większość Twoich klientów, a&nbsp;dopiero potem o&nbsp;większych ekranach.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Dotyk i czytelność</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Dotyk i&nbsp;czytelność</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
             <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Duże, wygodne przyciski oraz odpowiednia wielkość tekstu ułatwiają korzystanie ze strony jednym kciukiem.</p></div></div>
           </div>
         </div>
       </div>
       <div class="svc-block-visual">
-        <img src="img/oferta-responsywnosc.webp" alt="Responsywna strona na telefonie, tablecie i komputerze" class="svc-block-img" loading="lazy" width="1200" height="896">
+        <img src="img/oferta-responsywnosc.webp" alt="" class="svc-block-img" loading="lazy" width="1200" height="896">
       </div>
     </div>
   </div>
@@ -260,24 +267,24 @@
     <div class="svc-block fade-up">
       <div class="svc-block-text">
         <h2 class="svc-block-h3">Opieka nad stroną</h2>
-        <p class="svc-block-desc">Masz już stronę, ale nie masz czasu, żeby się nią zająć? Zajmuję się aktualizacjami, poprawkami i rozwojem istniejących stron. Ty skupiasz się na firmie, a strona rozwija się razem z nią.</p>
+        <p class="svc-block-desc">Masz już stronę, ale nie masz czasu, żeby się nią zająć? Zajmuję się aktualizacjami, poprawkami i&nbsp;rozwojem istniejących stron. Ty skupiasz się na firmie, a&nbsp;strona rozwija się razem z&nbsp;nią.</p>
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
-            <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Aktualizacje i poprawki</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Bieżące zmiany treści, cen, godzin czy zdjęć oraz drobne poprawki. Bez stresu i bez długiego czekania.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Aktualizacje i&nbsp;poprawki</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Bieżące zmiany treści, cen, godzin czy zdjęć oraz drobne poprawki. Bez stresu i&nbsp;bez długiego czekania.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Rozbudowa strony</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Dokładam nowe podstrony i sekcje w miarę rozwoju Twojej firmy i pojawiania się nowych usług.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Dokładam nowe podstrony i&nbsp;sekcje w&nbsp;miarę rozwoju Twojej firmy i&nbsp;pojawiania się nowych usług.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Bezpieczeństwo i stały kontakt</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Dbam o aktualność i kopie zapasowe, a Ty masz jedną osobę do kontaktu, która zna Twoją stronę i szybko reaguje.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Bezpieczeństwo i&nbsp;stały kontakt</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Dbam o&nbsp;aktualność i&nbsp;kopie zapasowe, a&nbsp;Ty masz jedną osobę do kontaktu, która zna Twoją stronę i&nbsp;szybko reaguje.</p></div></div>
           </div>
         </div>
       </div>
       <div class="svc-block-visual">
-        <img src="img/oferta-opieka.webp" alt="Opieka i rozwój istniejącej strony internetowej" class="svc-block-img" loading="lazy" width="1200" height="896">
+        <img src="img/oferta-opieka.webp" alt="" class="svc-block-img" loading="lazy" width="1200" height="896">
       </div>
     </div>
   </div>
@@ -289,24 +296,24 @@
     <div class="svc-block svc-block--rev fade-up">
       <div class="svc-block-text">
         <h2 class="svc-block-h3">Analityka Google</h2>
-        <p class="svc-block-desc">Podpinam Google Analytics do mierzenia ruchu na stronie. Dzięki temu wiesz, ile osób odwiedza stronę, skąd przychodzą i czy wykonują ważne działania, np. dzwonią lub wysyłają zapytanie.</p>
+        <p class="svc-block-desc">Podpinam Google Analytics do mierzenia ruchu na stronie. Dzięki temu wiesz, ile osób odwiedza stronę, skąd przychodzą i&nbsp;czy wykonują ważne działania, np. dzwonią lub wysyłają zapytanie.</p>
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
             <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Google Analytics 4</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Podpinam GA4, dzięki czemu zobaczysz, ile osób odwiedza stronę, jak długo na niej zostają i jak z niej korzystają.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Podpinam GA4, dzięki czemu zobaczysz, ile osób odwiedza stronę, jak długo na niej zostają i&nbsp;jak z&nbsp;niej korzystają.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Źródła ruchu</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Sprawdzisz, skąd przychodzą klienci: z Google, z social mediów czy z wizytówki, i w co warto inwestować.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Sprawdzisz, skąd przychodzą klienci: z&nbsp;Google, z&nbsp;social mediów czy z&nbsp;wizytówki, i&nbsp;w co warto inwestować.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Śledzenie kliknięć i konwersji</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Mierzę ważne działania: kliknięcie w numer telefonu, wysłanie formularza czy kliknięcie w mapę dojazdu.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Śledzenie kliknięć i&nbsp;konwersji</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Mierzę ważne działania: kliknięcie w&nbsp;numer telefonu, wysłanie formularza czy kliknięcie w&nbsp;mapę dojazdu.</p></div></div>
           </div>
         </div>
       </div>
       <div class="svc-block-visual">
-        <img src="img/oferta-analityka.webp" alt="Google Analytics — dane i statystyki strony internetowej" class="svc-block-img" loading="lazy" width="1200" height="896">
+        <img src="img/oferta-analityka.webp" alt="" class="svc-block-img" loading="lazy" width="1200" height="896">
       </div>
     </div>
   </div>
@@ -319,7 +326,7 @@
 <section class="svc-cta">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-cta-card fade-up">
-      <h2 class="svc-cta-h2">Stwórzmy razem coś<br>wyjątkowego dla Twojej firmy</h2>
+      <h2 class="svc-cta-h2">Stwórzmy razem coś <br>wyjątkowego dla Twojej firmy</h2>
       <a href="kontakt.html" class="btn-primary svc-cta-btn">
         <span class="btn-cta-icon" aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -346,7 +353,7 @@
 
       <article class="svc-work-card fade-up" style="transition-delay:80ms">
         <div class="svc-work-thumb">
-          <img src="img/barbermockup.webp" alt="Koncepcja strony dla salonu barberskiego" loading="lazy" width="1254" height="1254">
+          <img src="img/barbermockup-640.webp" srcset="img/barbermockup-640.webp 640w, img/barbermockup-960.webp 960w, img/barbermockup.webp 1254w" sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 46vw, 440px" alt="Koncepcja strony dla salonu barberskiego" loading="lazy" decoding="async" width="1254" height="1254">
         </div>
         <div class="svc-work-meta">
           <div class="svc-work-tags">
@@ -359,7 +366,7 @@
 
       <article class="svc-work-card fade-up" style="transition-delay:160ms">
         <div class="svc-work-thumb">
-          <img src="img/sewisbmwmockup.webp" alt="Koncepcja strony dla serwisu samochodowego BMW" loading="lazy" width="1254" height="1254">
+          <img src="img/sewisbmwmockup-640.webp" srcset="img/sewisbmwmockup-640.webp 640w, img/sewisbmwmockup-960.webp 960w, img/sewisbmwmockup.webp 1254w" sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 46vw, 440px" alt="Koncepcja strony dla serwisu samochodowego BMW" loading="lazy" decoding="async" width="1254" height="1254">
         </div>
         <div class="svc-work-meta">
           <div class="svc-work-tags">
@@ -372,7 +379,7 @@
 
       <article class="svc-work-card fade-up" style="transition-delay:240ms">
         <div class="svc-work-thumb">
-          <img src="img/fizjomockup.webp" alt="Koncepcja strony dla gabinetu fizjoterapii" loading="lazy" width="1254" height="1254">
+          <img src="img/fizjomockup-640.webp" srcset="img/fizjomockup-640.webp 640w, img/fizjomockup-960.webp 960w, img/fizjomockup.webp 1254w" sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 46vw, 440px" alt="Koncepcja strony dla gabinetu fizjoterapii" loading="lazy" decoding="async" width="1254" height="1254">
         </div>
         <div class="svc-work-meta">
           <div class="svc-work-tags">
@@ -386,6 +393,7 @@
     </div>
   </div>
 </section>
+</main>
 
 
 <!-- ============================================================
@@ -457,16 +465,19 @@
 
 <!-- ============================================================
      Biblioteki animacji: GSAP + ScrollTrigger + Lenis (smooth scroll)
+     defer: nie blokują parsowania ani DOMContentLoaded-owego startu treści;
+     wykonują się (w kolejności) tuż przed DOMContentLoaded, więc kod niżej
+     startuje w tym evencie, nie od razu.
      ============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
 <!-- ============================================================
      Animacje sekcji usług — alternating reveal + parallax (GSAP + ScrollTrigger)
      ============================================================ -->
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   const root = document.documentElement;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasGSAP = !!(window.gsap && window.ScrollTrigger);
@@ -545,7 +556,9 @@
   });
 
   // ---- Mobile (<768px): lżej — opacity + y, bez mocnego x, scale, rotate i parallaxu ----
-  mm.add('(max-width: 767px)', () => {
+  // 767.98, nie 767: przy ułamkowej szerokości (np. 767.5 przy skalowaniu ekranu w Windows)
+  // nie pasowałby żaden warunek, a CSS pod .gsap-enhance zostawiłby treść pasów niewidoczną.
+  mm.add('(max-width: 767.98px)', () => {
     blocks.forEach((block) => {
       const { h3, desc, items, visual } = parts(block);
 
@@ -566,7 +579,7 @@
   });
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
-})();
+});
 </script>
 
 <!-- ============================================================
@@ -733,7 +746,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Smooth scroll dla anchor linków (Lenis gdy dostępny, inaczej natywnie)
-  document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(link => {
+  // .skip-link pominięty — natywny skok do #main przenosi też fokus, a preventDefault by go zgubił
+  document.querySelectorAll('a[href^="#"]:not(.skip-link), a[href^="/#"]').forEach(link => {
     link.addEventListener('click', e => {
       const raw = link.getAttribute('href');
       const hash = raw.startsWith('/#') ? raw.slice(1) : raw; // „/#kontakt" → „#kontakt"

@@ -124,7 +124,7 @@ html.lenis, html.lenis body { height: auto; }
 .svc-cta-card :focus-visible { outline-color: var(--color-yellow); }
 
 /* „Przejdź do treści" — niewidoczny, dopóki nie dostanie fokusu z klawiatury.
-   Cel: <main id="main"> (na razie tylko proces.html) */
+   Cel: <main id="main"> (index, oferta, proces, omnie — kontakt jeszcze nie) */
 .skip-link {
   position: fixed;
   top: 12px;
@@ -2413,9 +2413,8 @@ html:not(.js) .fade-up { opacity: 1; transform: none; }
 
 /* ---- Hero (centered) ---- */
 .svc-hero {
-  background:
-    radial-gradient(circle at 50% -10%, rgba(37,99,235,0.10) 0%, transparent 55%),
-    linear-gradient(180deg, #F0F4FF 0%, #FFFFFF 100%);
+  /* tło nadaje wariant --case (jedyny używany); dawny jasny gradient usunięty 26.09.2026 */
+  background: var(--color-blue);
   padding: 9.5rem 0 5.5rem;
   border-bottom: 1px solid var(--color-border);
   text-align: center;
@@ -2552,8 +2551,9 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   border-radius: 22px;
   overflow: hidden;
   aspect-ratio: 4 / 3;
+  /* krawędź robi obrys + wewnętrzny pierścień (::after) — bez szerokiego cienia,
+     para „hairline + rozmyty cień 40px" to wzorzec generowanych UI (audyt 26.09.2026) */
   border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-lg);
 }
 .svc-block-visual::after {
   content: '';
@@ -2700,6 +2700,11 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 
   .svc-cta { padding: 1rem 0 3.5rem; }
   .svc-cta-card { padding: 2.75rem 1.75rem; text-align: center; justify-content: center; }
+  /* twarde <br> ustawia łamanie pod desktop; na wąskim ekranie pierwsza linia i tak
+     się zawija i zostawały poszarpane wiersze — tu łamie balance (wszystkie strony z banerem).
+     Przed <br> w HTML musi stać spacja, inaczej po ukryciu słowa się sklejają. */
+  .svc-cta-h2 br { display: none; }
+  .svc-cta-h2 { text-wrap: balance; }
 
   .svc-work { padding: 4.5rem 0; }
   .svc-work-grid { grid-template-columns: 1fr; gap: 1.75rem; }
@@ -2721,33 +2726,10 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
    (motyw domyślny; <body class="offer-page">)
    ============================================================ */
 
-/* ---- Hero: jasny motyw + siatka („kratka") w tle ---- */
+/* ---- Hero ----
+   Kratka (::before) i poświata (::after) jasnego wariantu usunięte 26.09.2026 —
+   wszystkie 4 podstrony używają niebieskiego --case, który i tak je wyłączał. */
 .svc-hero { position: relative; overflow: hidden; }
-.svc-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
-  background-size: 54px 54px;
-  -webkit-mask-image: radial-gradient(ellipse 82% 78% at 50% 38%, #000 16%, transparent 78%);
-          mask-image: radial-gradient(ellipse 82% 78% at 50% 38%, #000 16%, transparent 78%);
-}
-.svc-hero::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -42%;
-  transform: translateX(-50%);
-  width: 900px;
-  height: 560px;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(37,99,235,0.13) 0%, transparent 66%);
-}
 .svc-hero-inner { position: relative; z-index: 1; }
 
 /* ---- HERO wariant B: kratka full-bleed + tekst do lewej, lead z prawej ---- */
@@ -2758,13 +2740,6 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 .svc-hero--b .svc-hero-inner {
   max-width: none;
   margin: 0;
-}
-/* kratka rozciągnięta na całą szerokość, wygaszana góra/dół (bez radialnej maski) */
-body.offer-page .svc-hero--b::before,
-body.process-page .svc-hero--b::before,
-body.contact-page .svc-hero--b::before {
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
 }
 .svc-hero-b-row {
   display: flex;
@@ -2803,9 +2778,6 @@ body.contact-page .svc-hero--b::before {
   padding: 17.5rem 0 12rem;
   color: #fff;
 }
-/* kratka i poświata z jasnego hero nie pasują do płaskiego niebieskiego tła */
-.svc-hero--case::before,
-.svc-hero--case::after { content: none; }
 
 /* hero case study rozciąga się na pełną szerokość — bez wewnętrznego kontenera */
 .svc-hero--case .svc-hero-inner {
@@ -2995,7 +2967,6 @@ body.contact-page .svc-hero--b::before {
      się w ciemny motyw pasa */
   background: var(--color-bg-dark);
   border-color: rgba(255,255,255,0.08);
-  box-shadow: 0 24px 55px rgba(0,0,0,0.5);
 }
 /* na ciemnym pasie łagodniejszy wewnętrzny obrys — bez efektu „białej karty" */
 .svc-band--dark .svc-block-visual::after {
@@ -3579,9 +3550,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   .me-sol-photo { max-width: 320px; aspect-ratio: 4 / 5; }
   /* twarde <br> w H2 ustawiają łamanie pod desktop; na wąskim ekranie pierwsza linia
      i tak się zawija, więc zostawały poszarpane 3–4 wiersze — tu łamie balance */
-  body.aboutme-page .me-sol-h2 br,
-  body.aboutme-page .svc-cta-h2 br { display: none; }
-  body.aboutme-page .svc-cta-h2 { text-wrap: balance; }
+  body.aboutme-page .me-sol-h2 br { display: none; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   .me-mission-top { grid-template-columns: 1fr; gap: 1rem; }
