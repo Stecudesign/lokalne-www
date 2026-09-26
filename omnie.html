@@ -11,7 +11,7 @@
   <title>O mnie — Paweł, twórca stron dla lokalnych firm | lokalnewww.pl</title>
   <meta name="description" content="Poznaj mnie — Paweł, freelancer specjalizujący się w stronach internetowych dla lokalnych firm. Design, SEO i wsparcie po wdrożeniu, bez agencji i pośredników.">
   <link rel="canonical" href="https://lokalnewww.pl/omnie">
-  <link rel="icon" type="image/png" href="img/logopin3Dv1.webp">
+  <link rel="icon" type="image/webp" href="img/logopin3Dv1.webp">
 
   <!-- Open Graph -->
   <meta property="og:title" content="O mnie — Paweł, twórca stron dla lokalnych firm | lokalnewww.pl">
@@ -157,7 +157,6 @@
   <div class="max-w-container mx-auto px-6">
 
     <div class="me-why-head fade-up">
-      <span class="me-eyebrow">Dlaczego ja</span>
       <h2 class="me-why-h2">Dlaczego warto <span class="me-why-h2-accent">pracować ze mną</span></h2>
       <p class="me-why-sub">Kilka zasad, na których naprawdę mi zależy — i które realnie widać w gotowej stronie.</p>
     </div>
@@ -307,7 +306,6 @@
 <section class="svc-cta">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-cta-card fade-up">
-      <div class="svc-cta-glow" aria-hidden="true"></div>
       <h2 class="svc-cta-h2">Zbudujmy razem stronę,<br>która pracuje na Twoją firmę</h2>
       <a href="kontakt.html" class="btn-primary svc-cta-btn">
         <span class="btn-cta-icon" aria-hidden="true">
@@ -336,7 +334,6 @@
           </span>
         </a>
         <div class="footer-cta-copy">
-          <span class="footer-cta-label">Zacznijmy działać</span>
           <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej firmy w internecie.</span></h2>
         </div>
         <a href="kontakt.html" class="btn-footer-cta">
@@ -380,7 +377,7 @@
       <div class="footer-bottom-links">
         <a href="#">Polityka prywatności</a>
         <span class="footer-dot" aria-hidden="true">·</span>
-        <a href="#">Realizacja: lokalnewww.pl</a>
+        <a href="index.html">Realizacja: lokalnewww.pl</a>
       </div>
     </div>
 
@@ -668,11 +665,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // 4. Nav fade-in
-  nav.style.opacity = '0';
-  nav.style.transition = 'opacity 0.3s ease';
-  requestAnimationFrame(() => { nav.style.opacity = '1'; });
 
   // 5. Smooth scroll dla kotwic na tej stronie (obsługa też prefiksu „/#…")
   document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(link => {

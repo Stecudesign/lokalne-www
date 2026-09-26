@@ -11,7 +11,7 @@
   <title>Kontakt — porozmawiajmy o Twoim projekcie | lokalnewww.pl</title>
   <meta name="description" content="Skontaktuj się w sprawie strony internetowej dla lokalnej firmy. Napisz przez formularz lub e-mail, umów bezpłatną konsultację. Odpowiedzi na najczęstsze pytania o tworzenie stron WWW.">
   <link rel="canonical" href="https://lokalnewww.pl/kontakt">
-  <link rel="icon" type="image/png" href="img/logopin3Dv1.webp">
+  <link rel="icon" type="image/webp" href="img/logopin3Dv1.webp">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Kontakt — porozmawiajmy o Twoim projekcie | lokalnewww.pl">
@@ -149,7 +149,6 @@
 
       <!-- Lewa kolumna: dane kontaktowe -->
       <div class="contact-col fade-up">
-        <span class="contact-eyebrow">Kontakt</span>
         <h2 class="contact-h2">Napisz<br>do mnie</h2>
 
         <div class="contact-list">
@@ -219,7 +218,6 @@
     <div class="contact-grid">
 
       <div class="contact-col fade-up">
-        <span class="contact-eyebrow">FAQ</span>
         <h2 class="contact-h2">Szybkie<br>odpowiedzi</h2>
       </div>
 
@@ -273,7 +271,6 @@
           </span>
         </a>
         <div class="footer-cta-copy">
-          <span class="footer-cta-label">Zacznijmy działać</span>
           <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej firmy w internecie.</span></h2>
         </div>
         <a href="kontakt.html" class="btn-footer-cta">
@@ -317,7 +314,7 @@
       <div class="footer-bottom-links">
         <a href="#">Polityka prywatności</a>
         <span class="footer-dot" aria-hidden="true">·</span>
-        <a href="#">Realizacja: lokalnewww.pl</a>
+        <a href="index.html">Realizacja: lokalnewww.pl</a>
       </div>
     </div>
 
@@ -497,11 +494,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // 4. Nav fade-in
-  nav.style.opacity = '0';
-  nav.style.transition = 'opacity 0.3s ease';
-  requestAnimationFrame(() => { nav.style.opacity = '1'; });
 
   // Powiązanie przycisk ↔ panel dla czytników ekranu (id nadawane tu, żeby HTML został czytelny)
   document.querySelectorAll('.svc-acc-head').forEach((head, i) => {

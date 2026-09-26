@@ -11,7 +11,7 @@
   <title>Oferta — strony WWW, SEO i opieka dla firm | lokalnewww.pl</title>
   <meta name="description" content="Oferta dla lokalnych firm: strony internetowe, indywidualny design, SEO, responsywność, opieka nad stroną i analityka Google. Bezpłatna konsultacja!">
   <link rel="canonical" href="https://lokalnewww.pl/oferta">
-  <link rel="icon" type="image/png" href="img/logopin3Dv1.webp">
+  <link rel="icon" type="image/webp" href="img/logopin3Dv1.webp">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Oferta — strony WWW, SEO i opieka dla firm | lokalnewww.pl">
@@ -319,7 +319,6 @@
 <section class="svc-cta">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-cta-card fade-up">
-      <div class="svc-cta-glow" aria-hidden="true"></div>
       <h2 class="svc-cta-h2">Stwórzmy razem coś<br>wyjątkowego dla Twojej firmy</h2>
       <a href="kontakt.html" class="btn-primary svc-cta-btn">
         <span class="btn-cta-icon" aria-hidden="true">
@@ -339,7 +338,6 @@
   <div class="max-w-container mx-auto px-6">
 
     <div class="svc-work-header fade-up">
-      <span class="svc-work-label">Portfolio</span>
       <h2 class="svc-work-h2">Przykładowe projekty</h2>
       <p class="svc-work-sub">Koncepcje stron dla różnych branż, które pokazują mój styl pracy: od salonu po serwis samochodowy.</p>
     </div>
@@ -406,7 +404,6 @@
           </span>
         </a>
         <div class="footer-cta-copy">
-          <span class="footer-cta-label">Zacznijmy działać</span>
           <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej firmy w internecie.</span></h2>
         </div>
         <a href="kontakt.html" class="btn-footer-cta">
@@ -450,7 +447,7 @@
       <div class="footer-bottom-links">
         <a href="#">Polityka prywatności</a>
         <span class="footer-dot" aria-hidden="true">·</span>
-        <a href="#">Realizacja: lokalnewww.pl</a>
+        <a href="index.html">Realizacja: lokalnewww.pl</a>
       </div>
     </div>
 
@@ -708,11 +705,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // 4. Nav fade-in
-  nav.style.opacity = '0';
-  nav.style.transition = 'opacity 0.3s ease';
-  requestAnimationFrame(() => { nav.style.opacity = '1'; });
 
   // Powiązanie przycisk ↔ panel dla czytników ekranu (id nadawane tu, żeby HTML został czytelny)
   document.querySelectorAll('.svc-acc-head').forEach((head, i) => {

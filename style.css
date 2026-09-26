@@ -9,6 +9,8 @@
   --color-bg-dark-mid: #1E293B;
   --color-yellow:      #FACC15;
   --color-yellow-dark: #EAB308;
+  --color-amber:       #F59E0B;   /* środek gradientu pierścienia hero */
+  --color-orange:      #FB923C;   /* koniec gradientu pierścienia hero */
   --color-text-primary:   #0F172A;
   --color-text-secondary: #475569;
   --color-text-light:     #F1F5F9;
@@ -113,10 +115,36 @@ html.lenis, html.lenis body { height: auto; }
   border-radius: 4px;
 }
 :focus:not(:focus-visible) { outline: none; }
+/* Zaznaczenie tekstu w kolorach marki — żółte tło + ciemny tekst jest czytelne
+   na każdym tle serwisu (biel, niebieskie hero, granat stopki) */
+::selection { background: var(--color-yellow); color: var(--color-text-primary); }
 /* Na ciemnych tłach (stopka, baner CTA) niebieski obrys ma ~2.9:1 do granatu —
    żółty spełnia wymagane 3:1 z dużym zapasem */
 .footer-section :focus-visible,
 .svc-cta-card :focus-visible { outline-color: var(--color-yellow); }
+
+/* „Przejdź do treści" — niewidoczny, dopóki nie dostanie fokusu z klawiatury.
+   Cel: <main id="main"> (na razie tylko proces.html) */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--color-navy);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+.skip-link:focus-visible {
+  transform: none;
+  outline-color: var(--color-yellow);
+}
+/* cel skip-linka dostaje fokus programowo — bez obrysu wokół całej treści */
+main[tabindex="-1"]:focus { outline: none; }
 
 body {
   font-family: 'Inter', sans-serif;
@@ -136,19 +164,28 @@ body {
   html { font-size: 18px; }
 }
 
-/* ---- Page-load stagger animations ---- */
-.anim-init {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+/* ---- Wejście hero (index.html) — czysty CSS, start od pierwszego renderu ----
+   Wcześniej tekst hero i kadr telefonu ukrywał CSS, a odsłaniał dopiero GSAP po
+   pobraniu skryptów z CDN (na Slow 4G H1 pojawiał się ~3.2 s). Teraz animacja nie
+   zależy od JS; fill-mode `backwards` trzyma stan startowy tylko w czasie opóźnienia
+   i po zakończeniu NIC nie nadpisuje — dzięki temu GSAP może potem dołożyć inline
+   transform (floating telefonu). Bez animacji (reduced motion) treść stoi od razu.
+   ⚠️ H1 i kadr telefonu to kandydaci LCP — NIE mogą startować od opacity 0. Chrome
+   liczy animację przezroczystości na GPU i zapisuje FCP/LCP dopiero po jej końcu
+   (zmierzone na Slow 4G: 2.62 s bez animacji → 3.52 s z fade od zera, choć tekst był
+   widać wcześniej). Dlatego H1 tylko wjeżdża (bez fade), telefon startuje od 0.35. */
+@keyframes hero-rise { from { opacity: 0; transform: translateY(24px); } }
+@keyframes hero-rise-lcp { from { transform: translateY(18px); } }
+@keyframes hero-phone-in { from { opacity: 0.35; transform: translate(80px, 30px) scale(0.94) rotate(4deg); } }
+.anim-init { animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.hero-h1.anim-init { animation-name: hero-rise-lcp; }
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.45s; }
+.anim-delay-3 { animation-delay: 0.6s; }
+@media (prefers-reduced-motion: reduce) {
+  .anim-init,
+  .hero-desktop-visual { animation: none; }
 }
-.anim-init.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.anim-delay-1 { transition-delay: 100ms; }
-.anim-delay-2 { transition-delay: 200ms; }
-.anim-delay-3 { transition-delay: 300ms; }
 
 /* ---- Navigation — floating pill o STAŁYM rozmiarze --------------------------
    Wysokość/padding/logo/CTA (`--nav-h`, `--nav-px`, `--nav-logo`, `--nav-cta-h`,
@@ -168,6 +205,11 @@ body {
    biały tekst na prawie białym tle. */
 
 @property --nav-glass-p { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+/* Wejście nav — w CSS, nie w JS: skrypt ustawiał opacity 0 dopiero w
+   DOMContentLoaded, więc widoczny już pasek znikał na chwilę i wracał */
+@keyframes nav-in { from { opacity: 0; } }
+html.js #nav { animation: nav-in 0.3s ease both; }
 
 #nav {
   position: fixed;
@@ -385,7 +427,7 @@ body[class] #nav {
   background: var(--color-blue);
   color: #fff;
   font-weight: 700;
-  box-shadow: 0 2px 10px rgba(37,99,235,0.35);
+  box-shadow: 0 1px 3px rgba(15,23,42,0.14); /* neutralny cień zamiast niebieskiej poświaty */
 }
 .nav-links-pill a.is-active:hover {
   background: var(--color-blue);
@@ -393,6 +435,8 @@ body[class] #nav {
 }
 /* Badge licznikowy (superscript) */
 
+/* Żółte CTA: cień neutralny (granatowy), nie żółta poświata — od 26.09.2026
+   we wszystkich przyciskach; kolor niesie samo wypełnienie */
 .btn-nav-brand {
   display: inline-flex;
   align-items: center;
@@ -406,14 +450,14 @@ body[class] #nav {
   padding: 0 18px 0 7px;
   border-radius: 9999px;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(250,204,21,0.28);
+  box-shadow: 0 2px 8px rgba(15,23,42,0.12);
   white-space: nowrap;
   transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 .btn-nav-brand:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.03);
-  box-shadow: 0 4px 18px rgba(250,204,21,0.45);
+  box-shadow: 0 4px 18px rgba(15,23,42,0.18);
 }
 /* Kółko z ikoną, rozmiar stały (14px mniejsze od CTA) */
 #nav .btn-nav-brand .btn-cta-icon {
@@ -425,8 +469,9 @@ body[class] #nav {
   .nav-bar,
   .btn-nav-brand { transition: none; }
 }
-/* Poniżej 480px CTA ustępuje miejsca logo + hamburgerowi */
-@media (max-width: 479px) {
+/* Poniżej 560px CTA ustępuje miejsca logo + hamburgerowi — przy 480–559px
+   (dawny próg 479px) żółty przycisk zasłaniał końcówkę wordmarku „WWW.PL" */
+@media (max-width: 559px) {
   .btn-nav-brand { display: none; }
 }
 
@@ -467,7 +512,7 @@ body[class] #nav {
 .btn-primary:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(250,204,21,0.4);
+  box-shadow: 0 8px 24px rgba(15,23,42,0.18);
 }
 
 .btn-ghost {
@@ -541,7 +586,7 @@ body[class] #nav {
 .btn-secondary:hover {
   background: #1D4ED8;
   transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+  box-shadow: 0 8px 24px rgba(15,23,42,0.18);
 }
 .btn-secondary:focus-visible {
   outline: 2px solid var(--color-blue-light);
@@ -584,14 +629,12 @@ body[class] #nav {
   object-fit: cover;
   object-position: center;
   z-index: 1;
-  will-change: transform, opacity;
+  transform-origin: 50% 60%;
+  animation: hero-phone-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
 }
-html.gsap-enhance .hero-desktop-visual { opacity: 0; }
 /* <picture> wokół kadrów hero nie może tworzyć własnego boksu — pozycjonowanie
    i marginesy img liczą się względem sekcji, jak przed owinięciem */
 .hero-picture { display: contents; }
-/* Gdy sekwencją hero steruje GSAP, wyłącz CSS-owe transition z .anim-init */
-html.gsap-enhance #hero .anim-init { transition: none; }
 
 .hero-text {
   max-width: 52%;
@@ -628,7 +671,7 @@ html.gsap-enhance #hero .anim-init { transition: none; }
 .btn-hero-brand:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(250,204,21,0.4);
+  box-shadow: 0 8px 24px rgba(15,23,42,0.18);
 }
 
 .btn-hero-ghost {
@@ -670,19 +713,17 @@ html.gsap-enhance #hero .anim-init { transition: none; }
   color: var(--color-yellow);
   opacity: 0;
 }
-/* Fallback bez GSAP: highlight odsłania się automatycznie po załadowaniu */
-html:not(.gsap-enhance) .hero-highlight-wrap::before {
+/* Granatowy skos odsłania się od lewej, potem pojawia się żółty tekst —
+   ta sama sekwencja co wcześniej w timeline GSAP, ale w CSS */
+.hero-highlight-wrap::before {
   animation: highlight-in 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
 }
-html:not(.gsap-enhance) .hero-highlight-wrap span {
-  animation: text-in 0.3s ease 1.0s forwards;
+.hero-highlight-wrap span {
+  animation: text-in 0.32s ease 0.9s forwards;
 }
-/* Z GSAP: highlight sterowany przez timeline (klasa .is-revealed) */
-html.gsap-enhance .hero-highlight-wrap.is-revealed::before {
-  animation: highlight-in 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-html.gsap-enhance .hero-highlight-wrap.is-revealed span {
-  animation: text-in 0.32s ease 0.42s forwards;
+@media (prefers-reduced-motion: reduce) {
+  .hero-highlight-wrap::before { animation: none; clip-path: inset(0 -4px 0 0); }
+  .hero-highlight-wrap span { animation: none; opacity: 1; }
 }
 @keyframes text-in {
   to { opacity: 1; }
@@ -769,32 +810,10 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   background: #F0F4FF;
   padding: 5rem 0 7rem;
 }
-/* siatka („kratka") w tle — jak w hero podstrony oferty */
-.benefit-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(37,99,235,0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,0.09) 1px, transparent 1px);
-  background-size: 54px 54px;
-  /* mocniejsza siatka przy nagłówku, słabsza w obszarze 3 kart */
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, rgba(0,0,0,0.9) 34%, rgba(0,0,0,0.22) 52%, rgba(0,0,0,0.12) 80%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 20%, rgba(0,0,0,0.9) 34%, rgba(0,0,0,0.22) 52%, rgba(0,0,0,0.12) 80%, transparent 100%);
-}
-.benefit-section > .max-w-container { position: relative; z-index: 1; }
+/* Dekoracyjna kratka w tle usunięta 26.09.2026 — nie niosła informacji
+   (zasada: siatki tylko na powierzchniach typu plan/mapa) */
 
-.benefit-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-blue);
-  margin-bottom: 1.25rem;
-}
+
 
 .benefit-h2 {
   font-size: clamp(1.875rem, 3.5vw, 2.75rem);
@@ -825,13 +844,9 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .benefit-card {
   padding: 2.5rem 2.25rem;
   border-right: 1px solid var(--color-border);
-  transition: background 0.22s ease;
 }
 .benefit-card:last-child {
   border-right: none;
-}
-.benefit-card:hover {
-  background: var(--color-bg-light);
 }
 
 .benefit-card-top {
@@ -850,33 +865,20 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   line-height: 1.3;
 }
 
-.benefit-arrow {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1.5px solid #CBD5E1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-secondary);
-  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
-}
-.benefit-card:hover .benefit-arrow {
-  background: var(--color-bg-dark);
-  border-color: #0F172A;
-  color: #fff;
-}
-.benefit-arrow--featured {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
-  color: #fff;
-}
 
 .benefit-desc {
   color: var(--color-text-secondary);
   font-size: 1rem; /* standard opisu karty */
   line-height: 1.75;
+}
+
+/* Tablet i wąski laptop: 4 linki w pillu + wordmark + CTA nie mieszczą się
+   poniżej ~990px (przy 768px logo nachodziło na linki o 175px) — hamburger
+   przejmuje nawigację już od 1023px, rozmiar pilla zostaje desktopowy */
+@media (max-width: 1023px) {
+  .nav-bar { grid-template-columns: auto 0px 1fr; }
+  .nav-links-pill { display: none; }
+  .nav-hamburger { display: flex; }
 }
 
 @media (max-width: 767px) {
@@ -945,7 +947,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   }
   .hero-text {
     max-width: 100%;
-    padding-top: 5rem;
+    padding-top: 7rem; /* 5rem = dokładnie wysokość nav (80px) → H1 stał przy pasku */
     padding-bottom: 2rem;
   }
   .benefit-grid {
@@ -961,15 +963,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 }
 
 /* ---- Section: Nasze Usługi — List (6.4) ---- */
-.services-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-blue);
-  margin-bottom: 1rem;
-}
+
 .services-h2 {
   font-size: clamp(1.875rem, 3.5vw, 2.75rem);
   font-weight: 800;
@@ -1052,7 +1046,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .bento-cta:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(250,204,21,0.4);
+  box-shadow: 0 6px 20px rgba(15,23,42,0.18);
 }
 
 /* Tile 5 — kolorowy kafel (Analityka Google) */
@@ -1215,7 +1209,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .bento2-cta:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 6px 24px rgba(250,204,21,0.45);
+  box-shadow: 0 6px 24px rgba(15,23,42,0.18);
 }
 
 /* Mikroanimacja: strzałka przesuwa się delikatnie w prawo (bez pulsowania) */
@@ -1275,6 +1269,27 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   width: 400px;
   pointer-events: none;
   user-select: none;
+}
+/* Laptop ma białe tło i wchodził na opis i link „Zobacz szczegóły" (zmierzone:
+   375 oraz 768–1180px).
+   · 1024–1279px (desktopowy grid): zostaje obok tekstu, ale mniejszy, a tekst ma
+     zarezerwowaną lewą część kafla. Zejście pod tekst wydłużało tu kafel i w
+     sąsiednim SEO (2 rzędy) robiło się 360–380px pustki.
+   · <1024px: schodzi pod tekst, w prawy dolny róg, z tym samym wyjściem za krawędź
+     co na desktopie (−10px + padding kafla 32px = −42px). Szerokość na tablecie/
+     mobile nadpisują media queries niżej. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .bento2-tile2-deco { width: 40%; }
+  .bento2-tile-2 .bento2-desc { max-width: 52%; }
+}
+@media (max-width: 1023px) {
+  .bento2-tile2-deco {
+    position: static;
+    display: block;
+    align-self: flex-end;
+    width: min(78%, 360px);
+    margin: 12px -42px -42px 0;
+  }
 }
 
 /* --- Tile 3 — Analityka Google --- */
@@ -1421,14 +1436,17 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 @media (min-width: 768px) and (max-width: 1023px) {
   .bento2-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: minmax(140px, auto) minmax(120px, auto) auto auto auto;
+    grid-template-rows: auto;
   }
-  .bento2-tile-1 { grid-column: 1;     grid-row: 1 / 3; }
-  .bento2-tile-2 { grid-column: 2;     grid-row: 1; }
-  .bento2-tile-3 { grid-column: 2;     grid-row: 2; }
-  .bento2-tile-4 { grid-column: 1 / 3; grid-row: 3; }
-  .bento2-tile-5 { grid-column: 1;     grid-row: 4; }
-  .bento2-tile-6 { grid-column: 2;     grid-row: 4; }
+  /* 3 równe pary. Wcześniej SEO zajmowało 2 rzędy (= wysokość Strony + Design)
+     i przy za małej treści zostawało w nim 150–370px pustki nad ilustracją */
+  .bento2-tile-1 { grid-column: 1; grid-row: 1; }
+  .bento2-tile-2 { grid-column: 2; grid-row: 1; }
+  .bento2-tile-3 { grid-column: 1; grid-row: 2; }
+  .bento2-tile-4 { grid-column: 2; grid-row: 2; }
+  .bento2-tile-5 { grid-column: 1; grid-row: 3; }
+  .bento2-tile-6 { grid-column: 2; grid-row: 3; }
+  .bento2-t1-visual { max-height: 260px; }
 
   /* Tiles 3 & 4 tablet */
   .bento2-tile-3,
@@ -1436,9 +1454,10 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
     min-height: 90px;
   }
 
-  /* Tile 2 tablet */
+  /* Tile 2 tablet — pełna szerokość: rząd ma wysokość kafla SEO obok,
+     przy 280px nad laptopem zostawało ~280px pustki */
   .bento2-tile2-deco {
-    width: 280px;
+    width: 100%;
   }
 }
 
@@ -1449,15 +1468,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   position: relative;
 }
 
-.process-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-blue);
-  margin-bottom: 1.25rem;
-}
+
 
 .process-h2 {
   font-size: clamp(1.875rem, 3.5vw, 2.75rem);
@@ -1596,10 +1607,11 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   line-height: 1.8;
 }
 
-/* Delikatny pulse ostatniego kroku (04) — akcent #FFCC49 */
+/* Delikatny pulse ostatniego kroku (04) — sam rozchodzący się pierścień,
+   bez rozmytej żółtej poświaty (0 0 20px usunięte 26.09.2026) */
 @keyframes process-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(255, 204, 73, 0); }
-  50%      { box-shadow: 0 0 0 7px rgba(255, 204, 73, 0.10), 0 0 20px rgba(255, 204, 73, 0.38); }
+  50%      { box-shadow: 0 0 0 7px rgba(255, 204, 73, 0.22); }
 }
 .process-badge--final.is-pulsing {
   animation: process-pulse 2.6s ease-in-out infinite;
@@ -1607,7 +1619,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 /* Stan początkowy dla animacji GSAP — aktywny tylko gdy JS dodał .gsap-enhance.
    Bez JS klasa nie istnieje → treść jest normalnie widoczna. */
-.gsap-enhance #proces .process-label,
 .gsap-enhance #proces .process-h2,
 .gsap-enhance #proces .process-badge,
 .gsap-enhance #proces .process-ghost,
@@ -1617,7 +1628,6 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 /* Szacunek dla użytkownika: bez ruchu pokazujemy wszystko od razu */
 @media (prefers-reduced-motion: reduce) {
-  .gsap-enhance #proces .process-label,
   .gsap-enhance #proces .process-h2,
   .gsap-enhance #proces .process-badge,
   .gsap-enhance #proces .process-ghost,
@@ -1700,13 +1710,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   flex-direction: column;
   gap: 0.85rem;
 }
-.footer-cta-label {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-yellow);
-}
+
 .footer-cta-heading {
   font-size: clamp(1.75rem, 3.4vw, 2.85rem);
   font-weight: 800;
@@ -1777,7 +1781,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .footer-subnav a {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: rgba(148,163,184,0.72);
+  color: var(--color-text-muted); /* 0.72 alfy dawało ~3.6:1 na granacie; hierarchię robi rozmiar + wcięcie */
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -1825,7 +1829,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .btn-footer-cta:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(250,204,21,0.4);
+  box-shadow: 0 4px 16px rgba(15,23,42,0.18);
 }
 
 .footer-bottom {
@@ -1835,7 +1839,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   gap: 1rem;
   flex-wrap: wrap;
   font-size: 0.8125rem;
-  color: #64748B;
+  color: var(--color-text-muted); /* #64748B miało 2.9–3.4:1 na granacie stopki */
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-top: 1.75rem;
 }
@@ -1846,11 +1850,11 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   gap: 0.75rem;
 }
 .footer-bottom-links a {
-  color: #64748B;
+  color: var(--color-text-muted);
   text-decoration: none;
   transition: color 0.15s ease;
 }
-.footer-bottom-links a:hover { color: var(--color-text-muted); }
+.footer-bottom-links a:hover { color: #F8FAFC; }
 
 .footer-dot { color: rgba(255,255,255,0.15); }
 
@@ -1890,7 +1894,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .btn-about-cta:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(250, 204, 21, 0.35);
+  box-shadow: 0 8px 24px rgba(15,23,42,0.18);
   gap: 12px;
 }
 
@@ -1913,15 +1917,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   gap: 3.5rem;
 }
 
-.usp-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-blue);
-  margin-bottom: 1.25rem;
-}
+
 
 .usp-h2 {
   font-size: clamp(1.875rem, 3.5vw, 2.75rem);
@@ -2086,7 +2082,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .about2-pill:hover {
   background: var(--color-yellow);
   transform: scale(1.1) rotate(-15deg);
-  box-shadow: 0 8px 28px rgba(250,204,21,0.45);
+  box-shadow: 0 8px 28px rgba(15,23,42,0.18);
 }
 
 .about2-sub {
@@ -2113,7 +2109,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 .about2-cta:hover {
   background: var(--color-yellow-dark);
   transform: scale(1.02);
-  box-shadow: 0 8px 28px rgba(250,204,21,0.4);
+  box-shadow: 0 8px 28px rgba(15,23,42,0.18);
 }
 
 /* Laptopy (m.in. 16") — odsuń tekst od postaci w tle:
@@ -2123,10 +2119,31 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   .about2-content { padding-left: 6vw; padding-right: 4vw; max-width: 1180px; }
 }
 
+/* Poniżej 1024px tekst leży na postaci (dłonie, jasna skóra, niebieski neon) —
+   lead 0.62 miał tam miejscami 1.3–2.4:1 (audyt 26.09.2026). Gradient: lekki przy
+   górze (twarz zostaje widoczna), ciemny od wysokości nagłówka w dół. */
+@media (max-width: 1023px) {
+  .about2-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(8, 12, 20, 0.15) 0%,
+      rgba(8, 12, 20, 0.62) 32%,
+      rgba(8, 12, 20, 0.80) 55%,
+      rgba(8, 12, 20, 0.86) 100%);
+  }
+  .about2-sub { color: rgba(255,255,255,0.86); }
+}
+
 @media (max-width: 767px) {
   .about2-section { min-height: 80svh; }
   .about2-content { padding: 3rem 1.5rem; }
-  .about2-pill { width: 40px; height: 40px; }
+  /* Strzałka to duplikat CTA „Porozmawiajmy" (aria-hidden, poza tabulacją) —
+     na wąskim ekranie spadała do osobnej linii i wisiała sama pod nagłówkiem */
+  .about2-pill { display: none; }
 }
 
 /* ---- Section: Portfolio / Realizacje (6.5) ---- */
@@ -2154,15 +2171,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 .portfolio-header-left { flex: 1; }
 
-.portfolio-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255,255,255,0.62); /* 0.4 dawało ~3.9:1 na #080C14 */
-  margin-bottom: 1.25rem;
-}
+
 
 .portfolio-h2 {
   font-size: clamp(1.875rem, 3.5vw, 2.75rem); /* standard H2 sekcji */
@@ -2192,12 +2201,12 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 6px 18px -6px rgba(37,99,235,0.6);
+  box-shadow: 0 6px 18px -6px rgba(0,0,0,0.5); /* na #080C14 — neutralny, nie niebieska poświata */
   transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 .portfolio-nav-btn:hover {
   background: #1D4ED8;
-  box-shadow: 0 8px 22px -6px rgba(37,99,235,0.75);
+  box-shadow: 0 8px 22px -6px rgba(0,0,0,0.6);
 }
 .portfolio-nav-btn:active { transform: scale(0.94); }
 .portfolio-nav-btn:disabled {
@@ -2330,13 +2339,11 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 /* Stan początkowy dla animacji wejścia GSAP — tylko gdy JS dodał .gsap-enhance.
    Bez JS / bez GSAP klasa nie istnieje → elementy są normalnie widoczne. */
-.gsap-enhance #realizacje .portfolio-label,
 .gsap-enhance #realizacje .portfolio-h2,
 .gsap-enhance #realizacje .portfolio-nav-btn,
 .gsap-enhance #realizacje .portfolio-card { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gsap-enhance #realizacje .portfolio-label,
   .gsap-enhance #realizacje .portfolio-h2,
   .gsap-enhance #realizacje .portfolio-nav-btn,
   .gsap-enhance #realizacje .portfolio-card { opacity: 1; }
@@ -2371,8 +2378,7 @@ html.gsap-enhance .hero-highlight-wrap.is-revealed span {
 
 /* Bez JS nikt nie doda .in-view / .visible — treść musi być widoczna od razu.
    Klasę .js dodaje inline-script w <head> każdej strony. */
-html:not(.js) .fade-up,
-html:not(.js) .anim-init { opacity: 1; transform: none; }
+html:not(.js) .fade-up { opacity: 1; transform: none; }
 
 /* Reduced motion: bez przesunięcia o 30px, ale z krótkim przenikaniem —
    zmiana stanu (sekcja się pojawia) zostaje czytelna, znika tylko ruch. */
@@ -2399,27 +2405,6 @@ html:not(.js) .anim-init { opacity: 1; transform: none; }
 /* ============================================================
    FEATURES SECTION — Co dostajesz w ramach strony
    ============================================================ */
-
-/* ---- Feature items ---- */
-
-/* ---- Icon box ---- */
-
-/* Design visual */
-
-/* Responsive visual — devices */
-
-/* SEO visual */
-
-/* Analytics visual */
-
-/* Care visual */
-
-@keyframes feat-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.45); }
-  50%       { box-shadow: 0 0 0 5px rgba(37,99,235,0); }
-}
-
-/* ---- Features responsive ---- */
 
 /* ============================================================
    REDESIGN PODSTRONY OFERTY (screenshot layout, jasny motyw)
@@ -2603,15 +2588,9 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   justify-content: space-between;
   gap: 2.5rem;
   flex-wrap: wrap;
-}
-.svc-cta-glow {
-  position: absolute;
-  top: -120px;
-  left: -60px;
-  width: 460px;
-  height: 460px;
-  background: radial-gradient(circle, rgba(37,99,235,0.35) 0%, transparent 68%);
-  pointer-events: none;
+  /* Bez niebieskiej poświaty (.svc-cta-glow usunięte 26.09.2026) — kartę niesie
+     sam granatowy gradient + jasna krawędź u góry, jak tafla, nie reflektor */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
 }
 .svc-cta-h2 {
   position: relative;
@@ -2636,15 +2615,7 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   max-width: 640px;
   margin: 0 auto 4rem;
 }
-.svc-work-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-blue);
-  margin-bottom: 1rem;
-}
+
 .svc-work-h2 {
   font-size: clamp(1.875rem, 3.5vw, 2.75rem);
   font-weight: 800;
@@ -2729,7 +2700,6 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 
   .svc-cta { padding: 1rem 0 3.5rem; }
   .svc-cta-card { padding: 2.75rem 1.75rem; text-align: center; justify-content: center; }
-  .svc-cta-glow { left: 50%; transform: translateX(-50%); }
 
   .svc-work { padding: 4.5rem 0; }
   .svc-work-grid { grid-template-columns: 1fr; gap: 1.75rem; }
@@ -2881,6 +2851,11 @@ body.contact-page .svc-hero--b::before {
 /* prawa kolumna: pierścień + mockup + karta realizacji.
    Wszystkie offsety w % szerokości kolumny, żeby układ skalował się płynnie. */
 .svc-hero-media { position: relative; }
+/* Kolory gradientu z tokenów — CSS nadpisuje atrybuty stop-color z HTML
+   (te same stopy na 3 podstronach, bez zmiany znaczników) */
+.svc-hero-ring stop:nth-child(1) { stop-color: var(--color-yellow); }
+.svc-hero-ring stop:nth-child(2) { stop-color: var(--color-amber); }
+.svc-hero-ring stop:nth-child(3) { stop-color: var(--color-orange); }
 .svc-hero-ring {
   position: absolute;
   top: -124px;
@@ -2931,7 +2906,7 @@ body.contact-page .svc-hero--b::before {
 .svc-hero-case-desc {
   font-size: 1rem;
   line-height: 1.5;
-  color: rgba(255,255,255,0.86);
+  color: rgba(255,255,255,0.94); /* 0.86 dawało 4.25:1 na --color-blue — poniżej AA */
   margin: 0;
 }
 
@@ -3133,25 +3108,8 @@ body.contact-page {
   align-items: start;
 }
 
-/* eyebrow „● KONTAKT / ● FAQ" */
-.contact-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-blue-light);
-  margin-bottom: 1.5rem;
-}
-.contact-eyebrow::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-blue);
-}
+
+
 
 .contact-h2 {
   font-size: clamp(2rem, 4.5vw, 3.25rem);
@@ -3364,23 +3322,8 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   gap: 3rem;
   align-items: start;
 }
-.me-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-blue);
-  padding-top: 0.4rem;
-}
-.me-eyebrow::before {
-  content: '';
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--color-blue);
-}
+
+
 .me-mission-text {
   /* Eyebrow "O mnie" zostal usuniety (18.09.2026), wiec akapit jest jedynym
      dzieckiem .me-mission-top. Bez jawnego grid-column auto-placement wrzucilby
@@ -3435,7 +3378,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   letter-spacing: -0.03em;
   line-height: 1.08;
   color: var(--color-text-primary);
-  margin: 1rem 0 0;
+  margin: 0;
 }
 .me-why-h2-accent { color: var(--color-blue); }
 .me-why-sub {
@@ -3647,32 +3590,13 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 
 /* ============================================================
    PODSTRONA PROCES (proces.html) — editorial, jasny motyw
-   Sekcje: svc-hero--b (reuse) · proc-intro · proc-over (timeline)
-   · proc-steps (Snøhetta-style list) · svc-cta (reuse)
+   Sekcje: svc-hero--case (reuse) · proc-steps (lista <ol> w stylu
+   Snøhetta) · svc-cta (reuse)
    Prefiks klas: .proc-*  ·  <body class="process-page">
    ============================================================ */
 
-/* ---- Intro / lead pod hero ---- */
 
-.proc-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-blue);
-}
-.proc-eyebrow::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-blue);
-}
 
-/* ---- Timeline overview (poziomy pasek numerów, jak na referencji) ---- */
 
 /* ---- Szczegółowe kroki (lista w stylu Snøhetta) ---- */
 .proc-steps {
@@ -3690,12 +3614,18 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   color: var(--color-text-primary);
   letter-spacing: -0.035em;
   line-height: 1.12;
-  margin: 1.25rem 0 0;
+  margin: 0;
 }
+
+/* <ol> z krokami — kolejność ma znaczenie, więc lista numerowana
+   (numery wizualne .proc-step-num są aria-hidden, liczbę podaje sama lista) */
+.proc-steps-list { list-style: none; margin: 0; padding: 0; }
 
 .proc-step {
   display: grid;
-  grid-template-columns: 320px 1fr 360px;
+  /* proporcje zamiast px: na 1440 daje ~320 / 560 / 400 jak wcześniej, ale przy
+     1024–1200 tekst nie zjeżdża do ~170px (stałe 320+360 zjadały cały zapas) */
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 3.5rem;
   align-items: start;
   padding: 3.25rem 0;
@@ -3707,7 +3637,8 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 .proc-step-index { display: flex; flex-direction: column; }
 .proc-step-num {
   display: block;
-  font-size: clamp(5.5rem, 15vw, 16rem);
+  /* cap w px, nie rem — przy root 18px (≥1920) 16rem dawało ink 343px w kolumnie 315px */
+  font-size: clamp(5.5rem, 15vw, 240px);
   font-weight: 800;
   line-height: 0.8;
   letter-spacing: -0.05em;
@@ -3725,6 +3656,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 0.9rem;
+  text-wrap: balance;
 }
 .proc-step-desc {
   font-size: 1rem;
@@ -3732,6 +3664,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   color: var(--color-text-secondary);
   margin: 0 0 1.5rem;
   max-width: 46ch;
+  text-wrap: pretty; /* bez pojedynczego słowa w ostatniej linii */
 }
 .proc-step-list { list-style: none; margin: 0 0 1.5rem; padding: 0; display: grid; gap: 0.6rem; }
 .proc-step-list li {
@@ -3760,7 +3693,7 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-blue);
-  background: rgba(37,99,235,0.07);
+  background: rgba(37,99,235,0.05); /* 0.07 dawało 4.49:1 przy 13px */
   border: 1px solid rgba(37,99,235,0.15);
   border-radius: 100px;
   padding: 6px 14px;
@@ -3769,7 +3702,6 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
 /* kolumna 3 — wizual (panel z ilustracją) */
 .proc-step-visual {
   position: relative;
-  overflow: hidden;
   aspect-ratio: 4 / 3;
   border-radius: 22px;
   overflow: hidden;
@@ -3779,21 +3711,8 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.proc-step-visual::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px);
-  background-size: 34px 34px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, #000 30%, transparent 80%);
-          mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, #000 30%, transparent 80%);
-}
-
-/* obraz (ilustracja Higgsfield) — wypełnia panel; kryje kratkę ::before */
+/* obraz (ilustracja Higgsfield) — wypełnia panel */
 .proc-step-img {
   position: relative;
   z-index: 1;
@@ -3801,25 +3720,23 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
 }
-.proc-step:hover .proc-step-visual { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-
-.proc-step:hover .proc-step-img { transform: scale(1.04); }
+/* Kroki nie są klikalne — celowo bez hover-lift/zoom (sugerowałby link,
+   jak w dawnych .svc-work-card na oferta.html) */
 
 /* ---- Responsywność ---- */
-@media (max-width: 1023px) {
-  .proc-step { grid-template-columns: 200px 1fr 280px; gap: 2.5rem; }
+/* Tablet: 3 kolumny zostawiały tekstowi ~180px (20 znaków w linii) —
+   numer w wąskiej kolumnie, ilustracja schodzi pod tekst w kolumnie treści */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .proc-step {
+    grid-template-columns: 150px minmax(0, 1fr);
+    column-gap: 2.5rem;
+    row-gap: 2rem;
+  }
+  .proc-step-num { font-size: 7rem; }
+  .proc-step-visual { grid-column: 2; max-width: 520px; aspect-ratio: 16 / 9; }
 }
 @media (max-width: 767px) {
-  
-  
-  
-  
-  
-  
-  
-  
   .proc-steps { padding: 4rem 0 4.5rem; }
   .proc-steps-head { margin-bottom: 2.5rem; }
   .proc-step {
@@ -3828,6 +3745,8 @@ body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
     padding: 2.5rem 0;
   }
   .proc-step-visual { order: -1; max-width: 100%; aspect-ratio: 16 / 9; }
+  /* numer i nagłówek to jedna grupa — ciaśniej niż odstęp od ilustracji */
+  .proc-step-body { margin-top: -0.75rem; }
 }
 
 /* ============================================================
