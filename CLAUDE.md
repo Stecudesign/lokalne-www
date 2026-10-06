@@ -96,7 +96,18 @@ img/
                                    biurku z układem strony w palecie marki (navy/niebieski + żółte CTA), obok otwarty szkicownik
                                    z odręcznymi wireframe'ami, ołówek i żółte karteczki. Motyw „od szkicu do gotowej strony".
                                    Kadrowany przez `object-fit: cover` + `object-position: 50% 42%` do 7/5 (mobile 4/3)
-  kontakt-hero.webp             ← kadr hero `kontakt.html` (1254×1254, Higgsfield nano_banana_pro) — FOTOGRAFIA: domowe biurko
+  kontakt-hero.webp             ← ⚠️ **PRZEGENEROWANY 06.10.2026 — opis poniżej dotyczy poprzedniej wersji tam, gdzie się różni.**
+                                   Aktualny plik to wariant wybrany przez Pawła z dwóch propozycji Higgsfield (źródło PNG 1024×1024,
+                                   przeskalowane w górę do 1254): ten sam kąt kamery, biurko i ściana co `proces-hero.webp`,
+                                   MacBook Pro z rozmytym formularzem kontaktowym (granatowy nagłówek, biała karta, żółty przycisk,
+                                   tekst jako szare bloki), telefon z ekranem połączenia w drewnianym stojaku tuż na prawo od laptopa
+                                   (~67–80% szerokości kadru — przy 1440px hero pokazuje ~87% szerokości, więc mieści się z zapasem),
+                                   dwie żółte karteczki, otwarty szkicownik z wireframe'ami i ołówek. Ekran wyszedł z modelu już
+                                   rozmyty — **post-processing rozmycia opisany niżej NIE był tym razem nakładany** i narożniki panelu
+                                   poniżej są nieaktualne. `cwebp -resize 1254 1254 -q 90 -m 6` (96 KB) + wersja 800:
+                                   `cwebp -q 84 -m 6 -resize 800 0` (39 KB).
+                                   --- opis poprzedniej wersji: ---
+                                   kadr hero `kontakt.html` (1254×1254, Higgsfield nano_banana_pro) — FOTOGRAFIA: domowe biurko
                                    dębowy blat w narożniku, MacBook Pro z formularzem kontaktowym (navy header + żółty przycisk CTA),
                                    telefon z ekranem połączenia w drewnianym stojaku, notes z wireframe'ami, ołówek, żółte karteczki,
                                    ciepła beżowa ściana i firanka, miękkie światło z lewej. Motyw „napisz lub zadzwoń".
