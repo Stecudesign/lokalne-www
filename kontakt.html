@@ -18,6 +18,7 @@
   <meta property="og:description" content="Napisz w sprawie strony internetowej dla swojej firmy — formularz, e-mail, bezpłatna konsultacja oraz odpowiedzi na najczęstsze pytania o tworzenie stron WWW.">
   <meta property="og:url" content="https://lokalnewww.pl/kontakt">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +30,7 @@
 </head>
 <body class="contact-page">
 
+<a href="#main" class="skip-link">Przejdź do treści</a>
 
 <!-- ============================================================
      NAWIGACJA
@@ -41,7 +43,7 @@
     <div class="nav-bar">
 
       <a href="index.html" class="nav-logo" aria-label="lokalnewww.pl — strona główna">
-        <img src="img/logopin3Dv1.webp" alt="" class="logo-img">
+        <img src="img/logopin3Dv1.webp" alt="" class="logo-img" width="325" height="305">
         <span class="logo-text">
           <span>lokalne</span><span>www.pl</span>
         </span>
@@ -96,20 +98,22 @@
      HERO — niebieski (wariant „case", wspólny z oferta.html):
      2 kolumny — dwuliniowy nagłówek + kadr biurka + karta
      ============================================================ -->
+<main id="main" tabindex="-1">
 <section id="svc-hero" class="svc-hero svc-hero--b svc-hero--case">
   <div class="max-w-container mx-auto px-6">
-    <div class="svc-hero-inner fade-up">
+    <!-- bez .fade-up: H1 i kadr (LCP) mają być widoczne od pierwszego renderu,
+         a nie czekać na DOMContentLoaded, czyli na skrypty z CDN -->
+    <div class="svc-hero-inner">
       <div class="svc-hero-b-row">
 
         <div class="svc-hero-b-main">
-
           <h1 class="svc-hero-h1">
             <span class="svc-hero-h1-l1">Porozmawiajmy</span>
-            <span class="svc-hero-h1-l2">o Twoim projekcie</span>
+            <span class="svc-hero-h1-l2">o&nbsp;Twoim projekcie</span>
           </h1>
           <p class="svc-hero-b-lead">
-            Napisz lub zadzwoń — odpowiadam zwykle tego samego dnia. Bezpłatnie
-            omówimy Twoje potrzeby i to, jak strona może pomóc Twojej firmie.
+            Napisz lub zadzwoń: odpowiadam zwykle tego samego dnia. Bezpłatnie
+            omówimy Twoje potrzeby i&nbsp;to, jak strona może pomóc Twojej firmie.
           </p>
         </div>
 
@@ -126,11 +130,14 @@
                     stroke-linecap="round" stroke-dasharray="452 114" transform="rotate(108 100 100)"/>
           </svg>
           <div class="svc-hero-device">
-            <img src="img/kontakt-hero.webp" alt="Biurko z laptopem otwartym na formularzu kontaktowym i telefonem" width="1254" height="1254">
+            <img src="img/kontakt-hero-800.webp"
+                 srcset="img/kontakt-hero-800.webp 800w, img/kontakt-hero.webp 1254w"
+                 sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 46vw, 640px"
+                 alt="Biurko z laptopem otwartym na formularzu kontaktowym i telefonem" width="1254" height="1254" fetchpriority="high">
           </div>
           <div class="svc-hero-case">
-            <h2 class="svc-hero-case-title">Odpowiadam tego samego dnia</h2>
-            <p class="svc-hero-case-desc">Bezpłatna konsultacja bez zobowiązań — porozmawiamy o pomyśle, zakresie i budżecie.</p>
+            <p class="svc-hero-case-title">Odpowiadam tego samego dnia</p>
+            <p class="svc-hero-case-desc">Bezpłatna konsultacja bez zobowiązań. Porozmawiamy o&nbsp;pomyśle, zakresie i&nbsp;budżecie.</p>
           </div>
         </div>
 
@@ -149,7 +156,7 @@
 
       <!-- Lewa kolumna: dane kontaktowe -->
       <div class="contact-col fade-up">
-        <h2 class="contact-h2">Napisz<br>do mnie</h2>
+        <h2 class="contact-h2">Napisz <br>do mnie</h2>
 
         <div class="contact-list">
           <a href="mailto:kontakt@lokalnewww.pl" class="contact-row">
@@ -177,20 +184,24 @@
       <div class="contact-form-wrap fade-up" style="transition-delay:120ms">
         <form class="contact-form-card" id="contact-form" novalidate>
           <p class="contact-form-title">Wyślij wiadomość</p>
+          <p class="contact-form-hint">Wszystkie pola są wymagane.</p>
 
           <div class="contact-field">
             <label class="contact-label" for="cf-name">Imię</label>
-            <input class="contact-input" type="text" id="cf-name" name="name" placeholder="Twoje imię" autocomplete="name" required>
+            <input class="contact-input" type="text" id="cf-name" name="name" placeholder="Twoje imię" autocomplete="name" required aria-describedby="cf-name-err">
+            <p class="contact-error" id="cf-name-err" hidden></p>
           </div>
 
           <div class="contact-field">
             <label class="contact-label" for="cf-email">E-mail</label>
-            <input class="contact-input" type="email" id="cf-email" name="email" placeholder="nazwa@firma.pl" autocomplete="email" required>
+            <input class="contact-input" type="email" id="cf-email" name="email" placeholder="nazwa@firma.pl" autocomplete="email" required aria-describedby="cf-email-err">
+            <p class="contact-error" id="cf-email-err" hidden></p>
           </div>
 
           <div class="contact-field">
             <label class="contact-label" for="cf-message">Wiadomość</label>
-            <textarea class="contact-textarea" id="cf-message" name="message" placeholder="Napisz kilka słów o swoim projekcie…" rows="4" required></textarea>
+            <textarea class="contact-textarea" id="cf-message" name="message" placeholder="Napisz kilka słów o swoim projekcie…" rows="4" required aria-describedby="cf-message-err"></textarea>
+            <p class="contact-error" id="cf-message-err" hidden></p>
           </div>
 
           <button type="submit" class="btn-primary contact-submit">
@@ -199,6 +210,7 @@
             </span>
             Wyślij wiadomość
           </button>
+          <p class="contact-form-privacy">Dane z&nbsp;formularza wykorzystam wyłącznie do odpowiedzi na Twoją wiadomość.</p>
           <p class="contact-form-note" id="contact-form-note" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -218,34 +230,34 @@
     <div class="contact-grid">
 
       <div class="contact-col fade-up">
-        <h2 class="contact-h2">Szybkie<br>odpowiedzi</h2>
+        <h2 class="contact-h2">Szybkie <br>odpowiedzi</h2>
       </div>
 
       <div class="contact-faq-col fade-up" style="transition-delay:120ms">
         <div class="svc-accordion">
           <div class="svc-acc-item is-open">
             <button class="svc-acc-head" aria-expanded="true"><span class="svc-acc-title">Ile kosztuje stworzenie strony internetowej?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Koszt zależy od zakresu — inny dla prostej wizytówki, inny dla rozbudowanego serwisu z wieloma podstronami. Po bezpłatnej konsultacji przygotowuję konkretną wycenę dopasowaną do Twoich potrzeb, bez ukrytych kosztów.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Koszt zależy od zakresu: inny dla prostej wizytówki, inny dla rozbudowanego serwisu z&nbsp;wieloma podstronami. Po bezpłatnej konsultacji przygotowuję konkretną wycenę dopasowaną do Twoich potrzeb, bez ukrytych kosztów.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Jak długo trwa realizacja strony?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Prosta strona-wizytówka to zwykle 1–2 tygodnie, bardziej rozbudowane projekty 3–6 tygodni. Termin ustalamy na samym początku i się go trzymam — na bieżąco informuję o postępach.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Prosta strona-wizytówka to zwykle 1–2 tygodnie, bardziej rozbudowane projekty 3–6 tygodni. Termin ustalamy na samym początku i&nbsp;się go trzymam. Na bieżąco informuję o&nbsp;postępach.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Czy pomagasz z treścią i zdjęciami?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Tak. Mogę przygotować teksty pod SEO, dobrać zdjęcia i grafiki albo popracować na materiałach, które już masz. Nie musisz mieć wszystkiego gotowego na start — przeprowadzę Cię przez ten etap.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Czy pomagasz z&nbsp;treścią i&nbsp;zdjęciami?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Tak. Mogę przygotować teksty pod SEO, dobrać zdjęcia i&nbsp;grafiki albo popracować na materiałach, które już masz. Nie musisz mieć wszystkiego gotowego na start. Przeprowadzę Cię przez ten etap.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Czy strona będzie widoczna w Google?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Każdą stronę buduję z podstawową optymalizacją SEO i lokalnym pozycjonowaniem oraz podpinam narzędzia Google, żeby od startu miała szansę pojawiać się w wynikach wyszukiwania klientów z Twojej okolicy.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Czy strona będzie widoczna w&nbsp;Google?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Każdą stronę buduję z&nbsp;podstawową optymalizacją SEO i&nbsp;lokalnym pozycjonowaniem oraz podpinam narzędzia Google, żeby od startu miała szansę pojawiać się w&nbsp;wynikach wyszukiwania klientów z&nbsp;Twojej okolicy.</p></div></div>
           </div>
           <div class="svc-acc-item">
-            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Czy będę mógł samodzielnie edytować stronę?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>To zależy od wybranego rozwiązania. Mogę oddać stronę z prostym panelem do samodzielnej edycji treści albo zająć się aktualizacjami za Ciebie w ramach opieki nad stroną — tak, jak Ci wygodniej.</p></div></div>
+            <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Czy samodzielnie zmienię treść na stronie?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>To zależy od wybranego rozwiązania. Mogę oddać stronę z&nbsp;prostym panelem do samodzielnej edycji treści albo zająć się aktualizacjami za Ciebie w&nbsp;ramach opieki nad stroną, tak jak Ci wygodniej.</p></div></div>
           </div>
           <div class="svc-acc-item">
             <button class="svc-acc-head" aria-expanded="false"><span class="svc-acc-title">Co dzieje się po uruchomieniu strony?</span><span class="svc-acc-chevron" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
-            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Nie znikam po wdrożeniu. Zostaję do pomocy przy poprawkach, aktualizacjach i rozwoju strony w miarę, jak Twoja firma rośnie — masz jedną osobę do kontaktu, która zna Twoją stronę.</p></div></div>
+            <div class="svc-acc-panel"><div class="svc-acc-panel-inner"><p>Nie znikam po wdrożeniu. Zostaję do pomocy przy poprawkach, aktualizacjach i&nbsp;rozwoju strony w&nbsp;miarę, jak Twoja firma rośnie. Masz jedną osobę do kontaktu, która zna Twoją stronę.</p></div></div>
           </div>
         </div>
       </div>
@@ -253,6 +265,7 @@
     </div>
   </div>
 </section>
+</main>
 
 
 <!-- ============================================================
@@ -324,16 +337,19 @@
 
 <!-- ============================================================
      Biblioteki animacji: GSAP + ScrollTrigger + Lenis (smooth scroll)
+     defer: nie blokują parsowania ani DOMContentLoaded-owego startu treści;
+     wykonują się (w kolejności) tuż przed DOMContentLoaded, więc kod niżej
+     startuje w tym evencie, nie od razu.
      ============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
 <!-- ============================================================
      Lenis smooth scroll (spięty z GSAP tickerem, jeśli dostępny)
      ============================================================ -->
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   const root = document.documentElement;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasGSAP = !!(window.gsap && window.ScrollTrigger);
@@ -354,7 +370,7 @@
   // Ta podstrona nie ma animacji GSAP band-reveal — zdejmij klasę, treść zostaje widoczna
   // (reveal .fade-up obsługuje IntersectionObserver poniżej).
   if (!hasGSAP || reduceMotion) { root.classList.remove('gsap-enhance'); }
-})();
+});
 </script>
 
 <!-- ============================================================
@@ -520,13 +536,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 6. Formularz kontaktowy — front-end (brak backendu): walidacja + potwierdzenie
+  // 6. Formularz kontaktowy — front-end (brak backendu): walidacja + potwierdzenie.
+  // Błędy pokazujemy przy polach (aria-invalid + aria-describedby), a nie w natywnych
+  // dymkach przeglądarki, które znikają po chwili i mają różną treść w każdej przeglądarce.
   const form = document.getElementById('contact-form');
   const note = document.getElementById('contact-form-note');
+  const fieldError = (field) => {
+    const v = field.validity;
+    if (field.id === 'cf-name'    && v.valueMissing) return 'Wpisz swoje imię.';
+    if (field.id === 'cf-email'   && v.valueMissing) return 'Wpisz adres e-mail, na który mam odpisać.';
+    if (field.id === 'cf-email'   && v.typeMismatch) return 'Sprawdź adres e-mail. Powinien wyglądać jak nazwa@firma.pl.';
+    if (field.id === 'cf-message' && v.valueMissing) return 'Napisz kilka słów o swoim projekcie.';
+    return '';
+  };
+  const showFieldError = (field) => {
+    const msg = fieldError(field);
+    const err = document.getElementById(field.id + '-err');
+    if (msg) field.setAttribute('aria-invalid', 'true');
+    else field.removeAttribute('aria-invalid');
+    if (err) { err.textContent = msg; err.hidden = !msg; }
+    return !msg;
+  };
+  const fields = form ? [...form.querySelectorAll('.contact-input, .contact-textarea')] : [];
+  // po pierwszej próbie wysłania błąd znika, gdy tylko pole zostanie poprawione
+  fields.forEach(f => f.addEventListener('input', () => {
+    if (f.hasAttribute('aria-invalid')) showFieldError(f);
+  }));
   form?.addEventListener('submit', e => {
     e.preventDefault();
-    if (!form.checkValidity()) {
-      form.reportValidity();
+    const invalid = fields.filter(f => !showFieldError(f));
+    if (invalid.length) {
+      note.textContent = '';
+      invalid[0].focus();
       return;
     }
     const name = form.querySelector('#cf-name').value.trim();
@@ -535,7 +576,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 7. Smooth scroll dla kotwic na tej stronie (obsługa też prefiksu „/#…")
-  document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(link => {
+  // .skip-link pominięty — natywny skok do #main przenosi też fokus, a preventDefault by go zgubił
+  document.querySelectorAll('a[href^="#"]:not(.skip-link), a[href^="/#"]').forEach(link => {
     link.addEventListener('click', e => {
       const raw = link.getAttribute('href');
       const hash = raw.startsWith('/#') ? raw.slice(1) : raw;

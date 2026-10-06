@@ -124,7 +124,7 @@ html.lenis, html.lenis body { height: auto; }
 .svc-cta-card :focus-visible { outline-color: var(--color-yellow); }
 
 /* „Przejdź do treści" — niewidoczny, dopóki nie dostanie fokusu z klawiatury.
-   Cel: <main id="main"> (index, oferta, proces, omnie — kontakt jeszcze nie) */
+   Cel: <main id="main"> (wszystkie 5 stron) */
 .skip-link {
   position: fixed;
   top: 12px;
@@ -3054,8 +3054,8 @@ body.contact-page {
   color: var(--color-border);
 }
 
-/* ---- Hero: pełny reuse wariantu B z oferta.html (.svc-hero.svc-hero--b) ----
-   Tło, kratka, padding i typografia H1/lead pochodzą w całości z sekcji
+/* ---- Hero: pełny reuse wariantu „case" z oferta.html (.svc-hero--case) ----
+   Tło, padding i typografia H1/lead pochodzą w całości z sekcji
    „PODSTRONA OFERTY" — tutaj żadnych nadpisań, żeby oba hero były identyczne. */
 
 /* ---- Linia podziału między pasami ---- */
@@ -3126,13 +3126,19 @@ a.contact-row:hover .contact-row-icon { color: #fff; }
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 22px;
   padding: 2rem;
-  box-shadow: 0 24px 55px rgba(0,0,0,0.4);
+  /* bez cienia: na tle #080C14 był prawie niewidoczny, a para „hairline + cień 55px"
+     to wzorzec generowanych UI — krawędź robi sam obrys (audyt 26.09.2026) */
 }
 .contact-form-title {
   font-size: 1.125rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.01em;
+  margin: 0 0 0.35rem;
+}
+.contact-form-hint {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.62);
   margin: 0 0 1.5rem;
 }
 .contact-field { margin-bottom: 1.15rem; }
@@ -3157,12 +3163,29 @@ a.contact-row:hover .contact-row-icon { color: #fff; }
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .contact-input::placeholder,
-.contact-textarea::placeholder { color: rgba(255,255,255,0.32); }
+.contact-textarea::placeholder { color: rgba(255,255,255,0.55); } /* 0.32 dawało 2.8:1 — teraz ~5.9:1 */
 .contact-input:focus,
 .contact-textarea:focus {
   outline: none;
   border-color: var(--color-blue);
   box-shadow: 0 0 0 3px rgba(37,99,235,0.25);
+}
+/* Błąd pola: czerwony obrys + komunikat pod polem (JS ustawia aria-invalid) */
+.contact-input[aria-invalid="true"],
+.contact-textarea[aria-invalid="true"] { border-color: #F87171; }
+.contact-input[aria-invalid="true"]:focus,
+.contact-textarea[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgba(248,113,113,0.25); }
+.contact-error {
+  margin: 0.45rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #FCA5A5; /* ~9:1 na #0F1626 */
+}
+.contact-form-privacy {
+  margin: 1rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.62);
 }
 .contact-textarea { resize: vertical; min-height: 120px; }
 .contact-submit {
