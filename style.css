@@ -2112,11 +2112,17 @@ body[class] #nav {
   box-shadow: 0 8px 28px rgba(15,23,42,0.18);
 }
 
-/* Laptopy (m.in. 16") — odsuń tekst od postaci w tle:
-   mniejszy lewy padding przesuwa blok w lewo, cap na nagłówku skraca linię.
+/* Laptopy (m.in. 16") — tekst blisko postaci w tle, ale bez nachodzenia:
+   prawa krawędź leadu (50ch ≈ 536px) trzyma się połowy okna (50vw − 536px),
+   tuż przed sylwetką. Dół 6vw dla wąskich okien, góra 17vw, żeby na szerokich
+   blok nie odjechał od lewej krawędzi dalej niż w regule bazowej (16vw od 1920px).
    Zakres do 1919px, bo 16" laptopy bywają szersze niż 1680px. */
 @media (min-width: 1024px) and (max-width: 1919px) {
-  .about2-content { padding-left: 6vw; padding-right: 4vw; max-width: 1180px; }
+  .about2-content {
+    padding-left: clamp(6vw, calc(50vw - 536px), 17vw);
+    padding-right: 4vw;
+    max-width: none;
+  }
 }
 
 /* Poniżej 1024px tekst leży na postaci (dłonie, jasna skóra, niebieski neon) —
