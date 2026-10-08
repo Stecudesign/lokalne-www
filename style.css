@@ -2610,6 +2610,33 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 }
 .svc-cta-btn { position: relative; z-index: 1; flex-shrink: 0; }
 
+/* iPad z koncepcją strony szkoły pływania — dekoracja w pustym polu między nagłówkiem
+   a przyciskiem. Span jest elementem flex, który bierze całą wolną szerokość, więc tablet
+   sam się centruje w przerwie niezależnie od długości nagłówka na danej stronie.
+   Obraz jest wyższy niż baner i przycina go overflow: hidden karty (tablet „wsunięty” w kartę).
+   Szerokość 330px to sufit ostrości: ekran w pliku ma 343px. Poniżej 1360px tablet znika:
+   na omnie.html (najdłuższy nagłówek) przerwa ma przy 1280px tylko 292px i tablet
+   dotykał nagłówka i przycisku; przy 1440px ma 431px. */
+.svc-cta-device { display: none; }
+@media (min-width: 1360px) {
+  .svc-cta-device {
+    display: block;
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    align-self: stretch;
+  }
+  .svc-cta-device img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 330px;
+    max-width: none;
+    height: auto;
+    transform: translate(-50%, -28%) rotate(-8deg);
+  }
+}
+
 /* ---- Featured work ---- */
 .svc-work {
   background: var(--color-bg-light);

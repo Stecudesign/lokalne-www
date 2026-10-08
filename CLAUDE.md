@@ -53,6 +53,12 @@ img/
    (próg 246) i przeskaluj go na canvas 1448×1086 wg powyższych proporcji (PowerShell + System.Drawing wystarczy,
    w projekcie nie ma ImageMagick ani PIL). Podmieniając obrazek trzymaj ten sam układ, inaczej dolna część
    ilustracji zostanie ucięta w kaflu)
+  ipad-plywanie.webp            ← iPad (pion) z koncepcją strony szkoły pływania, tło przezroczyste, 475×590 (w tym 50px marginesu
+                                   i miękki cień). Dekoracja banera `.svc-cta-card` na oferta/omnie/proces (08.10.2026): `<span class="svc-cta-device">`
+                                   między H2 a przyciskiem — element flex biorący wolną szerokość, więc tablet sam centruje się w przerwie;
+                                   obrócony −8°, wyższy niż baner, przycięty `overflow: hidden` karty. Widoczny od 1360px (niżej przerwa
+                                   jest za wąska — na omnie.html tablet dotykał nagłówka i przycisku). Ekran w pliku ma tylko 343px
+                                   szerokości, więc **nie wyświetlaj szerzej niż 330px** (z marginesem) — będzie nieostry
   szkolaplywaniamockup.webp     ← mockup laptop + telefon (karta 5 slidera #realizacje na index.html)
   szkolaplywaniamockup-laptop.webp ← UŻYWANY w hero oferta.html: ten sam kadr co wyżej, ale bez telefonu — laptop (MacBook Pro)
                                    na słupku startowym, basen w tle. 1254×1254, krok pośredni pipeline’u opisanego niżej.
