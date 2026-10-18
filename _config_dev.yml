@@ -1,0 +1,5 @@
+# Nadpisanie tylko do lokalnego podglądu: serwis pod http://127.0.0.1:4000/ zamiast /lokalne-www/.
+# Używane przez: bundle exec jekyll serve --config _config.yml,_config_dev.yml
+# (PowerShell 5.1 gubi pusty argument --baseurl "", stąd osobny plik). GitHub Pages go nie czyta.
+baseurl: ""
+url: http://127.0.0.1:4000

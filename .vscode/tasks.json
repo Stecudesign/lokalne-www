@@ -1,0 +1,26 @@
+{
+  // Podgląd lokalny: Terminal → Run Task… → „Jekyll: podgląd” (albo Ctrl+Shift+B).
+  // Strona pod http://127.0.0.1:4000/ — przebudowuje się i odświeża przeglądarkę po zapisie pliku.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Jekyll: podgląd",
+      "type": "shell",
+      "command": "bundle exec jekyll serve --livereload --config _config.yml,_config_dev.yml",
+      "options": {
+        "env": { "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8" }
+      },
+      "isBackground": true,
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "jekyll",
+        "pattern": { "regexp": "^\\s*(Error|ERROR):\\s+(.*)$", "severity": 1, "message": 2 },
+        "background": {
+          "activeBegin": "Generating\\.\\.\\.|Regenerating:",
+          "activeEnd": "Server running|done in"
+        }
+      }
+    }
+  ]
+}
