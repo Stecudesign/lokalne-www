@@ -1,0 +1,82 @@
+---
+layout: default
+title: Blog
+seo_title: "Blog o stronach WWW i SEO lokalnym dla firm | lokalnewww.pl"
+description: "Praktyczne porady o stronach internetowych, SEO lokalnym i pozyskiwaniu klientów z Google dla małych, lokalnych firm."
+permalink: /blog/
+nav_active: blog
+blog_index: true
+---
+{%- assign featured = site.posts | where: "featured", true | first -%}
+{%- unless featured %}{% assign featured = site.posts | first %}{% endunless -%}
+{%- assign categories = site.posts | map: "category" | uniq -%}
+
+<!-- ============================================================
+     WYRÓŻNIONY WPIS (h1 tylko dla czytników/SEO) (najnowszy albo featured: true)
+     ============================================================ -->
+<section id="blog-top" class="blog-top">
+  <div class="max-w-container mx-auto px-6">
+    <h1 class="sr-only">Blog o&nbsp;stronach internetowych i&nbsp;SEO lokalnym</h1>
+
+    {%- if featured %}
+    <article class="blog-featured">
+      <div class="blog-featured-text">
+        <div class="blog-card-meta">
+          <span class="blog-tag">{{ featured.category }}</span>
+          {% include date-pl.html date=featured.date %}
+        </div>
+        <h2 class="blog-featured-title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
+        <p class="blog-featured-desc">{{ featured.description }}</p>
+        <div class="blog-featured-foot">
+          <span class="blog-byline">
+            <img src="{{ site.author.avatar | relative_url }}" alt="" width="80" height="80" class="blog-avatar">
+            {{ site.author.name }}
+          </span>
+          <a href="{{ featured.url | relative_url }}" class="btn-secondary blog-featured-btn" aria-hidden="true" tabindex="-1">
+            <span class="btn-cta-icon btn-cta-icon--light" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+            Czytaj dalej
+          </a>
+        </div>
+      </div>
+      <a href="{{ featured.url | relative_url }}" class="blog-featured-media" aria-hidden="true" tabindex="-1">
+        <img src="{{ featured.image | relative_url }}" alt="" width="1254" height="705" fetchpriority="high">
+      </a>
+    </article>
+    {%- endif %}
+  </div>
+</section>
+
+<!-- ============================================================
+     LISTA WPISÓW — filtry kategorii + wyszukiwarka (JS: blog-scripts.html)
+     Bez JS widać wszystkie wpisy, a pasek filtrów jest ukryty.
+     ============================================================ -->
+<section id="wpisy" class="blog-list" aria-labelledby="wpisy-h2">
+  <div class="max-w-container mx-auto px-6">
+    <h2 id="wpisy-h2" class="sr-only">Wszystkie wpisy</h2>
+
+    <div class="blog-toolbar" hidden>
+      <div class="blog-chips" role="group" aria-label="Filtruj według kategorii">
+        <button type="button" class="blog-chip" data-filter="all" aria-pressed="true">Wszystkie</button>
+        {%- for c in categories %}
+        <button type="button" class="blog-chip" data-filter="{{ c | slugify }}" aria-pressed="false">{{ c }}</button>
+        {%- endfor %}
+      </div>
+      <div class="blog-search">
+        <label for="blog-search-input" class="sr-only">Szukaj artykułów</label>
+        <input id="blog-search-input" type="search" placeholder="Szukaj artykułów" autocomplete="off">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </div>
+    </div>
+
+    <div class="blog-grid">
+      {%- for post in site.posts %}
+      {% include post-card.html post=post %}
+      {%- endfor %}
+    </div>
+    <p class="blog-empty" role="status" hidden>Nie znalazłem wpisów pasujących do wyszukiwania. Spróbuj innego słowa albo wybierz „Wszystkie”.</p>
+  </div>
+</section>
+
+{% include cta.html %}

@@ -25,7 +25,13 @@ o-mnie.html     ← PRZEKIEROWANIE na omnie.html, nie prawdziwa strona (18.09.20
                   noindex — ten sygnał mógłby zostać odniesiony do celu przekierowania. Usuń dopiero, gdy stary adres zniknie
                   z indeksu Google i z linków zewnętrznych
 proces.html     ← strona Proces (root, URL /proces) — jasny motyw editorial (styl Snøhetta): hero + lista 6 kroków z ilustracjami
-style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html, omnie.html i proces.html
+blog.html       ← lista wpisów bloga (Jekyll, permalink /blog/) — patrz sekcja „Blog (Jekyll)"
+_config.yml     ← konfiguracja Jekylla (baseurl, autor, polskie miesiące, exclude, domyślny layout i permalink wpisów)
+_layouts/       ← default.html (powłoka: head + nav + footer + skrypty) · post.html (wpis)
+_includes/      ← header/footer/scripts.html (KOPIE bloków z oferta.html/proces.html — patrz „Blog”), post-card, author-card,
+                  cta, date-pl, reading-time, blog-scripts (filtry + szukajka), post-scripts (spis treści + pasek postępu)
+_posts/         ← wpisy w Markdown: RRRR-MM-DD-slug.md → /blog/slug/
+style.css       ← wszystkie custom style — wspólny dla index.html, oferta.html, kontakt.html, omnie.html, proces.html i bloga
 img/
   logopin3Dv1.png          ← logo pin 3D (64×64)
   herov8.png               ← tło hero (desktop)
@@ -186,6 +192,10 @@ img/
                                    Pliki bez sufiksu to ŹRÓDŁA, już nieładowane — dekodowanie 2400 px na telefonie kosztowało ~17 MB RAM na obrazek.
                                    Podmiana ilustracji = przegeneruj obie szerokości
   (wszystkie proces-*.webp: minimal flat, paleta marki navy/niebieski/żółty na off-white #F8FAFC — spójny set, bez tekstu)
+  blog/                         ← obrazy bloga: okładki wpisów `<slug>.webp` (1254×705, 16:9, wycięte z mockupów/zdjęć hero przez
+                                   ImageMagick `convert -crop 1254x705+0+Y -quality 84`) + `<slug>-720.webp` (karta), `pawel-fotel-400/640.webp`
+                                   (karta autora, 4:5 z `omniefotelgaming1.png`, crop 1360×1700+330+60) i `pawel-avatar.webp` (160×160, twarz).
+                                   Tło zdjęcia z fotelem to #07080A — karta autora ma ten sam kolor
 examples/       ← screenshoty referencyjne
 PRD_lokalnewww.md
 ```
@@ -257,7 +267,7 @@ Nav jest **jednym pillem** (`.nav-bar`) wewnątrz `.nav-wrapper`, wspólnym dla 
 - `.btn-nav-brand` ma **stałą wysokość** z `--nav-cta-h` (padding pionowy usunięty), a kółko ikony `--nav-cta-h − 14`.
 - Linki: `0.9375rem`/`500` (referencja: 14–16px, waga 400–500) zamiast dawnych `1rem`/`600`.
 - CTA jest widoczne od 560px w górę (poniżej `display: none`; przy dawnym progu 480px przycisk zasłaniał końcówkę wordmarku przy ~500px).
-- **Hamburger przejmuje nawigację już od 1023px w dół** (od 25.09.2026, osobne `@media (max-width: 1023px)` przed blokiem mobile). Przy 768–990px 4 linki pilla + wordmark + CTA się nie mieściły i logo nachodziło na linki (175px przy 768). Rozmiar pilla na tablecie zostaje desktopowy (80px) — skalę mobile zmienia dopiero `max-width: 767px`.
+- **Hamburger przejmuje nawigację od 1119px w dół** (od 13.10.2026; wcześniej od 1023px — po dodaniu 5. linku „Blog” logo nachodziło na „Oferta” przy 1024px, przy 1120px odstęp ma ~36px). Osobne `@media (max-width: 1119px)` przed blokiem mobile. Przy 768–990px 4 linki pilla + wordmark + CTA się nie mieściły i logo nachodziło na linki (175px przy 768). Rozmiar pilla na tablecie zostaje desktopowy (80px) — skalę mobile zmienia dopiero `max-width: 767px`.
 - Zmiana wysokości/paddingu pilla wymaga edycji **jednego miejsca**: `#nav` w `style.css` (desktop) + media query `max-width: 767px` (mobile) — te wartości nie istnieją już w JS, więc nie trzeba ich synchronizować z 5 plikami HTML.
 - Zmiana wartości szkła wymaga edycji **dwóch miejsc**: tokenów `--nav-a-hero` itd. na `#nav`/`#nav.nav--light` w CSS i (jeśli zmienia się czas/ease tweena) `glassTween` w JS **każdej z 5 stron**. Cały blok nav-JS jest **bajt w bajt identyczny we wszystkich 5 plikach** — zmieniaj go skryptem, nie ręcznie.
 - Nowa podstrona musi mieć hero o id `hero`, `svc-hero` albo `me-hero` — inaczej `navHero` będzie `null` i szkło spadnie na fallback „scrollY > 60" (czyli tło pojawi się już wewnątrz hero).
@@ -265,7 +275,7 @@ Nav jest **jednym pillem** (`.nav-bar`) wewnątrz `.nav-wrapper`, wspólnym dla 
 
 ## Szablon podstron — `oferta.html` jest wzorcem
 
-Projekt **nie ma buildu ani include'ów** — każda podstrona to samodzielny plik HTML. `oferta.html` jest **kanonicznym szablonem powłoki podstrony**: przy tworzeniu nowej podstrony (np. `blog.html`, `kontakt.html`, `polityka-prywatnosci.html`) **kopiuj z `oferta.html`** trzy współdzielone bloki i zmieniaj tylko treść między nimi.
+Strony statyczne **nie mają buildu ani include'ów** — każda podstrona to samodzielny plik HTML (Jekyll kopiuje je 1:1, bo nie mają front matter; include'y ma tylko blog, patrz „Blog (Jekyll)”). `oferta.html` jest **kanonicznym szablonem powłoki podstrony**: przy tworzeniu nowej podstrony (np. `blog.html`, `kontakt.html`, `polityka-prywatnosci.html`) **kopiuj z `oferta.html`** trzy współdzielone bloki i zmieniaj tylko treść między nimi.
 
 **Bloki do skopiowania z `oferta.html` (1:1):**
 
@@ -400,9 +410,27 @@ Plik `omnie.html` w katalogu głównym (URL `/omnie`), zbudowany na szablonie po
 
 ---
 
+## Blog (Jekyll)
+
+Dodany 13.10.2026. **GitHub Pages buduje stronę Jekyllem sam** (bez Actions, bez `.nojekyll`). Pliki HTML bez front matter (`index`, `oferta`, `kontakt`, `omnie`, `proces`, `o-mnie`, `design-system`) są kopiowane 1:1 — Liquid działa tylko w plikach z front matter (`blog.html`, `_layouts`, `_posts`). `_config.yml` wyklucza `CLAUDE.md`, PRD, `PRODUCT.md`, `examples/` i lokalne foldery robocze, żeby Pages ich nie publikował.
+
+**Nowy wpis = jeden plik** `_posts/RRRR-MM-DD-slug.md` (adres `/blog/slug/`, layout `post` z `defaults`). Front matter: `title`, `description` (lead na kartach + meta description), `category` (z niej powstają chipy filtra — nowa kategoria = nowy chip automatycznie), `image` (okładka 16:9, ~1254×705), `thumb` (wersja 720 px na karty), `image_alt`, opcjonalnie `featured: true` (inaczej wyróżniony jest najnowszy). Nagłówki `##`/`###` budują spis treści; ładną kotwicę nadaj ręcznie `## Nagłówek {#kotwica}` (kramdown gubi polskie litery w automatycznych id). Linki wewnętrzne przez `{{ '/kontakt.html' | relative_url }}`, bo wpisy leżą w podkatalogu i działają pod `baseurl`.
+
+**Ścieżki:** `baseurl: /lokalne-www` (project page). W szablonach bloga **każdy** link/obraz idzie przez `relative_url`. Po podpięciu domeny (plik `CNAME`) ustaw `url: https://lokalnewww.pl` i `baseurl: ""`. `og:url` = adres github.io (`absolute_url`), `canonical` = `canonical_base` (lokalnewww.pl) — tak jak na stronie głównej.
+
+**Duplikacja z oferta.html — pilnuj przy zmianach nav/stopki/skryptów:** `_includes/header.html` (nav + `#mobile-menu`), `footer.html` i `scripts.html` (GSAP/Lenis + nav-JS z `proces.html`) to kopie bloków stron statycznych z linkami przez `relative_url`. Zmiana w nav lub stopce = 5 plików HTML **+ te include'y**. Aktywny „Blog” w nav ustawia Liquid (`page.nav_active == "blog"`), bo JS-owy snippet porównuje nazwę pliku, a `/blog/wpis/` jej nie ma. `<body class="blog-page">` (wpis: `blog-page post-page`) — biały pill przez regułę `body[class] #nav`; brak `#svc-hero`, więc szkło gęstnieje po 60px scrolla (fallback).
+
+**Lista (`blog.html`):** nagłówek H1 „Blog” + lead → wyróżniony wpis (tekst | obraz 16:10) → pasek filtrów (chipy kategorii + szukajka; bez JS ukryty, widać wszystkie wpisy) → siatka 3/2/1 kolumny ze **wszystkimi** wpisami (też wyróżnionym, żeby filtr obejmował całość) → `.svc-cta`. Filtr czyta i zapisuje `?kategoria=slug` (link z okruszków wpisu). Szukajka ignoruje polskie znaki.
+
+**Wpis (`_layouts/post.html`):** pasek postępu (`.post-progress`, fixed, z-index 60 nad navem) → okruszki → H1 → meta (autor, data po polsku z `date-pl.html`, czas czytania 200 słów/min) → okładka 21:9 na szerokość kontenera → siatka `240px | treść (max 720) | 300px`: spis treści sticky (budowany w JS z H2/H3, podświetla bieżącą sekcję, przewija z offsetem 110px) + treść + karta autora sticky (zdjęcie `img/blog/pawel-fotel-*`, bio z `_config.yml → author`). 1024–1279px: karta autora pod treścią, poziomo. <1024px: jedna kolumna, spis treści jako zwijany `<details>`. Pod wpisem „Czytaj także” (3 inne wpisy) i `.svc-cta`. Twarde spacje po i/w/z/o/a/u w treści wpisu dokłada filtr `replace` w layoucie — nie wpisuj `&nbsp;` w Markdownie.
+
+**Podgląd lokalny:** Jekylla nie ma na komputerze; `file://` nie zbuduje bloga. Do lokalnego podglądu potrzebny Ruby + `gem install jekyll` i `jekyll serve` — albo po prostu push i podgląd na Pages. Style w `style.css` w sekcji „BLOG (Jekyll)” (przed „OBSZARY DOTYKU”).
+
+---
+
 ## Strona Proces (`proces.html`)
 
-Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. Podlinkowany w nav (pill + mobile menu) i w stopce jako „Proces" na wszystkich stronach — **zastąpił dawny link „Blog", który został usunięty** z całej nawigacji (`index.html`, `oferta.html`, `kontakt.html`, `omnie.html`, `proces.html`). Pokazuje proces tworzenia strony WWW od pierwszego kontaktu z klientem po wdrożenie i wsparcie.
+Plik `proces.html` w katalogu głównym (URL `/proces`), zbudowany na szablonie podstron (`oferta.html`): współdzielony `<head>`, header (`nav` + `#mobile-menu`), footer i skrypty. Podlinkowany w nav (pill + mobile menu) i w stopce jako „Proces" na wszystkich stronach — wcześniej zastąpił link „Blog", a od 13.10.2026 „Blog” wrócił obok niego (kolejność: Oferta, O mnie, Proces, Blog, Kontakt; link `blog/`). Pokazuje proces tworzenia strony WWW od pierwszego kontaktu z klientem po wdrożenie i wsparcie.
 
 **Motyw: niebieskie hero + jasna, editorialna reszta (inspiracja Snøhetta)** — `<body class="process-page">`, `darkSectionIds = []`. Hero jak na oferta — od 01.09.2026 **niebieski `svc-hero--case`** (wcześniej jasny gradient + kratka); od 15.09.2026 nav nad nim ma jasny wariant jak na `index.html` (patrz „Nawigacja nad hero podstron"), a że cała reszta strony jest jasna, `darkSectionIds` zostaje pustą tablicą. Reszta strony jasna, dużo białej przestrzeni, cienkie linie między wierszami. Wizuały kroków to **ilustracje Higgsfield** (`img/proces-0X-*.webp`, `nano_banana_pro`, spójny flat set w palecie marki na off-white — tło grafiki zlewa się z panelem `.proc-step-visual`). Klasy `.proc-step-ghost` / `.proc-step-icon(-*)` + `.proc-step-visual::before` (kratka) pozostały w `style.css` jako **martwy kod** po podmianie ikon na obrazy.
 

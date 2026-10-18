@@ -1,0 +1,69 @@
+<!-- ============================================================
+     Wpis — spis treści z nagłówków H2/H3, podświetlenie bieżącej sekcji
+     i pasek postępu czytania. Startuje PO skryptach wspólnych, więc ogólny
+     handler kotwic (offset −20) nie podpina się pod linki spisu treści.
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const body = document.querySelector('.post-body');
+  const box = document.querySelector('.post-toc-box');
+  const list = document.querySelector('.post-toc-list');
+  const bar = document.querySelector('.post-progress-bar');
+  if (!body) return;
+
+  // 1. Spis treści
+  const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const heads = [...body.querySelectorAll('h2, h3')];
+  const links = [];
+  heads.forEach(h => {
+    if (!h.id) h.id = slug(h.textContent);
+    const li = document.createElement('li');
+    li.className = 'post-toc-item' + (h.tagName === 'H3' ? ' post-toc-item--sub' : '');
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      if (window.__lenis) window.__lenis.scrollTo(h, { offset: -110 });
+      else h.scrollIntoView({ behavior: 'smooth' });
+      history.replaceState(null, '', '#' + h.id);
+      if (!desktop.matches) box.open = false;
+    });
+    li.appendChild(a);
+    list.appendChild(li);
+    links.push(a);
+  });
+  if (!heads.length) document.querySelector('.post-toc').hidden = true;
+
+  // Na desktopie spis jest zawsze rozwinięty (kolumna), na mobile zwinięty
+  const desktop = window.matchMedia('(min-width: 1024px)');
+  const syncBox = () => { box.open = desktop.matches; };
+  syncBox();
+  desktop.addEventListener('change', syncBox);
+
+  // 2. Bieżąca sekcja + 3. postęp czytania — jeden listener scrolla
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const line = 140;                               // pod pływającym navem
+    let current = -1;
+    heads.forEach((h, i) => { if (h.getBoundingClientRect().top <= line) current = i; });
+    links.forEach((a, i) => {
+      const on = i === current;
+      a.classList.toggle('is-current', on);
+      if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+
+    const r = body.getBoundingClientRect();
+    const total = r.height - window.innerHeight * 0.6;
+    const p = Math.min(1, Math.max(0, (-r.top + window.innerHeight * 0.25) / Math.max(total, 1)));
+    if (bar) bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+});
+</script>

@@ -1,0 +1,47 @@
+<!-- ============================================================
+     Blog — filtr kategorii + wyszukiwarka (bez bibliotek).
+     Kategoria z adresu: blog/?kategoria=seo-lokalne (link z okruszków wpisu).
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toolbar = document.querySelector('.blog-toolbar');
+  const cards = [...document.querySelectorAll('.blog-list .blog-card')];
+  const chips = [...document.querySelectorAll('.blog-chip')];
+  const input = document.getElementById('blog-search-input');
+  const empty = document.querySelector('.blog-empty');
+  if (!toolbar || !cards.length) return;
+  toolbar.hidden = false;
+
+  // „ą” → „a” itd., żeby „ksiegowa” znalazło „księgowa”
+  const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l');
+  cards.forEach(c => { c.dataset.searchNorm = norm(c.dataset.search || c.textContent); });
+
+  let filter = 'all';
+  const apply = () => {
+    const q = norm(input.value.trim());
+    let visible = 0;
+    cards.forEach(c => {
+      const show = (filter === 'all' || c.dataset.category === filter) && (!q || c.dataset.searchNorm.includes(q));
+      c.hidden = !show;
+      if (show) visible++;
+    });
+    empty.hidden = visible > 0;
+  };
+  const setFilter = (f) => {
+    filter = chips.some(ch => ch.dataset.filter === f) ? f : 'all';
+    chips.forEach(ch => ch.setAttribute('aria-pressed', String(ch.dataset.filter === filter)));
+    apply();
+  };
+
+  chips.forEach(ch => ch.addEventListener('click', () => {
+    setFilter(ch.dataset.filter);
+    const url = new URL(location.href);
+    if (filter === 'all') url.searchParams.delete('kategoria'); else url.searchParams.set('kategoria', filter);
+    history.replaceState(null, '', url);
+  }));
+  input.addEventListener('input', apply);
+
+  const fromUrl = new URLSearchParams(location.search).get('kategoria');
+  setFilter(fromUrl || 'all');
+});
+</script>

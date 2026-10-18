@@ -844,6 +844,7 @@
         <a class="ds-nav-link" href="#process">Process Step</a>
         <a class="ds-nav-link" href="#usp">USP Card</a>
         <a class="ds-nav-link" href="#portfolio">Portfolio Card</a>
+        <a class="ds-nav-link" href="#blog">Blog</a>
       </div>
       <div class="ds-nav-group">
         <span class="ds-nav-group-label">Standardy</span>
@@ -1637,6 +1638,17 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ── BLOG ── -->
+    <section class="ds-section" id="blog">
+      <p class="ds-section-label">Komponenty</p>
+      <h2 class="ds-section-title">Blog (Jekyll)</h2>
+      <p class="ds-section-desc">Lista <code>blog/</code> i szablon wpisu <code>_layouts/post.html</code>, budowane przez GitHub Pages. Etykieta kategorii <code>.blog-tag</code> to pigułka (niebieski tekst na <code>rgba(37,99,235,0.08)</code>, 13px/600, bez wersalików). Karta <code>.blog-card</code>: obraz 16:10 z radiusem 20px i zoomem 1.04 na hover, wiersz meta (kategoria + data), tytuł 18px/700 (cała karta klikalna przez rozciągnięty link tytułu), opis 16px przycięty do 3 linii. Filtry: chipy <code>.blog-chip</code> (aktywny = niebieski obrys + jasnoniebieskie tło, <code>aria-pressed</code>) i szukajka <code>.blog-search</code> (pigułka 48px). Wpis: okładka 21:9 (tablet/mobile 16:9) na szerokość kontenera, pasek postępu 4px w <code>--color-blue</code> nad navem, siatka 240px | treść max 720px | 300px. Karta autora <code>.post-author</code> ma tło <code>#07080A</code> (kolor tła zdjęcia), więc kadr wtapia się w kartę.</p>
+      <pre><code>.blog-tag  .blog-card(-media|-meta|-title|-desc)  .blog-featured(-*)  .blog-chip  .blog-search
+.post-progress  .post-head  .post-crumbs  .post-h1  .post-meta  .post-cover
+.post-layout  .post-toc(-box|-title|-list|-item)  .post-body  .post-aside  .post-author(-*)
+.blog-related(-head|-h2)</code></pre>
     </section>
 
     <!-- ── ACCESSIBILITY ── -->

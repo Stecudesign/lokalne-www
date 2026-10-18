@@ -1,0 +1,1 @@
+{%- assign _d = include.date -%}{%- assign _m = _d | date: "%-m" | minus: 1 -%}<time datetime="{{ _d | date: '%Y-%m-%d' }}">{{ _d | date: "%-d" }} {{ site.months_pl[_m] }} {{ _d | date: "%Y" }}</time>

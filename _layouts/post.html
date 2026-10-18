@@ -1,0 +1,87 @@
+---
+layout: default
+---
+{%- assign cat_slug = page.category | slugify -%}
+<!-- Pasek postępu czytania (JS: post-scripts.html) -->
+<div class="post-progress" aria-hidden="true"><span class="post-progress-bar"></span></div>
+
+<article class="post">
+
+  <!-- ============================================================
+       NAGŁÓWEK WPISU — okruszki, tytuł, meta, okładka na szerokość kontenera
+       ============================================================ -->
+  <header class="post-head">
+    <div class="max-w-container mx-auto px-6">
+      <nav class="post-crumbs" aria-label="Okruszki">
+        <ol>
+          <li><a href="{{ '/' | relative_url }}">Strona główna</a></li>
+          <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
+          <li><a href="{{ '/blog/' | relative_url }}?kategoria={{ cat_slug }}">{{ page.category }}</a></li>
+        </ol>
+      </nav>
+      <h1 class="post-h1">{{ page.title }}</h1>
+      <div class="post-meta">
+        <span class="blog-byline">
+          <img src="{{ site.author.avatar | relative_url }}" alt="" width="80" height="80" class="blog-avatar">
+          {{ site.author.name }}
+        </span>
+        <span class="post-meta-sep" aria-hidden="true"></span>
+        {% include date-pl.html date=page.date %}
+        <span class="post-meta-sep" aria-hidden="true"></span>
+        <span>{% include reading-time.html content=content %}</span>
+        <a class="blog-tag" href="{{ '/blog/' | relative_url }}?kategoria={{ cat_slug }}">{{ page.category }}</a>
+      </div>
+      <figure class="post-cover">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | escape }}" width="1254" height="705" fetchpriority="high">
+      </figure>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       3 KOLUMNY: spis treści | treść | autor
+       ============================================================ -->
+  <div class="max-w-container mx-auto px-6">
+    <div class="post-layout">
+
+      <aside class="post-toc" aria-label="Spis treści">
+        <details class="post-toc-box">
+          <summary class="post-toc-title">Spis treści</summary>
+          <ol class="post-toc-list"></ol>
+        </details>
+      </aside>
+
+      <div class="post-body">
+        {{ content | replace: ' i ', ' i&nbsp;' | replace: ' w ', ' w&nbsp;' | replace: ' z ', ' z&nbsp;' | replace: ' o ', ' o&nbsp;' | replace: ' a ', ' a&nbsp;' | replace: ' u ', ' u&nbsp;' | replace: ' W ', ' W&nbsp;' | replace: ' Z ', ' Z&nbsp;' | replace: ' I ', ' I&nbsp;' | replace: ' O ', ' O&nbsp;' | replace: ' A ', ' A&nbsp;' }}
+      </div>
+
+      <aside class="post-aside" aria-label="O autorze">
+        {% include author-card.html %}
+      </aside>
+
+    </div>
+  </div>
+</article>
+
+<!-- ============================================================
+     CZYTAJ TAKŻE — 3 najnowsze wpisy poza bieżącym
+     ============================================================ -->
+{%- assign related = site.posts | where_exp: "p", "p.url != page.url" -%}
+{%- if related.size > 0 %}
+<section class="blog-related" aria-labelledby="related-h2">
+  <div class="max-w-container mx-auto px-6">
+    <div class="blog-related-head">
+      <h2 id="related-h2" class="blog-related-h2">Czytaj także</h2>
+      <a href="{{ '/blog/' | relative_url }}" class="btn-text btn-text--dark">Wszystkie wpisy
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="blog-grid">
+      {%- for post in related limit: 3 %}
+      {% include post-card.html post=post %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{% include cta.html %}

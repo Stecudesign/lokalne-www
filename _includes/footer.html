@@ -1,0 +1,64 @@
+{%- comment -%} Kopia bloku z oferta.html (nav + #mobile-menu / stopka). Zmieniasz nav lub stopkę na stronach statycznych — przenieś zmianę też tutaj. {%- endcomment -%}
+<footer id="footer" class="footer-section">
+  <div class="max-w-container mx-auto px-6">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <a href="{{ '/' | relative_url }}" class="footer-logo" aria-label="lokalnewww.pl — strona główna">
+          <img src="{{ '/img/logopin3Dv1.webp' | relative_url }}" alt="" class="footer-logo-img" width="40" height="40" loading="lazy">
+          <span class="footer-logo-text">
+            <span>lokalne</span><span>www.pl</span>
+          </span>
+        </a>
+        <div class="footer-cta-copy">
+          <h2 class="footer-cta-heading">Porozmawiajmy o przyszłości <span class="footer-cta-heading-accent">Twojej firmy w internecie.</span></h2>
+        </div>
+        <a href="{{ '/kontakt.html' | relative_url }}" class="btn-footer-cta">
+          <span class="btn-cta-icon btn-cta-icon--sm" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+          Bezpłatna konsultacja
+        </a>
+      </div>
+
+      <nav class="footer-nav" aria-label="Nawigacja stopki">
+        <div class="footer-nav-group">
+          <a href="{{ '/oferta.html' | relative_url }}">Oferta</a>
+          <ul class="footer-subnav">
+            <li><a href="{{ '/oferta.html#svc-strony' | relative_url }}">Strony internetowe</a></li>
+            <li><a href="{{ '/oferta.html#svc-seo' | relative_url }}">SEO</a></li>
+            <li><a href="{{ '/oferta.html#svc-design' | relative_url }}">Indywidualny design</a></li>
+            <li><a href="{{ '/oferta.html#svc-responsywnosc' | relative_url }}">Responsywność</a></li>
+            <li><a href="{{ '/oferta.html#svc-opieka' | relative_url }}">Opieka nad stroną</a></li>
+            <li><a href="{{ '/oferta.html#svc-analityka' | relative_url }}">Analityka Google</a></li>
+          </ul>
+        </div>
+        <a href="{{ '/omnie.html' | relative_url }}">O mnie</a>
+        <a href="{{ '/proces.html' | relative_url }}">Proces</a>
+        <a href="{{ '/blog/' | relative_url }}">Blog</a>
+        <a href="{{ '/kontakt.html' | relative_url }}">Kontakt</a>
+      </nav>
+
+      <div class="footer-social">
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 lokalnewww.pl</span>
+      <div class="footer-bottom-links">
+        <a href="#">Polityka prywatności</a>
+        <span class="footer-dot" aria-hidden="true">·</span>
+        <a href="{{ '/' | relative_url }}">Realizacja: lokalnewww.pl</a>
+      </div>
+    </div>
+
+  </div>
+</footer>

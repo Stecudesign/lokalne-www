@@ -1,0 +1,54 @@
+# Jekyll — GitHub Pages buduje stronę sam po każdym pushu (bez Actions).
+# Strony *.html bez front matter (index, oferta, kontakt, omnie, proces…) Jekyll
+# kopiuje 1:1 — Liquid działa tylko w plikach z front matter (blog).
+title: lokalnewww.pl
+description: Strony internetowe dla lokalnych firm
+lang: pl
+
+# Project page: stecudesign.github.io/lokalne-www/. Po podpięciu domeny
+# lokalnewww.pl (plik CNAME) zmień na: url: https://lokalnewww.pl i baseurl: ""
+url: https://stecudesign.github.io
+baseurl: /lokalne-www
+# Adres kanoniczny (canonical/og:url) — strona docelowo działa na własnej domenie,
+# tak jak canonicale na pozostałych podstronach.
+canonical_base: https://lokalnewww.pl
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true   # kramdown gubi polskie litery w id — ładne kotwice nadawaj ręcznie: ## Nagłówek {#kotwica}
+
+author:
+  name: Paweł
+  role: Strony WWW dla lokalnych firm
+  avatar: img/blog/pawel-avatar.webp
+  bio: >-
+    Projektuję i koduję strony internetowe dla lokalnych firm — od pierwszej rozmowy
+    po wdrożenie i opiekę. Piszę o tym, co realnie przyprowadza klientów z Google.
+
+# Nazwy miesięcy w dopełniaczu — filtr date w Liquid zna tylko angielskie
+months_pl: [stycznia, lutego, marca, kwietnia, maja, czerwca, lipca, sierpnia, września, października, listopada, grudnia]
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      permalink: /blog/:title/
+      nav_active: blog              # „Blog” podświetlony w nav (zmienne z front matter layoutu nie trafiają do page.*)
+      body_class: blog-page post-page
+
+exclude:
+  - CLAUDE.md
+  - PRD_lokalnewww.md
+  - PRODUCT.md
+  - README.md
+  - examples/
+  - agents/
+  - assets/
+  - oferta/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - node_modules/

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Progresywne wzbogacenie animacjami — klasa zdejmowana przez JS gdy brak GSAP / reduce-motion -->
+  <script>document.documentElement.classList.add('js', 'gsap-enhance');</script>
+
+  {%- assign seo_title = page.title | append: ' | lokalnewww.pl' -%}
+  {%- if page.seo_title %}{% assign seo_title = page.seo_title %}{% endif -%}
+  {%- assign seo_desc = page.description | default: page.excerpt | strip_html | normalize_whitespace | truncate: 160 -%}
+  {%- assign canonical = page.url | replace: 'index.html', '' | prepend: site.canonical_base %}
+
+  <!-- SEO -->
+  <title>{{ seo_title }}</title>
+  <meta name="description" content="{{ seo_desc | escape }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <link rel="icon" type="image/webp" href="{{ '/img/logopin3Dv1.webp' | relative_url }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ seo_title | escape }}">
+  <meta property="og:description" content="{{ seo_desc | escape }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  {%- if page.image %}
+  <meta property="og:image" content="{{ page.image | absolute_url }}">
+  {%- endif %}
+  {%- if page.layout == 'post' %}
+  <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+  {%- endif %}
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+</head>
+<body class="{{ page.body_class | default: 'blog-page' }}">
+<a href="#main" class="skip-link">Przejdź do treści</a>
+
+{% include header.html %}
+
+<main id="main" tabindex="-1">
+{{ content }}
+</main>
+
+{% include footer.html %}
+
+{% include scripts.html %}
+{%- if page.layout == 'post' %}{% include post-scripts.html %}{% endif %}
+{%- if page.blog_index %}{% include blog-scripts.html %}{% endif %}
+</body>
+</html>

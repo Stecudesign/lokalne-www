@@ -1,0 +1,197 @@
+{%- comment -%} Skrypty 1:1 z proces.html (GSAP + Lenis z defer, nav-JS, menu mobilne, .fade-up). Blok nav-JS ma być identyczny na wszystkich stronach — zmieniasz go tam, zmień i tu. {%- endcomment -%}
+<!-- ============================================================
+     Biblioteki: GSAP (tylko tween szkła w nav) + Lenis (smooth scroll).
+     Bez ScrollTrigger — blog nie ma animacji sterowanych scrollem.
+     defer: nie blokują parsowania ani DOMContentLoaded-owego startu treści;
+     wykonują się (w kolejności) tuż przed DOMContentLoaded, więc kod niżej
+     startuje w tym evencie, nie od razu.
+     ============================================================ -->
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+<!-- ============================================================
+     Smooth scroll (Lenis) — degraduje się gdy brak biblioteki / reduce-motion.
+     Reveal sekcji obsługuje IntersectionObserver (.fade-up) niżej.
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGSAP = !!window.gsap;
+
+  if (window.Lenis && !reduceMotion) {
+    const lenis = new window.Lenis({ duration: 1.05, smoothWheel: true });
+    window.__lenis = lenis;
+    if (hasGSAP) {
+      window.gsap.ticker.add((t) => lenis.raf(t * 1000));
+      window.gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+  }
+
+  // Ta podstrona nie ma animacji GSAP na sekcjach — treść odsłania IntersectionObserver.
+  // Zdejmujemy klasę zawsze, żeby .fade-up działało jak na index.html.
+  root.classList.remove('gsap-enhance');
+});
+</script>
+
+<!-- ============================================================
+     JS: nawigacja, animacje scroll
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Navigation — sticky + jasny tekst nad ciemnymi pasami (brak na tej stronie)
+  const nav = document.getElementById('nav');
+  const darkSectionIds = [];
+
+  // Aktywna strona — podświetla pozycję menu odpowiadającą bieżącemu URL-owi
+  // (działa i dla „/proces", i dla „/proces.html"). Blok wspólny dla wszystkich stron.
+  const currentPage = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
+  document.querySelectorAll('.nav-links-pill a, #mobile-menu a[data-menu-link]:not(.btn-primary)').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href || href.includes('#')) return;
+    const target = href.split('/').pop().replace(/\.html$/, '');
+    if (target && target === currentPage) {
+      a.classList.add('is-active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+
+  // --- Nawigacja: rozmiar STAŁY, animuje się tylko szkło ------------------
+  // Pill ma zawsze wymiary sekcji hero (bez kurczenia przy scrollu — usunięte
+  // 15.09.2026 na życzenie, patrz CLAUDE.md, sekcja Ważne decyzje projektowe).
+  // Jedyne, co się animuje, to gęstość szkła: nad hero pill jest przezroczysty
+  // (glassmorphism), po jego opuszczeniu gęstnieje. JS animuje TYLKO jedną
+  // liczbę --nav-glass-p (0 → 1); wartości brzegowe obu stanów siedzą w CSS,
+  // osobno dla wariantu jasnego i nav--light. Bez GSAP / przy
+  // prefers-reduced-motion gęstość ustawia sama klasa .nav--solid, a przejście
+  // dowozi CSS transition na .nav-bar (patrz style.css).
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const useGsapNav   = typeof gsap !== 'undefined' && !reduceMotion;
+
+  const navGlass = { g: 0 };
+  const paintNavGlass = () => {
+    nav.style.setProperty('--nav-glass-p', Math.min(1, Math.max(0, navGlass.g)));
+  };
+
+  if (useGsapNav) nav.classList.add('nav--gsap');  // wyłącza CSS transition — steruje GSAP
+
+  // Zwykły fade, bez naddatku — overshoot na tle/blurze wyglądałby jak błąd.
+  let glassTween = null;
+  let navSolid = false;
+  const setNavSolid = (on) => {
+    if (on === navSolid) return;
+    navSolid = on;
+    nav.classList.toggle('nav--solid', on);
+    if (!useGsapNav) return;
+    if (glassTween) glassTween.kill();
+    glassTween = gsap.to(navGlass, { g: on ? 1 : 0, duration: 0.45, ease: 'power2.out', onUpdate: paintNavGlass });
+  };
+
+  // Hero bieżącej strony (#hero na index, #svc-hero na podstronach, #me-hero na omnie)
+  const navHero = document.querySelector('#hero, #svc-hero, #me-hero');
+  const navMidY = 60;                       // umowna linia środka pilla w oknie
+
+  // Wejście na stronę już przewiniętą — bez animacji, od razu stan docelowy
+  if (navHero ? navHero.getBoundingClientRect().bottom <= navMidY : window.scrollY > 60) {
+    navSolid = true;
+    nav.classList.add('nav--solid');
+    navGlass.g = 1;
+  }
+  if (useGsapNav) paintNavGlass();
+
+  const updateNav = () => {
+    // Szkło — dopiero gdy dolna krawędź hero minie środek pilla (histereza 40px).
+    // Ten sam próg co przełączanie nav--light, więc tło i kolor linków zmieniają
+    // się w tym samym momencie.
+    if (navHero) {
+      const heroBottom = navHero.getBoundingClientRect().bottom;
+      if (heroBottom <= navMidY)           setNavSolid(true);
+      else if (heroBottom > navMidY + 40)  setNavSolid(false);
+    } else {
+      setNavSolid(window.scrollY > 60);
+    }
+
+    const overDark = darkSectionIds.some(id => {
+      const s = document.getElementById(id);
+      if (!s) return false;
+      const r = s.getBoundingClientRect();
+      return r.top <= navMidY && r.bottom >= navMidY;
+    });
+    nav.classList.toggle('nav--light', overDark);
+  };
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  // 2. Hamburger menu
+  const mobileMenu = document.getElementById('mobile-menu');
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const closeBtn = document.querySelector('[data-menu-close]');
+  const menuLinks = document.querySelectorAll('[data-menu-link]');
+
+  // Menu to modalny dialog: focus wchodzi do środka i w nim zostaje (Tab/Shift+Tab),
+  // Esc zamyka, a po zamknięciu focus wraca na hamburger.
+  const menuFocusables = () => mobileMenu.querySelectorAll('a[href], button:not([disabled])');
+  const openMenu = () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    toggle?.setAttribute('aria-expanded', 'true');
+    closeBtn?.focus();
+  };
+  const closeMenu = ({ restoreFocus = true } = {}) => {
+    if (!mobileMenu.classList.contains('open')) return;
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+    toggle?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) toggle?.focus();
+  };
+
+  toggle?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', () => closeMenu());
+  menuLinks.forEach(l => l.addEventListener('click', () => closeMenu({ restoreFocus: false })));
+  mobileMenu?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); closeMenu(); return; }
+    if (e.key !== 'Tab') return;
+    const items = menuFocusables();
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  // 3. IntersectionObserver — animacje scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Smooth scroll dla anchor linków (Lenis gdy dostępny, inaczej natywnie)
+  // .skip-link pominięty — natywny skok do #main przenosi też fokus, a preventDefault by go zgubił
+  document.querySelectorAll('a[href^="#"]:not(.skip-link), a[href^="/#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const raw = link.getAttribute('href');
+      const hash = raw.startsWith('/#') ? raw.slice(1) : raw; // „/#kontakt" → „#kontakt"
+      if (hash.length < 2) return;                            // np. href="#" (bez celu)
+      const target = document.querySelector(hash);
+      if (target) {
+        e.preventDefault();
+        if (window.__lenis) {
+          window.__lenis.scrollTo(target, { offset: -20 });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+});
+</script>
