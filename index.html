@@ -174,6 +174,62 @@
 
 </section>
 
+<!-- TEST (tylko lokalnie): druga sekcja hero z animacją ekranu — do porównania z #hero powyżej.
+     Do usunięcia razem z blokiem „HERO — przewijanie strony” w JS i regułami #hero-test w style.css. -->
+<!-- UKRYTE (25.10.2026): żeby włączyć test, usuń atrybut hidden poniżej i ustaw enabled: true w HERO_SCREEN_CONFIG -->
+<section id="hero-test" class="relative bg-white overflow-hidden" aria-label="Test: hero z animacją" hidden>
+  <div class="hero-test-badge">TEST: hero z animacją</div>
+
+  <!-- Główny element wizualny (desktop): dłoń z telefonem — animowany wejściem GSAP -->
+  <!-- Dwa kadry hero (desktop / mobile) siedzą w różnych miejscach DOM, więc każdy ma
+       własny <picture>. Na „cudzym" breakpoincie <source> podstawia 1-pikselowy GIF —
+       display:none nie blokuje pobierania, a&nbsp;tak każde urządzenie ściąga tylko swój kadr. -->
+  <picture class="hero-picture">
+    <source media="(max-width: 767px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+    <img src="img/heroplywanie2-1600.webp" srcset="img/heroplywanie2-1600.webp 1600w, img/heroplywanie2-2400.webp 2400w, img/heroplywanie2.webp 3344w" sizes="100vw" alt="" class="hero-desktop-visual" width="3344" height="1882" loading="lazy" decoding="async">
+  </picture>
+
+  <div class="hero-content relative w-full max-w-container mx-auto px-6">
+    <div class="hero-text">
+
+      <!-- Zdjęcie (tylko mobile) -->
+      <div class="hero-heading-block"></div>
+
+      <!-- H1 -->
+      <h2 class="anim-init anim-delay-1 hero-h1 font-extrabold text-slate-900 mb-8">
+        Profesjonalne strony<br>
+        <span class="hero-highlight-wrap">
+          <span>dla lokalnych biznesów</span>
+        </span>
+      </h2>
+
+      <!-- Subheadline -->
+      <p class="anim-init anim-delay-2 hero-sub text-lg mb-10">
+        Projektuję i&nbsp;wdrażam strony, które przyciągają klientów&nbsp;-
+        nowoczesne i&nbsp;dopasowane do&nbsp;Twojego biznesu.
+      </p>
+
+      <!-- CTA row -->
+      <div class="hero-cta anim-init anim-delay-3 flex flex-wrap items-center justify-start gap-5">
+        <a href="#uslugi" class="btn-hero-brand">
+          <span class="btn-cta-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+          Sprawdź ofertę
+        </a>
+        <a href="#realizacje" class="btn-hero-ghost">Projekty stron</a>
+      </div>
+
+    </div>
+  </div>
+
+  <picture class="hero-picture">
+    <source media="(min-width: 768px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+    <img src="img/heroplywanie2-mobile-800.webp" srcset="img/heroplywanie2-mobile-800.webp 800w, img/heroplywanie2-mobile-1200.webp 1200w, img/heroplywanie2-mobile.webp 1882w" sizes="100vw" alt="Przykładowa strona WWW na smartfonie" class="hero-mobile-img" width="1882" height="3344" loading="lazy" decoding="async">
+  </picture>
+
+</section>
+
 
 <!-- ============================================================
      CO ZYSKASZ — sekcja 6.3
@@ -653,6 +709,196 @@
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+<!-- ============================================================
+     HERO — przewijanie strony na ekranie telefonu (GSAP)
+     Warstwy: kadr hero (statyczny, z pierwszą klatką ekranu) → zrzut strony
+     w perspektywie (matrix3d) → dłoń z telefonem z wyciętym ekranem (alfa),
+     która przycina zrzut dokładnie do kształtu ekranu.
+     KONFIGURACJA jest tutaj, logika niżej. Narożniki ekranu i kadr nakładki
+     są we frakcjach naturalnego obrazu (0–1), więc działają w każdej rozdzielczości.
+     ============================================================ -->
+<script>
+window.HERO_SCREEN_CONFIG = {
+  enabled: false,                         // UKRYTE — test wyłączony (patrz sekcja #hero-test)
+  host: '#hero-test',                    // sekcja z animacją (TEST — porównanie z #hero)
+  shot: 'img/hero-ekran-plywanie.webp',  // pełny zrzut strony do stopki, szer. 585 px (1,5× 390)
+  shotWidth: 390,                         // szerokość „logiczna” ekranu (CSS px telefonu)
+  statusBar: 60,                          // pasek statusu nad stroną (pod wyspą), px logiczne
+  timeline: {
+    startPause: 1.5,       // góra strony przed startem (s)
+    stepSize: 0.7,         // jeden krok = 70% wysokości ekranu (jak przesunięcie kciukiem)
+    stepDuration: 1.1,     // czas jednego kroku (s)
+    stepPause: 1.3,        // pauza po każdym kroku (s)
+    stepEase: 'power2.inOut',
+    endPause: 2,           // pauza na stopce (s)
+    scrollBy: 'max',       // dokąd przewijać: 'max' = do końca zrzutu, albo liczba px logicznych
+    returnMode: 'fade',    // powrót na górę: 'fade' (szybkie przygaszenie ekranu) albo 'scroll'
+    returnDuration: 0.5,   // czas przygaszenia / przewinięcia w górę (s)
+    returnEase: 'power3.inOut'
+  },
+  variants: {
+    desktop: {
+      img: '#hero-test .hero-desktop-visual',
+      fit: 'cover',
+      overlay: 'img/hero-reka-desktop.webp',
+      overlaySm: 'img/hero-reka-desktop-sm.webp',
+      overlayBox: [0.55861, 0.15462, 0.22458, 0.69182],   // x, y, szer., wys.
+      corners: [[0.62328, 0.16865], [0.77518, 0.19801], [0.72783, 0.8351], [0.56773, 0.7935]], // LG, PG, PD, LD
+      screenHeight: 890
+    },
+    mobile: {
+      img: '#hero-test .hero-mobile-img',
+      fit: 'fill',
+      overlay: 'img/hero-reka-mobile.webp',
+      overlaySm: 'img/hero-reka-mobile-sm.webp',
+      overlayBox: [0.32891, 0.22877, 0.51169, 0.53917],
+      corners: [[0.47315, 0.2357], [0.82669, 0.25765], [0.70893, 0.7619], [0.34196, 0.73316]],
+      screenHeight: 965
+    }
+  }
+};
+</script>
+<script>
+(function () {
+  const CFG = window.HERO_SCREEN_CONFIG;
+  if (!CFG || !CFG.enabled) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // Homografia: prostokąt (0,0)-(w,h) → dowolny czworokąt; wynik jako CSS matrix3d
+  function rectToQuad(w, h, q) {
+    const [p0, p1, p2, p3] = q;
+    const dx1 = p1[0] - p2[0], dx2 = p3[0] - p2[0], dy1 = p1[1] - p2[1], dy2 = p3[1] - p2[1];
+    const sx = p0[0] - p1[0] + p2[0] - p3[0], sy = p0[1] - p1[1] + p2[1] - p3[1];
+    const den = dx1 * dy2 - dx2 * dy1;
+    const g = (sx * dy2 - dx2 * sy) / den, hh = (dx1 * sy - sx * dy1) / den;
+    const a = p1[0] - p0[0] + g * p1[0], b = p3[0] - p0[0] + hh * p3[0], c = p0[0];
+    const d = p1[1] - p0[1] + g * p1[1], e = p3[1] - p0[1] + hh * p3[1], f = p0[1];
+    // skala z jednostkowego kwadratu do w×h
+    return 'matrix3d(' + [a / w, d / w, 0, g / w, b / h, e / h, 0, hh / h, 0, 0, 1, 0, c, f, 0, 1].join(',') + ')';
+  }
+
+  let state = null; // { key, root, view, shot, tl, io }
+
+  function activeVariant() {
+    for (const key of Object.keys(CFG.variants)) {
+      const el = document.querySelector(CFG.variants[key].img);
+      if (el && el.offsetParent && el.getClientRects().length) return { key, v: CFG.variants[key], img: el };
+    }
+    return null;
+  }
+
+  // Prostokąt narysowanego obrazu (z uwzględnieniem object-fit: cover) względem sekcji hero
+  function contentBox(img, fit, host) {
+    const r = img.getBoundingClientRect(), hr = host.getBoundingClientRect();
+    const nw = img.naturalWidth || +img.getAttribute('width'), nh = img.naturalHeight || +img.getAttribute('height');
+    let w = r.width, h = r.height, x = r.left - hr.left, y = r.top - hr.top;
+    if (fit === 'cover') {
+      const s = Math.max(r.width / nw, r.height / nh);
+      w = nw * s; h = nh * s; x += (r.width - w) / 2; y += (r.height - h) / 2;
+    }
+    return { x, y, w, h };
+  }
+
+  function layout() {
+    if (!state) return;
+    const { v, img, root, view, over, host } = state;
+    const b = contentBox(img, v.fit, host);
+    root.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px)';
+    root.style.width = b.w + 'px'; root.style.height = b.h + 'px';
+    const ob = v.overlayBox;
+    Object.assign(over.style, { left: ob[0] * b.w + 'px', top: ob[1] * b.h + 'px', width: ob[2] * b.w + 'px', height: ob[3] * b.h + 'px' });
+    const q = v.corners.map(c => [c[0] * b.w, c[1] * b.h]);
+    view.style.transform = rectToQuad(CFG.shotWidth, v.screenHeight, q);
+  }
+
+  function buildTimeline() {
+    const t = CFG.timeline, { shot, v, view } = state;
+    const visible = v.screenHeight - CFG.statusBar;
+    const shotH = shot.naturalHeight * CFG.shotWidth / shot.naturalWidth;
+    const maxScroll = Math.max(0, shotH - visible);
+    const dist = t.scrollBy === 'max' ? maxScroll : Math.min(maxScroll, t.scrollBy);
+    const step = Math.max(80, visible * t.stepSize);
+    const tl = gsap.timeline({ repeat: -1, paused: true, delay: 0 });
+    tl.set(shot, { y: 0, force3D: true }).to({}, { duration: t.startPause });
+    // przewijanie krokami: krok → pauza → krok … aż do końca strony
+    for (let y = step; y < dist + step; y += step) {
+      tl.to(shot, { y: -Math.min(y, dist), duration: t.stepDuration, ease: t.stepEase });
+      tl.to({}, { duration: y >= dist ? t.endPause : t.stepPause });
+    }
+    if (t.returnMode === 'scroll') {
+      tl.to(shot, { y: 0, duration: t.returnDuration, ease: t.returnEase });
+    } else {
+      // przygaszenie ekranu, skok na górę, rozjaśnienie (bez przewijania całej strony w 1 s)
+      tl.to(shot, { opacity: 0, duration: t.returnDuration, ease: 'power1.in' })
+        .set(shot, { y: 0 })
+        .to(shot, { opacity: 1, duration: t.returnDuration, ease: 'power1.out' });
+    }
+    return tl;
+  }
+
+  function destroy() {
+    if (!state) return;
+    state.tl && state.tl.kill(); state.io && state.io.disconnect();
+    state.root.remove(); state = null;
+  }
+
+  function setPlaying() {
+    if (!state || !state.tl) return;
+    const on = state.visible && !document.hidden;
+    on ? state.tl.play() : state.tl.pause();
+  }
+
+  function init() {
+    destroy();
+    if (reduceMotion.matches || !window.gsap) return;
+    const a = activeVariant(); if (!a) return;
+    const host = document.querySelector(CFG.host || '#hero');
+    const root = document.createElement('div');
+    root.className = 'hero-screen hero-screen--' + a.key; root.setAttribute('aria-hidden', 'true');
+    const view = document.createElement('div'); view.className = 'hero-screen__view';
+    view.style.width = CFG.shotWidth + 'px'; view.style.height = a.v.screenHeight + 'px';
+    view.style.paddingTop = CFG.statusBar + 'px';
+    view.style.setProperty('--hero-screen-statusbar', CFG.statusBar + 'px');
+    const shot = new Image(); shot.className = 'hero-screen__shot'; shot.alt = ''; shot.decoding = 'async';
+    shot.src = CFG.shot; shot.width = CFG.shotWidth;
+    view.appendChild(shot);
+    const over = new Image(); over.className = 'hero-screen__hand'; over.alt = ''; over.decoding = 'async';
+    over.src = a.img.getBoundingClientRect().width > 1100 || window.devicePixelRatio > 1.5 ? a.v.overlay : a.v.overlaySm;
+    root.append(view, over);
+    a.img.insertAdjacentElement('afterend', root); // ta sama warstwa (z-index) co kadr hero
+    state = { key: a.key, v: a.v, img: a.img, host, root, view, over, shot, visible: true };
+    layout();
+    Promise.all([shot, over].map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve())).then(() => {
+      if (!state || state.shot !== shot) return;
+      state.tl = buildTimeline();
+      root.classList.add('is-ready'); // płynne pojawienie się warstw nad statycznym kadrem
+      state.io = new IntersectionObserver(([e]) => { state.visible = e.isIntersecting; setPlaying(); }, { threshold: 0.15 });
+      state.io.observe(host);
+    });
+  }
+
+  let resizeT;
+  function onResize() {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => {
+      const a = activeVariant();
+      if (!state || !a || a.key !== state.key) init(); else layout();
+    }, 120);
+  }
+
+  function start() {
+    // poczekaj na koniec CSS-owego wejścia kadru (inaczej transform animacji przesuwa obraz)
+    const a = activeVariant(); const anims = a && a.img.getAnimations ? a.img.getAnimations() : [];
+    Promise.all(anims.map(x => x.finished.catch(() => {}))).then(init);
+    window.addEventListener('resize', onResize, { passive: true });
+    document.addEventListener('visibilitychange', setPlaying);
+    reduceMotion.addEventListener && reduceMotion.addEventListener('change', init);
+  }
+  // po pełnym załadowaniu strony — nie konkuruje z LCP
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+})();
+</script>
 
 <!-- ============================================================
      Animacja sekcji „proces": progress timeline reveal (GSAP)

@@ -600,14 +600,16 @@ body[class] #nav {
 }
 
 /* ---- Hero ---- */
-#hero {
+#hero,
+#hero-test {
   min-height: 100svh;
   display: flex;
   align-items: center;
   background: var(--color-bg-white);
   position: relative;
 }
-#hero::before {
+#hero::before,
+#hero-test::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -916,14 +918,16 @@ body[class] #nav {
   }
 
   /* Hero: tekst nad obrazkiem */
-  #hero {
+  #hero,
+  #hero-test {
     background-image: none;
     display: block;
     min-height: unset;
     margin-top: 0;
     overflow: hidden;
   }
-  #hero::before {
+  #hero::before,
+  #hero-test::before {
     display: none;
   }
   .hero-desktop-visual {
@@ -4387,3 +4391,61 @@ html:not(.js) .post-progress { display: none; }
   white-space: nowrap;
   border-width: 0;
 }
+
+/* ---- Hero: przewijana strona na ekranie telefonu (warstwy nad kadrem) -------
+   Kontener ma rozmiar narysowanego kadru (JS liczy object-fit: cover), więc
+   narożniki ekranu we frakcjach obrazu trafiają w to samo miejsce co na grafice.
+   Bez JS / przy reduced-motion zostaje sam statyczny kadr z pierwszą klatką. */
+.hero-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  contain: layout paint;
+}
+.hero-screen.is-ready { opacity: 1; }
+.hero-screen__view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #fff;
+  transform-origin: 0 0;
+  backface-visibility: hidden;
+}
+.hero-screen__view::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--hero-screen-statusbar, 48px);
+  background: #fff;
+  z-index: 1;
+}
+.hero-screen__shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+.hero-screen__hand {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+/* TEST: etykieta drugiej sekcji hero (tylko lokalnie) */
+#hero-test { border-top: 2px dashed #94a3b8; }
+.hero-test-badge {
+  position: absolute; bottom: 24px; left: 24px;
+  z-index: 5; padding: 6px 14px; border-radius: 999px;
+  background: #0f172a; color: #fff; font: 600 12px/1.2 system-ui, sans-serif; letter-spacing: .04em;
+}
+
+/* TEST ukryty: atrybut hidden musi wygrać z display:flex z reguły #hero-test */
+#hero-test[hidden] { display: none !important; }
