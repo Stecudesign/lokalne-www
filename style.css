@@ -2139,14 +2139,14 @@ body[class] #nav {
   box-shadow: 0 8px 28px rgba(15,23,42,0.18);
 }
 
-/* Laptopy (m.in. 16") — tekst blisko postaci w tle, ale bez nachodzenia:
+/* Desktop (od 1024px wzwyż) — tekst blisko postaci w tle, ale bez nachodzenia:
    prawa krawędź leadu (50ch ≈ 536px) trzyma się połowy okna (50vw − 536px),
-   tuż przed sylwetką. Dół 6vw dla wąskich okien, góra 17vw, żeby na szerokich
-   blok nie odjechał od lewej krawędzi dalej niż w regule bazowej (16vw od 1920px).
-   Zakres do 1919px, bo 16" laptopy bywają szersze niż 1680px. */
-@media (min-width: 1024px) and (max-width: 1919px) {
+   tuż przed sylwetką. Tło ma background-size: cover, więc postać skaluje się
+   z szerokością okna i ta reguła działa też na 1920px+ (wcześniej 16vw zostawiało
+   tam dużą dziurę między tekstem a postacią). Dół 6vw dla wąskich okien. */
+@media (min-width: 1024px) {
   .about2-content {
-    padding-left: clamp(6vw, calc(50vw - 536px), 17vw);
+    padding-left: max(6vw, calc(50vw - 536px));
     padding-right: 4vw;
     max-width: none;
   }
