@@ -1007,13 +1007,16 @@ html.hero-b #hero .hero-b-visual {
   top: 0;
   right: 0;
   bottom: 0;
-  /* 3. wartość: panel nie może być szerszy niż ~0.82 × wysokość ekranu — zdjęcie ma 3:4,
-     więc na szerokich i niskich monitorach (np. 2000×830) cover ucinał dół z telefonem */
-  width: min(50%, calc(100% - 640px), 82vh);
-  width: min(50%, calc(100% - 640px), 82svh);
+  /* 3. wartość: panel najwyżej ~1.15 × wysokość ekranu. Zdjęcie ma 3:4, więc przy cover
+     widać wtedy min. ~65% jego wysokości — a telefon zajmuje pas ok. 22–75%. Przy 82svh
+     (pierwsza poprawka) zdjęcie było za wąskie i między nim a tekstem zostawała dziura;
+     bez limitu (sam 50%) na 2000×830 ucinało dół telefonu. object-position 38% trzyma
+     wycinek na telefonie — przycina się raczej góra laptopa niż ręka z telefonem. */
+  width: min(50%, calc(100% - 640px), 115vh);
+  width: min(50%, calc(100% - 640px), 115svh);
   height: 100%;
   object-fit: cover;
-  object-position: 50% 20%;
+  object-position: 50% 38%;
   z-index: 1;
   /* tło zdjęcia jest jasnoszare, nie czysto białe — miękkie wejście zamiast widocznej krawędzi */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
