@@ -989,6 +989,72 @@ body[class] #nav {
   }
 }
 
+/* ---- Hero — wersja B (TEST porównawczy, index.html?hero=b) ----
+   Ten sam tekst i układ co wersja A; zamiast pełnoekranowego kadru z dłonią zdjęcie 3:4
+   (telefon ze szkołą pływania + laptop z serwisem) jako panel w prawej części sekcji.
+   Tło zdjęcia jest białe, więc krawędź panelu zlewa się z sekcją. Szerokość panelu:
+   połowa okna, ale nie mniej niż 640px wolnego miejsca na tekst (przy 1024 H1 z
+   wyróżnieniem kończy się ok. 590px). Do usunięcia po wyborze wersji. */
+.hero-b-visual,
+.hero-compare-switch { display: none; }
+
+html.hero-b #hero::before,
+html.hero-b #hero .hero-desktop-visual,
+html.hero-b #hero .hero-mobile-img { display: none; }
+html.hero-b #hero .hero-b-visual {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(50%, calc(100% - 640px));
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+  z-index: 1;
+  /* tło zdjęcia jest jasnoszare, nie czysto białe — miękkie wejście zamiast widocznej krawędzi */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
+  mask-image: linear-gradient(to right, transparent, #000 14%);
+}
+
+html.hero-compare .hero-compare-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 70;
+  padding: 4px 4px 4px 12px;
+  border-radius: 9999px;
+  background: var(--color-navy);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+}
+.hero-compare-switch a {
+  padding: 8px 12px;
+  border-radius: 9999px;
+  color: #fff;
+  text-decoration: none;
+}
+html.hero-compare:not(.hero-b) .hero-compare-a,
+html.hero-b .hero-compare-b {
+  background: var(--color-yellow);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 767px) {
+  html.hero-b #hero .hero-b-visual {
+    position: static;
+    width: 100%;
+    height: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 /* ---- Section: Nasze Usługi — List (6.4) ---- */
 
 .services-h2 {

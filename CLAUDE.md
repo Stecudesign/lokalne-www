@@ -65,6 +65,10 @@ img/
                                    obrócony −8°, wyższy niż baner, przycięty `overflow: hidden` karty. Widoczny od 1360px (niżej przerwa
                                    jest za wąska — na omnie.html tablet dotykał nagłówka i przycisku). Ekran w pliku ma tylko 343px
                                    szerokości, więc **nie wyświetlaj szerzej niż 330px** (z marginesem) — będzie nieostry
+  hero-b-bmw(-900/-1300).webp   ← TEST porównawczy hero (index.html?hero=b, 01.11.2026): dłonie z telefonem (strona szkoły
+                                   pływania) + laptop w tle (strona serwisu BMW), białe studio, 3:4, 1744×2336. Higgsfield
+                                   gpt_image_2_5 (image-to-image z ujęcia D2 + `szkolaplywaniamockup-laptop-800.webp` +
+                                   `sewisbmwmockup.webp`), `cwebp -q 84/86 -m 6`. Do usunięcia, jeśli wygra wersja A
   szkolaplywaniamockup.webp     ← mockup laptop + telefon (karta 5 slidera #realizacje na index.html)
   szkolaplywaniamockup-laptop.webp ← UŻYWANY w hero oferta.html: ten sam kadr co wyżej, ale bez telefonu — laptop (MacBook Pro)
                                    na słupku startowym, basen w tle. 1254×1254, krok pośredni pipeline’u opisanego niżej.
@@ -507,6 +511,8 @@ Overlay: `#hero::before` z `rgba(255,255,255,0.2)`.
 Treść wyrównana do lewej. Kontener: `w-full max-w-container mx-auto px-6`.
 
 **Aktualne kadry hero: `img/heronewv3a.webp` (desktop, 3344×1882, LCP, `fetchpriority="high"`) i `img/heronewv3mobile.webp` (mobile, 1882×3344).** Każdy siedzi we własnym `<picture class="hero-picture">` (`display: contents`, żeby nie zmieniać pozycjonowania), a `<source>` z mediami „cudzego” breakpointu (`max-width: 767px` / `min-width: 768px`) podstawia 1-pikselowy GIF z `data:` — `display: none` nie blokuje pobierania, a tak każde urządzenie ściąga tylko swój kadr (zmierzone w DevTools na mobile: brak żądania o kadr desktopowy). Zmieniając breakpoint hero, zmień go też w obu `<source>`.
+
+**TEST A/B hero (od 01.11.2026):** `index.html?hero=b` pokazuje wersję B — ten sam tekst i układ, ale zamiast pełnoekranowego kadru z dłonią zdjęcie `img/hero-b-bmw*.webp` jako panel po prawej (`width: min(50%, calc(100% − 640px))`, maska gradientem na lewej krawędzi; na mobile pod tekstem, bez maski). `?hero=a` = obecna wersja. Każdy parametr `?hero=` pokazuje przełącznik A/B w lewym dolnym rogu (`.hero-compare-switch`); bez parametru strona wygląda jak wcześniej i nie pobiera zdjęcia B (`loading="lazy"` + `display: none`). Klasy `hero-compare`/`hero-b` na `<html>` ustawia inline-script w `<head>`. Po wyborze wersji usuń: ten skrypt, `<img class="hero-b-visual">` + `<nav class="hero-compare-switch">` w `#hero`, blok „Hero — wersja B” w `style.css` i (jeśli wygra A) pliki `hero-b-bmw*`.
 
 `.hero-highlight-wrap` — navy tło ze skosem `skewX(-6deg)`, animacja `highlight-in` odkrywa tło od lewej. Tekst wewnątrz: żółty, pojawia się przez `text-in` po 0.9s.
 
