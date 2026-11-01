@@ -1007,10 +1007,13 @@ html.hero-b #hero .hero-b-visual {
   top: 0;
   right: 0;
   bottom: 0;
-  width: min(50%, calc(100% - 640px));
+  /* 3. wartość: panel nie może być szerszy niż ~0.82 × wysokość ekranu — zdjęcie ma 3:4,
+     więc na szerokich i niskich monitorach (np. 2000×830) cover ucinał dół z telefonem */
+  width: min(50%, calc(100% - 640px), 82vh);
+  width: min(50%, calc(100% - 640px), 82svh);
   height: 100%;
   object-fit: cover;
-  object-position: 50% 0;
+  object-position: 50% 20%;
   z-index: 1;
   /* tło zdjęcia jest jasnoszare, nie czysto białe — miękkie wejście zamiast widocznej krawędzi */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
