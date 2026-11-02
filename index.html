@@ -177,10 +177,10 @@
   <!-- TEST porównawczy: wersja B hero (?hero=b) — telefon ze stroną szkoły pływania + laptop ze stroną serwisu.
        loading="lazy": w wersji A obrazek ma display:none, więc się nie pobiera. Do usunięcia razem z regułami
        „Hero — wersja B” w style.css i skryptem hero-compare w <head>, gdy wybierzemy wersję. -->
-  <!-- desktop: kadr poszerzony (3:2), żeby na szerokich ekranach zdjęcie dochodziło do krawędzi okna bez ucinania telefonu;
-       mobile: pionowy kadr 3:4 pod tekstem. Wysokość kadru = wysokość sekcji, więc szerokość ≈ 1.49 × 100vh -->
+  <!-- desktop: kadr poszerzony w LEWO (biurko, okno), laptop ucięty prawą krawędzią jak w oryginale — dzięki temu na
+       szerokich ekranach zdjęcie dochodzi do krawędzi okna bez ucinania telefonu; mobile: pionowy kadr 3:4 pod tekstem -->
   <picture class="hero-picture">
-    <source media="(min-width: 768px)" srcset="img/hero-b-bmw-wide-1600.webp 1600w, img/hero-b-bmw-wide.webp 2528w" sizes="149vh" width="2528" height="1696">
+    <source media="(min-width: 768px)" srcset="img/hero-b-bmw-desktop-1200.webp 1200w, img/hero-b-bmw-desktop.webp 1810w" sizes="(min-aspect-ratio: 2/1) 60vw, 50vw" width="1810" height="1696">
   <img src="img/hero-b-bmw-900.webp" srcset="img/hero-b-bmw-900.webp 900w, img/hero-b-bmw-1300.webp 1300w, img/hero-b-bmw.webp 1744w" sizes="100vw" alt="Strona szkoły pływania na telefonie i strona serwisu samochodowego na laptopie" class="hero-b-visual" width="1744" height="2336" loading="lazy" decoding="async">
   </picture>
 
