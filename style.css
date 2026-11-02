@@ -1012,19 +1012,19 @@ html.hero-b #hero .hero-b-visual {
      640px = minimum na tekst przy 1024 (H1 z wyróżnieniem kończy się ok. 590px). */
   --hb-left: max(640px, calc(50% - 80px));
   left: var(--hb-left);
-  /* szerokość: do prawej krawędzi okna, ale najwyżej ~1.15 × wysokość ekranu. Zdjęcie ma 3:4,
-     więc przy cover widać wtedy min. ~65% jego wysokości — telefon zajmuje pas ok. 22–75%.
-     Na bardzo szerokich ekranach zdjęcie kończy się przed krawędzią okna — stąd prawa
-     strona maski. object-position 38% trzyma wycinek na telefonie. */
-  width: min(calc(100% - var(--hb-left)), 115vh);
-  width: min(calc(100% - var(--hb-left)), 115svh);
+  /* Zawsze do prawej krawędzi okna. Na desktopie kadr jest poszerzony do 3:2
+     (hero-b-bmw-wide: oryginał 3:4 w środku + boki dorysowane w Higgsfield), więc przy
+     cover na wąskim panelu (1024–1440) widać sam środek = oryginalny kadr, a na ultrawide
+     (3440×1240, panel ~1.45:1) prawie całe zdjęcie — telefon nigdy nie jest ucinany,
+     a po prawej nie zostaje pusty pas. Telefon jest w środku kadru, stąd 50% 50%. */
+  width: calc(100% - var(--hb-left)); /* img to element zastępowany — left+right go nie rozciągną */
   height: 100%;
   object-fit: cover;
-  object-position: 50% 38%;
+  object-position: 50% 50%;
   z-index: 1;
   /* tło zdjęcia jest jasnoszare, nie czysto białe — miękkie wejście zamiast widocznej krawędzi */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 92%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 14%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
+  mask-image: linear-gradient(to right, transparent, #000 14%);
 }
 
 html.hero-compare .hero-compare-switch {
