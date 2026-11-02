@@ -1005,22 +1005,26 @@ html.hero-b #hero .hero-b-visual {
   display: block;
   position: absolute;
   top: 0;
-  right: 0;
   bottom: 0;
-  /* 3. wartość: panel najwyżej ~1.15 × wysokość ekranu. Zdjęcie ma 3:4, więc przy cover
-     widać wtedy min. ~65% jego wysokości — a telefon zajmuje pas ok. 22–75%. Przy 82svh
-     (pierwsza poprawka) zdjęcie było za wąskie i między nim a tekstem zostawała dziura;
-     bez limitu (sam 50%) na 2000×830 ucinało dół telefonu. object-position 38% trzyma
-     wycinek na telefonie — przycina się raczej góra laptopa niż ręka z telefonem. */
-  width: min(50%, calc(100% - 640px), 115vh);
-  width: min(50%, calc(100% - 640px), 115svh);
+  /* Lewa krawędź zaczepiona przy ŚRODKU ekranu, a nie prawa przy krawędzi okna: tekst stoi
+     w wyśrodkowanym kontenerze 1440px i kończy się ok. 50% − 50px, więc przy prawej krawędzi
+     okna na ultrawide (3440×1240) między tekstem a zdjęciem robiło się ~700px dziury.
+     640px = minimum na tekst przy 1024 (H1 z wyróżnieniem kończy się ok. 590px). */
+  --hb-left: max(640px, calc(50% - 80px));
+  left: var(--hb-left);
+  /* szerokość: do prawej krawędzi okna, ale najwyżej ~1.15 × wysokość ekranu. Zdjęcie ma 3:4,
+     więc przy cover widać wtedy min. ~65% jego wysokości — telefon zajmuje pas ok. 22–75%.
+     Na bardzo szerokich ekranach zdjęcie kończy się przed krawędzią okna — stąd prawa
+     strona maski. object-position 38% trzyma wycinek na telefonie. */
+  width: min(calc(100% - var(--hb-left)), 115vh);
+  width: min(calc(100% - var(--hb-left)), 115svh);
   height: 100%;
   object-fit: cover;
   object-position: 50% 38%;
   z-index: 1;
   /* tło zdjęcia jest jasnoszare, nie czysto białe — miękkie wejście zamiast widocznej krawędzi */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
-  mask-image: linear-gradient(to right, transparent, #000 14%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 92%, transparent);
 }
 
 html.hero-compare .hero-compare-switch {
