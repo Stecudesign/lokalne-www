@@ -3390,8 +3390,8 @@ body.aboutme-page .svc-hero-b-lead strong {
    Ramka obrazu ma proporcje ORYGINAŁU (2274/2766), więc przy object-fit: contain
    sylwetka wypełnia ją bez marginesów i to wysokość tej ramki wyznacza wysokość hero. */
 .svc-hero-device--portrait {
-  width: 124%;
-  margin-left: -24%;     /* rośnie w lewo — w prawo wyszłaby poza viewport przy 1440 */
+  width: 104%;
+  margin-left: -4%;      /* rośnie w lewo — w prawo wyszłaby poza viewport przy 1440 */
   background: none;
   border-radius: 0;
   box-shadow: none;
@@ -3423,9 +3423,10 @@ body.aboutme-page .svc-hero-media { align-self: end; }
 }
 
 /* Wysokość hero: sekcję wyznacza ramka portretu (~860px na 1440) dosunięta do dolnej krawędzi,
-   więc jest tylko górny padding. Cel: ta sama wysokość co hero na oferta.html (~1003px na 1440).
+   więc jest tylko górny padding.
+   Od 06.11.2026 cel to ~836px jak hero na oferta.html (ramka ~721px + 7rem).
    Zmiana szerokości portretu zmienia wysokość ramki => przelicz padding, nie zgaduj. */
-body.aboutme-page .svc-hero--case { padding: 8rem 0 0; }
+body.aboutme-page .svc-hero--case { padding: 7rem 0 0; }
 
 /* ---- Misja: akapit + (karta statystyki | zdjęcie) ---- */
 .me-mission { padding: 6rem 0; }
