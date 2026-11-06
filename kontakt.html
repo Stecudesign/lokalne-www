@@ -97,52 +97,34 @@
 
 
 <!-- ============================================================
-     HERO — niebieski (wariant „case", wspólny z oferta.html):
-     2 kolumny — dwuliniowy nagłówek + kadr biurka + karta
+     HERO — pełnoekranowy obraz (wariant „photo", jak oferta/proces):
+     laptop i telefon z czatem z prawej, tekst z lewej
      ============================================================ -->
 <main id="main" tabindex="-1">
-<section id="svc-hero" class="svc-hero svc-hero--b svc-hero--case">
+<section id="svc-hero" class="svc-hero svc-hero--b svc-hero--case svc-hero--photo svc-hero--kontakt">
+  <!-- Lewa krawędź obrazu to jednolity niebieski ~#1B63F2 = tło sekcji (.svc-hero--kontakt),
+       maska rozmywa szew. Na mobile ten sam <picture> idzie pod tekst (kadr 7:5). -->
+  <picture class="svc-hero-photo">
+    <source media="(max-width: 1023px)"
+            srcset="img/kontakt-hero-rozmowa-800.webp 800w, img/kontakt-hero-rozmowa.webp 1317w"
+            sizes="100vw" width="1317" height="941">
+    <img src="img/kontakt-hero-rozmowa-wide.webp"
+         srcset="img/kontakt-hero-rozmowa-wide-1200.webp 1200w, img/kontakt-hero-rozmowa-wide.webp 1672w"
+         sizes="(min-width: 1024px) 70vw, 100vw"
+         alt="Laptop i telefon z rozmową na czacie o projekcie strony" width="1672" height="941" fetchpriority="high">
+  </picture>
   <div class="max-w-container mx-auto px-6">
-    <!-- bez .fade-up: H1 i kadr (LCP) mają być widoczne od pierwszego renderu,
-         a nie czekać na DOMContentLoaded, czyli na skrypty z CDN -->
+    <!-- bez .fade-up: H1 i obraz (LCP) mają być widoczne od pierwszego renderu -->
     <div class="svc-hero-inner">
-      <div class="svc-hero-b-row">
-
-        <div class="svc-hero-b-main">
-          <h1 class="svc-hero-h1">
-            <span class="svc-hero-h1-l1">Porozmawiajmy</span>
-            <span class="svc-hero-h1-l2">o&nbsp;Twoim projekcie</span>
-          </h1>
-          <p class="svc-hero-b-lead">
-            Napisz lub zadzwoń: odpowiadam zwykle tego samego dnia. Bezpłatnie
-            omówimy Twoje potrzeby i&nbsp;to, jak strona może pomóc Twojej firmie.
-          </p>
-        </div>
-
-        <div class="svc-hero-media">
-          <svg class="svc-hero-ring" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-            <defs>
-              <linearGradient id="svc-hero-ring-grad" x1="0.15" y1="0" x2="0.85" y2="1">
-                <stop offset="0" stop-color="#FACC15"/>
-                <stop offset="0.5" stop-color="#F59E0B"/>
-                <stop offset="1" stop-color="#FB923C"/>
-              </linearGradient>
-            </defs>
-            <circle cx="100" cy="100" r="90" fill="none" stroke="url(#svc-hero-ring-grad)" stroke-width="13"
-                    stroke-linecap="round" stroke-dasharray="452 114" transform="rotate(108 100 100)"/>
-          </svg>
-          <div class="svc-hero-device">
-            <img src="img/kontakt-hero-800.webp"
-                 srcset="img/kontakt-hero-800.webp 800w, img/kontakt-hero.webp 1254w"
-                 sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 46vw, 640px"
-                 alt="Biurko z laptopem otwartym na formularzu kontaktowym i telefonem" width="1254" height="1254" fetchpriority="high">
-          </div>
-          <div class="svc-hero-case">
-            <p class="svc-hero-case-title">Odpowiadam tego samego dnia</p>
-            <p class="svc-hero-case-desc">Bezpłatna konsultacja bez zobowiązań. Porozmawiamy o&nbsp;pomyśle, zakresie i&nbsp;budżecie.</p>
-          </div>
-        </div>
-
+      <div class="svc-hero-b-main">
+        <h1 class="svc-hero-h1">
+          <span class="svc-hero-h1-l1">Porozmawiajmy</span>
+          <span class="svc-hero-h1-l2">o&nbsp;Twoim projekcie</span>
+        </h1>
+        <p class="svc-hero-b-lead">
+          Napisz lub zadzwoń: odpowiadam zwykle tego samego dnia. Bezpłatnie
+          omówimy Twoje potrzeby i&nbsp;to, jak strona może pomóc Twojej firmie.
+        </p>
       </div>
     </div>
   </div>

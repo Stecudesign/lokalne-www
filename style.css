@@ -3127,6 +3127,14 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero--proces .svc-hero-b-lead { max-width: 34ch; }
 }
 
+/* kontakt.html: obraz z czatem, lewa krawędź ~#1B63F2. Laptop zaczyna się ~28% szerokości
+   obrazu (bliżej tekstu niż na ofercie/procesie), więc węższy lead i niższy cap H1 */
+.svc-hero--kontakt { background: #1B63F2; }
+@media (min-width: 1024px) {
+  .svc-hero--kontakt .svc-hero-h1 { font-size: clamp(2.35rem, 4vw, 60px); }
+  .svc-hero--kontakt .svc-hero-b-lead { max-width: 34ch; }
+}
+
 @media (max-width: 1023px) {
   .svc-hero--photo {
     flex-direction: column;
