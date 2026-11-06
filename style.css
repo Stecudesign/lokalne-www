@@ -3050,11 +3050,11 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 /* ---- HERO wariant PHOTO (oferta.html, 06.11.2026) ----
    Nakładka na --case: zamiast ramki z mockupem + pierścienia + karty jest jeden
    obraz na całą wysokość sekcji, przyklejony do prawej (laptop BMW na niebieskim
-   tle z żółtym blokiem). Lewa krawędź obrazu to jednolity #1158D7, więc tło
+   podeście, bez żółtego bloku od 06.11.2026). Lewa krawędź obrazu to jednolity #1058DE, więc tło
    sekcji ma ten sam kolor, a maska rozmywa szew. Tekst + 2 przyciski z lewej.
    Na <1024px obraz schodzi pod tekst (kadr 7:5 z <source> w <picture>). */
 .svc-hero--photo {
-  background: #1158D7;
+  background: #1058DE;
   display: flex;
   align-items: center;
   min-height: clamp(640px, 52vw, 1040px);
@@ -3116,7 +3116,7 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   border: 2px solid #fff;
   color: #fff;
 }
-.svc-hero-btn--outline:hover { background: #fff; color: #1158D7; }
+.svc-hero-btn--outline:hover { background: #fff; color: #1058DE; }
 
 @media (max-width: 1023px) {
   .svc-hero--photo {
