@@ -2894,7 +2894,7 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 .svc-hero--case {
   background: var(--color-blue);
   border-bottom: none;
-  padding: 17.5rem 0 12rem;
+  padding: 14rem 0 5rem;
   color: #fff;
 }
 
@@ -3002,7 +3002,7 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 }
 
 @media (max-width: 1023px) {
-  .svc-hero--case { padding: 14rem 0 8.75rem; }
+  .svc-hero--case { padding: 11rem 0 5rem; }
   
   /* na tablecie kolumna medialna potrzebuje więcej miejsca, żeby karta nie robiła się wąska */
   .svc-hero--case .svc-hero-b-row { grid-template-columns: minmax(0, 48fr) minmax(0, 52fr); }
@@ -3020,10 +3020,10 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero-case-desc { font-size: 0.9375rem; }
 }
 @media (max-width: 767px) {
-  .svc-hero--case { padding: 11rem 0 8.5rem; }
+  .svc-hero--case { padding: 8.5rem 0 5rem; }
   /* na mobile wzrost wysokosci rozlozony tez na gap miedzy tekstem a mockupem,
      zeby nie powstal jeden wielki pusty pas nad badgem */
-  .svc-hero--case .svc-hero-b-row { grid-template-columns: 1fr; gap: 6rem; }
+  .svc-hero--case .svc-hero-b-row { grid-template-columns: 1fr; gap: 4.5rem; }
   
   .svc-hero--case .svc-hero-b-main { max-width: none; }
   .svc-hero--case .svc-hero-h1 { font-size: clamp(2.25rem, 10vw, 3.25rem); letter-spacing: -0.035em; }
