@@ -3542,6 +3542,18 @@ body.aboutme-page .svc-hero-media { align-self: end; }
    Zmiana szerokości portretu zmienia wysokość ramki => przelicz padding, nie zgaduj. */
 body.aboutme-page .svc-hero--case { padding: 7rem 0 0; }
 
+/* Od 06.11.2026 hero O mnie to wariant PHOTO (jak oferta/proces/kontakt): zdjęcie Pawła
+   z iPadem na całą wysokość sekcji. Lewa krawędź obrazu ~#0F59E3 = tło sekcji.
+   Nagłówek i lead bez zmian (reguły body.aboutme-page wyżej wygrywają specyficznością).
+   Padding nadpisuje „portretowy" 7rem 0 0, bo tu tekst jest wyśrodkowany w pionie. */
+body.aboutme-page .svc-hero--omnie { background: #0F59E3; padding: 9.5rem 0 4.5rem; }
+@media (max-width: 1023px) {
+  body.aboutme-page .svc-hero--omnie { padding: 10rem 0 0; }
+}
+@media (max-width: 767px) {
+  body.aboutme-page .svc-hero--omnie { padding: 7.5rem 0 0; }
+}
+
 /* ---- Misja: akapit + (karta statystyki | zdjęcie) ---- */
 .me-mission { padding: 6rem 0; }
 .me-mission-top {
