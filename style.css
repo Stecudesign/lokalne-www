@@ -3118,6 +3118,15 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 }
 .svc-hero-btn--outline:hover { background: #fff; color: #1058DE; }
 
+/* proces.html: obraz z makietą ma jaśniejszy niebieski na lewej krawędzi niż BMW na ofercie */
+.svc-hero--proces { background: #155EE7; }
+/* kartka z makietą zaczyna się ~39% szerokości obrazu (bliżej tekstu niż laptop BMW),
+   więc węższy lead i niższy cap H1, żeby na 1920px tekst nie wchodził na kartkę */
+@media (min-width: 1024px) {
+  .svc-hero--proces .svc-hero-h1 { font-size: clamp(2.35rem, 4vw, 60px); }
+  .svc-hero--proces .svc-hero-b-lead { max-width: 34ch; }
+}
+
 @media (max-width: 1023px) {
   .svc-hero--photo {
     flex-direction: column;
