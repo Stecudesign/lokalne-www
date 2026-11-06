@@ -3047,6 +3047,105 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero--case .svc-hero-h1 { font-size: clamp(2.35rem, 5vw, 73px); }
 }
 
+/* ---- HERO wariant PHOTO (oferta.html, 06.11.2026) ----
+   Nakładka na --case: zamiast ramki z mockupem + pierścienia + karty jest jeden
+   obraz na całą wysokość sekcji, przyklejony do prawej (laptop BMW na niebieskim
+   tle z żółtym blokiem). Lewa krawędź obrazu to jednolity #1158D7, więc tło
+   sekcji ma ten sam kolor, a maska rozmywa szew. Tekst + 2 przyciski z lewej.
+   Na <1024px obraz schodzi pod tekst (kadr 7:5 z <source> w <picture>). */
+.svc-hero--photo {
+  background: #1158D7;
+  display: flex;
+  align-items: center;
+  min-height: clamp(640px, 52vw, 1040px);
+  padding: 9.5rem 0 4.5rem;
+}
+.svc-hero--photo > .max-w-container { width: 100%; }
+.svc-hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.svc-hero-photo img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14%);
+          mask-image: linear-gradient(to right, transparent 0, #000 14%);
+}
+/* px, nie % kontenera: na >=1920px kontener ma stały max, a laptop zaczyna się ~50vw.
+   Cap H1 68px: „Kompleksowa oferta" ≈ 8.9 × font-size = ~605px, mieści się w 680px. */
+.svc-hero--photo .svc-hero-b-main { max-width: 680px; }
+.svc-hero--photo .svc-hero-h1 { font-size: clamp(2.35rem, 4.2vw, 68px); }
+.svc-hero--photo .svc-hero-b-lead { margin-top: 1.5rem; max-width: 44ch; font-size: clamp(1.0625rem, 1.25vw, 1.375rem); }
+.svc-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  margin-top: 2.5rem;
+}
+.svc-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0 2rem;
+  border-radius: 9999px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.svc-hero-btn svg { transition: transform 0.15s ease; }
+.svc-hero-btn:hover { transform: scale(1.02); }
+.svc-hero-btn:hover svg { transform: translateX(3px); }
+.svc-hero-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.svc-hero-btn--yellow {
+  background: var(--color-yellow);
+  color: var(--color-text-primary);
+}
+.svc-hero-btn--yellow:hover {
+  background: var(--color-yellow-dark);
+  box-shadow: 0 8px 24px rgba(6,17,45,0.28);
+}
+.svc-hero-btn--outline {
+  border: 2px solid #fff;
+  color: #fff;
+}
+.svc-hero-btn--outline:hover { background: #fff; color: #1158D7; }
+
+@media (max-width: 1023px) {
+  .svc-hero--photo {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding: 10rem 0 0;
+  }
+  .svc-hero-photo { position: static; order: 2; margin-top: 1.5rem; display: block; }
+  /* górna krawędź obrazu rozmyta w tło sekcji — bez widocznej poziomej linii */
+  .svc-hero-photo img {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 18%);
+  }
+  .svc-hero--photo .svc-hero-b-main { max-width: 640px; }
+  .svc-hero--photo .svc-hero-h1 { font-size: clamp(2.25rem, 7vw, 3.5rem); }
+}
+@media (max-width: 767px) {
+  .svc-hero--photo { padding-top: 7.5rem; }
+  .svc-hero--photo .svc-hero-b-main { max-width: none; }
+  .svc-hero--photo .svc-hero-h1 { font-size: clamp(2.25rem, 10vw, 3.25rem); }
+  .svc-hero-cta { flex-direction: column; align-items: stretch; margin-top: 2rem; }
+  .svc-hero-btn { justify-content: center; padding: 0 1.25rem; }
+}
+
 /* ---- Pasy usług: naprzemienne tło ciemne / jasne ---- */
 /* scroll-margin-top: linki z kotwicą (oferta.html#svc-seo ze stopki / bento na index)
    lądowały pod pływającym navem (dół pilla ~110px desktop / ~80px mobile, padding pasa
