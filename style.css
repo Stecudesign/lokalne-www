@@ -3080,8 +3080,12 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 /* px, nie % kontenera: na >=1920px kontener ma stały max, a laptop zaczyna się ~50vw.
    Cap H1 68px: „Kompleksowa oferta" ≈ 8.9 × font-size = ~605px, mieści się w 680px. */
 .svc-hero--photo .svc-hero-b-main { max-width: 680px; }
-.svc-hero--photo .svc-hero-h1 { font-size: clamp(2.35rem, 4.2vw, 68px); }
-.svc-hero--photo .svc-hero-b-lead { margin-top: 1.5rem; max-width: 44ch; font-size: clamp(1.0625rem, 1.25vw, 1.375rem); }
+.svc-hero--photo .svc-hero-h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); }
+/* Nagłówek i lead jak na omnie.html (wzór dla podstron, 06.11.2026): lead dziedziczy
+   z .svc-hero--case (1.125rem, 52ch, margin 2rem), h1 ma te same clamp() co aboutme-page. */
+@media (min-width: 1920px) {
+  .svc-hero--photo .svc-hero-h1 { font-size: clamp(2.2rem, 4vw, 57px); }
+}
 .svc-hero-cta {
   display: flex;
   flex-wrap: wrap;
@@ -3120,20 +3124,14 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 
 /* proces.html: obraz z makietą ma jaśniejszy niebieski na lewej krawędzi niż BMW na ofercie */
 .svc-hero--proces { background: #155EE7; }
-/* kartka z makietą zaczyna się ~39% szerokości obrazu (bliżej tekstu niż laptop BMW),
-   więc węższy lead i niższy cap H1, żeby na 1920px tekst nie wchodził na kartkę */
+/* Kartka z makietą jest bliżej tekstu niż laptop na ofercie: lead węższy (font jak na O mnie),
+   żeby na 1920px nie wchodził na kartkę */
 @media (min-width: 1024px) {
-  .svc-hero--proces .svc-hero-h1 { font-size: clamp(2.35rem, 4vw, 60px); }
-  .svc-hero--proces .svc-hero-b-lead { max-width: 34ch; }
+  .svc-hero--proces .svc-hero-b-lead { max-width: 44ch; }
 }
 
-/* kontakt.html: obraz z czatem, lewa krawędź ~#1B63F2. Laptop zaczyna się ~28% szerokości
-   obrazu (bliżej tekstu niż na ofercie/procesie), więc węższy lead i niższy cap H1 */
+/* kontakt.html: obraz z czatem, lewa krawędź ~#1B63F2 */
 .svc-hero--kontakt { background: #1B63F2; }
-@media (min-width: 1024px) {
-  .svc-hero--kontakt .svc-hero-h1 { font-size: clamp(2.35rem, 4vw, 60px); }
-  .svc-hero--kontakt .svc-hero-b-lead { max-width: 34ch; }
-}
 
 @media (max-width: 1023px) {
   .svc-hero--photo {
@@ -3153,12 +3151,12 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
             mask-image: linear-gradient(to bottom, transparent 0, #000 18%);
   }
   .svc-hero--photo .svc-hero-b-main { max-width: 640px; }
-  .svc-hero--photo .svc-hero-h1 { font-size: clamp(2.25rem, 7vw, 3.5rem); }
+  .svc-hero--photo .svc-hero-h1 { font-size: clamp(1.6rem, 3.6vw, 3.6rem); }
 }
 @media (max-width: 767px) {
   .svc-hero--photo { padding-top: 7.5rem; }
   .svc-hero--photo .svc-hero-b-main { max-width: none; }
-  .svc-hero--photo .svc-hero-h1 { font-size: clamp(2.25rem, 10vw, 3.25rem); }
+  .svc-hero--photo .svc-hero-h1 { font-size: clamp(1.5rem, 7.6vw, 3rem); }
   .svc-hero-cta { flex-direction: column; align-items: stretch; margin-top: 2rem; }
   .svc-hero-btn { justify-content: center; padding: 0 1.25rem; }
 }
