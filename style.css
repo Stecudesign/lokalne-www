@@ -3161,32 +3161,6 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero-btn { justify-content: center; padding: 0 1.25rem; }
 }
 
-/* ---- HERO photo na bardzo szerokich ekranach (>=2400px, np. 3440x1440, 07.11.2026) ----
-   Obraz przyklejony do prawej krawędzi okna odjeżdżał od tekstu (kontener 1440px zostaje
-   na środku). Tu obraz kończy się na prawej granicy wyśrodkowanej „sceny” 2400px, a dalej
-   do krawędzi okna ciągnie się pasek *-edge.webp: ostatnie kolumny pikseli zdjęcia
-   rozciągnięte w poziomie, więc kolory w każdym wierszu zgadzają się z brzegiem obrazu.
-   Prawa krawędź obrazu jest lekko rozmyta maską, żeby nie było widać szwu.
-   Laptop/1920px bez zmian (reguła działa dopiero od 2400px). Nowe zdjęcie w hero =>
-   wygeneruj nowy *-edge.webp z jego prawego brzegu. */
-.svc-hero--photo { --hero-edge: url("img/oferta-hero-bmw-edge.webp"); }
-.svc-hero--proces { --hero-edge: url("img/proces-hero-makieta-edge.webp"); }
-.svc-hero--kontakt { --hero-edge: url("img/kontakt-hero-rozmowa-edge.webp"); }
-.svc-hero--omnie { --hero-edge: url("img/omnie-hero-ipad-edge.webp"); }
-@media (min-width: 2400px) {
-  html body .svc-hero.svc-hero--photo {
-    background-image: var(--hero-edge);
-    background-repeat: no-repeat;
-    background-position: right top;
-    background-size: calc(50% - 1100px) 100%;
-  }
-  .svc-hero--photo .svc-hero-photo img {
-    right: calc(50% - 1200px);
-    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 96%, transparent 100%);
-            mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 96%, transparent 100%);
-  }
-}
-
 /* ---- Pasy usług: naprzemienne tło ciemne / jasne ---- */
 /* scroll-margin-top: linki z kotwicą (oferta.html#svc-seo ze stopki / bento na index)
    lądowały pod pływającym navem (dół pilla ~110px desktop / ~80px mobile, padding pasa
