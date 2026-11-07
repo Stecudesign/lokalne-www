@@ -3162,7 +3162,7 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
 }
 
 /* ---- HERO na ekranach >=2400px (np. 3440x1440, 07.11.2026) ----
-   <picture> podaje tu szeroki baner img/*-hero-ultrawide.webp (1942x809, 2.4:1): scena
+   <picture> podaje tu szeroki baner img/*-hero-ultrawide.webp (3000x1250, 2.4:1): scena
    z obiektem w środku i pustym niebieskim po obu stronach. Obraz ma pełną wysokość
    sekcji (1040px => ~2497px szerokości), a jego lewa krawędź stoi 640px w lewo od środka
    okna — obiekt (od ~24% szerokości banera) zaczyna się wtedy tuż za tekstem, a prawa
