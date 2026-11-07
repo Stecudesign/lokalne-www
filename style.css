@@ -3161,6 +3161,21 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero-btn { justify-content: center; padding: 0 1.25rem; }
 }
 
+/* ---- HERO na ekranach >=2400px (np. 3440x1440, 07.11.2026) ----
+   <picture> podaje tu szeroki baner img/*-hero-ultrawide.webp (1942x809, 2.4:1): scena
+   z obiektem w środku i pustym niebieskim po obu stronach. Obraz ma pełną wysokość
+   sekcji (1040px => ~2497px szerokości), a jego lewa krawędź stoi 640px w lewo od środka
+   okna — obiekt (od ~24% szerokości banera) zaczyna się wtedy tuż za tekstem, a prawa
+   część banera dochodzi do krawędzi okna. Powyżej ~3700px baner byłby za krótki, więc
+   max() przykleja go do prawej krawędzi. 2497px zakłada wysokość sekcji 1040px
+   (min-height przy >=2000px) — zmiana wysokości hero => przelicz. */
+@media (min-width: 2400px) {
+  .svc-hero--photo .svc-hero-photo img {
+    right: auto;
+    left: max(calc(50% - 640px), calc(100% - 2497px));
+  }
+}
+
 /* ---- Pasy usług: naprzemienne tło ciemne / jasne ---- */
 /* scroll-margin-top: linki z kotwicą (oferta.html#svc-seo ze stopki / bento na index)
    lądowały pod pływającym navem (dół pilla ~110px desktop / ~80px mobile, padding pasa

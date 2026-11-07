@@ -105,6 +105,8 @@
   <!-- Lewa krawędź obrazu to jednolity niebieski ~#155EE7 = tło sekcji (.svc-hero--proces),
        maska rozmywa szew. Na mobile ten sam <picture> idzie pod tekst (kadr 7:5). -->
   <picture class="svc-hero-photo">
+    <!-- >=2400px: szeroki baner 2.4:1, ustawiany w style.css („HERO na ekranach >=2400px”) -->
+    <source media="(min-width: 2400px)" srcset="img/proces-hero-ultrawide.webp" width="1942" height="809">
     <source media="(max-width: 1023px)"
             srcset="img/proces-hero-makieta-800.webp 800w, img/proces-hero-makieta.webp 1317w"
             sizes="100vw" width="1317" height="941">
