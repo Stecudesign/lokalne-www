@@ -952,15 +952,23 @@ body[class] #nav {
   /* Hero: dłoń z telefonem W TLE, wychodzi zza prawej krawędzi obok przycisków
      (15.11.2026; wcześniej obrazek stał pod przyciskami i hero miało ~1127px przy 375).
      Biały gradient od lewej trzyma tekst i przyciski na czystej bieli.
-     min-height: ekran, ale nie mniej niż 225vw — na niskich telefonach (375×667)
-     telefon zaczynałby się przy leadzie; tak zawsze startuje na wysokości przycisków. */
+     Obrazek zakotwiczony od GÓRY, nie od dołu: przy dole i min-height w vw telefon
+     uciekał w dół na szerszych telefonach (592px: hero ~1330px). --hm-w = szerokość
+     kadru (cap 540px), --hm-y = wysokość, na której ma się zaczynać telefon (ok. górna
+     krawędź przycisków). 0.418 = górna krawędź telefonu w pliku (23.5% wysokości
+     kadru 9:16 → 0.235 × 1.777). Hero kończy się ok. przy dolnej krawędzi telefonu. */
   #hero,
   #hero-test {
+    --hm-w: min(118vw, 540px);
+    --hm-y: 400px; /* <420px: lead ma 3 linie, a przyciski 2 rzędy */
     background-image: none;
     display: block;
-    min-height: max(100svh, 225vw);
+    min-height: max(100svh, calc(var(--hm-y) + var(--hm-w)));
     margin-top: 0;
     overflow: hidden;
+  }
+  @media (min-width: 420px) {
+    #hero, #hero-test { --hm-y: 360px; }
   }
   #hero::before,
   #hero-test::before {
@@ -976,10 +984,10 @@ body[class] #nav {
     display: block;
     position: absolute;
     z-index: 1;
-    width: 118%;
+    width: var(--hm-w);
     height: auto;
-    right: -34%;
-    bottom: -12%;
+    right: calc(var(--hm-w) * -0.29);
+    top: calc(var(--hm-y) - var(--hm-w) * 0.418);
     pointer-events: none;
   }
   .hero-h1 {
