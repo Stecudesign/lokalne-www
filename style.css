@@ -752,12 +752,16 @@ body[class] #nav {
   to { opacity: 1; }
 }
 
-/* ---- Mobile menu overlay ---- */
+/* ---- Mobile menu overlay ----
+   Matowe białe szkło (15.11.2026, wcześniej granat 0.97) — spójne z jasnym
+   paskiem nav; strona pod spodem jest rozmyta, a tekst ciemny. */
 #mobile-menu {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(15,23,42,0.97);
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   z-index: 100;
   flex-direction: column;
   align-items: center;
@@ -766,20 +770,21 @@ body[class] #nav {
 }
 #mobile-menu.open { display: flex; }
 #mobile-menu a {
-  color: var(--color-text-light);
+  color: var(--color-text-primary);
   font-size: 1.5rem;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.15s;
 }
-#mobile-menu a:hover { color: var(--color-yellow); }
+#mobile-menu a:hover { color: var(--color-blue); }
 /* CTA w menu: #mobile-menu a (wyższa specyficzność) nadpisywał ciemny tekst
    .btn-primary — jasny tekst na żółtym tle miał kontrast 1.4:1. */
 #mobile-menu a.btn-primary,
 #mobile-menu a.btn-primary:hover { color: var(--color-text-primary); }
 /* Aktywna strona w menu mobilnym */
+/* Niebieski, nie żółty — żółty tekst na białym szkle ma ~1.5:1 */
 #mobile-menu a[aria-current="page"]:not(.btn-primary) {
-  color: var(--color-yellow);
+  color: var(--color-blue);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 6px;
@@ -791,10 +796,10 @@ body[class] #nav {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   transition: color 0.15s;
 }
-#mobile-menu .close-btn:hover { color: #fff; }
+#mobile-menu .close-btn:hover { color: var(--color-text-primary); }
 
 /* ---- Hamburger ---- */
 .nav-hamburger {
@@ -908,8 +913,11 @@ body[class] #nav {
 
 @media (max-width: 767px) {
   /* Nav: sam pill, mniejsza skala; rozmiar stały (patrz #nav na desktopie) */
+  /* Na telefonie pasek jest pełnoszerokościowy i przyklejony do góry ekranu
+     (15.11.2026) — bez zaokrągleń i bez bocznych obrysów, zostaje tylko linia
+     u dołu. Szkło (tint/blur) działa tak samo jak w pillu. */
   #nav {
-    top: 12px;
+    top: 0;
     --nav-h: 68;
     --nav-px: 14;
     --nav-logo: 34;
@@ -917,11 +925,14 @@ body[class] #nav {
     --nav-a-solid: 0.88;
   }
   .nav-wrapper {
-    padding: 0 16px;
+    padding: 0;
   }
   /* Linki znikają, ale kolumny zostają — .nav-actions ma siedzieć w 3. kolumnie */
   .nav-bar {
     grid-template-columns: auto 0px 1fr;
+    border-radius: 0;
+    border-width: 0 0 1px;
+    padding-inline: 16px;
   }
   .nav-links-pill {
     display: none;
