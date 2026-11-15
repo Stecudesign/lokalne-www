@@ -710,46 +710,15 @@ body[class] #nav {
   outline-offset: 3px;
 }
 
-/* ---- Hero highlight (skewed dark block + yellow text reveal) ---- */
+/* ---- Hero highlight ----
+   Do 15.11.2026 żółty tekst na granatowym skosie (::before + animacja odsłaniania).
+   Skos usunięty na życzenie; żółty tekst na bieli ma ~1.5:1, więc wyróżnienie
+   przeszło na niebieski marki (5.2:1). */
 .hero-highlight-wrap {
-  position: relative;
-  display: inline-block;
-  padding: 4px 18px 8px;
-}
-.hero-highlight-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--color-navy);
-  border-radius: 5px;
-  transform: skewX(-6deg);
-  z-index: 0;
-  clip-path: inset(0 100% 0 0);
-}
-@keyframes highlight-in {
-  to { clip-path: inset(0 -4px 0 0); }
+  display: inline;
 }
 .hero-highlight-wrap span {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-  color: var(--color-yellow);
-  opacity: 0;
-}
-/* Granatowy skos odsłania się od lewej, potem pojawia się żółty tekst —
-   ta sama sekwencja co wcześniej w timeline GSAP, ale w CSS */
-.hero-highlight-wrap::before {
-  animation: highlight-in 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
-}
-.hero-highlight-wrap span {
-  animation: text-in 0.32s ease 0.9s forwards;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-highlight-wrap::before { animation: none; clip-path: inset(0 -4px 0 0); }
-  .hero-highlight-wrap span { animation: none; opacity: 1; }
-}
-@keyframes text-in {
-  to { opacity: 1; }
+  color: var(--color-blue);
 }
 
 /* ---- Mobile menu overlay ----
@@ -960,7 +929,7 @@ body[class] #nav {
   #hero,
   #hero-test {
     --hm-w: min(118vw, 540px);
-    --hm-y: 400px; /* <420px: lead ma 3 linie, a przyciski 2 rzędy */
+    --hm-y: 200px;
     background-image: none;
     display: block;
     min-height: max(100svh, calc(var(--hm-y) + var(--hm-w)));
@@ -968,11 +937,15 @@ body[class] #nav {
     overflow: hidden;
   }
   @media (min-width: 420px) {
-    #hero, #hero-test { --hm-y: 360px; }
+    #hero, #hero-test { --hm-y: 180px; }
   }
   #hero::before,
   #hero-test::before {
-    background: linear-gradient(100deg, #fff 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 72%);
+    /* poziomy: tekst po lewej na bieli; pionowy: welon nad górą telefonu, która
+       od 15.11.2026 leży pod leadem — kończy się mniej więcej na przyciskach */
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.75) 0, rgba(255,255,255,0.75) 380px, rgba(255,255,255,0) 470px),
+      linear-gradient(100deg, #fff 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 72%);
   }
   .hero-desktop-visual {
     display: none;
