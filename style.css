@@ -3092,14 +3092,17 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   gap: 1rem 1.25rem;
   margin-top: 2.5rem;
 }
+/* Rozmiar jak przyciski hero na index.html (.btn-hero-brand / .btn-hero-ghost): 1rem, 54px
+   wysokości, szerokość wg treści — także na telefonie (15.11.2026; wcześniej 56px, 17px
+   i na mobile rozciągnięte na całą szerokość ekranu, czego nie robi żaden inny przycisk) */
 .svc-hero-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 3.5rem;
-  padding: 0 2rem;
+  gap: 0.625rem;
+  min-height: 3.375rem;
+  padding: 0 1.75rem;
   border-radius: 9999px;
-  font-size: 1.0625rem;
+  font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
@@ -3157,8 +3160,13 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero--photo { padding-top: 7.5rem; }
   .svc-hero--photo .svc-hero-b-main { max-width: none; }
   .svc-hero--photo .svc-hero-h1 { font-size: clamp(1.5rem, 7.6vw, 3rem); }
-  .svc-hero-cta { flex-direction: column; align-items: stretch; margin-top: 2rem; }
-  .svc-hero-btn { justify-content: center; padding: 0 1.25rem; }
+  .svc-hero-cta { gap: 0.875rem 1rem; margin-top: 2rem; }
+  /* „Porozmawiajmy o Twojej stronie” + strzałka ma ~322px przy tym paddingu — mieści się
+     w jednej linii od 375px; węższe telefony tracą strzałkę zamiast łamać tekst */
+  .svc-hero-btn { padding: 0 1.25rem; line-height: 1.25; }
+}
+@media (max-width: 374px) {
+  .svc-hero-btn svg { display: none; }
 }
 
 /* ---- HERO na ekranach >=2400px (np. 3440x1440, 07.11.2026) ----
