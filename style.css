@@ -949,18 +949,22 @@ body[class] #nav {
     font-size: 0.95rem;
   }
 
-  /* Hero: tekst nad obrazkiem */
+  /* Hero: dłoń z telefonem W TLE, wychodzi zza prawej krawędzi obok przycisków
+     (15.11.2026; wcześniej obrazek stał pod przyciskami i hero miało ~1127px przy 375).
+     Biały gradient od lewej trzyma tekst i przyciski na czystej bieli.
+     min-height: ekran, ale nie mniej niż 225vw — na niskich telefonach (375×667)
+     telefon zaczynałby się przy leadzie; tak zawsze startuje na wysokości przycisków. */
   #hero,
   #hero-test {
     background-image: none;
     display: block;
-    min-height: unset;
+    min-height: max(100svh, 225vw);
     margin-top: 0;
     overflow: hidden;
   }
   #hero::before,
   #hero-test::before {
-    display: none;
+    background: linear-gradient(100deg, #fff 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 72%);
   }
   .hero-desktop-visual {
     display: none;
@@ -970,9 +974,13 @@ body[class] #nav {
   }
   .hero-mobile-img {
     display: block;
-    width: 100%;
+    position: absolute;
+    z-index: 1;
+    width: 118%;
     height: auto;
-    margin-top: -22%;
+    right: -34%;
+    bottom: -12%;
+    pointer-events: none;
   }
   .hero-h1 {
     text-align: left;
