@@ -2376,24 +2376,9 @@ html.hero-b .hero-compare-b {
 }
 .portfolio-nav-btn[hidden] { display: none; }
 
-/* Pauza autoplay — wariant obrysowy, żeby nie konkurował z prev/next */
-.portfolio-nav-btn--ghost {
-  background: transparent;
-  border-color: rgba(255,255,255,0.28);
-  box-shadow: none;
-}
-.portfolio-nav-btn--ghost:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.5);
-  box-shadow: none;
-}
-
-/* Ikona pauza/odtwórz — wspólne dla slidera i wideo */
-.portfolio-nav-btn--ghost .icon-play,
+/* Ikona pauza/odtwórz przycisku wideo */
 .usp-video-toggle .icon-play { display: none; }
-.portfolio-nav-btn--ghost.is-paused .icon-play,
 .usp-video-toggle.is-paused .icon-play { display: block; }
-.portfolio-nav-btn--ghost.is-paused .icon-pause,
 .usp-video-toggle.is-paused .icon-pause { display: none; }
 
 /* Viewport slidera — full-bleed, ale wewnętrzny padding wyrównuje pierwszą
@@ -2520,7 +2505,15 @@ html.hero-b .hero-compare-b {
   .portfolio-h2 { white-space: normal; }
   /* jedna karta + fragment następnej */
   .portfolio-card { flex: 0 0 min(78vw, 320px); }
-  .portfolio-card-content { padding: 0 22px 26px; }
+  /* Podpis na półprzezroczystym pasku z blurem — czytelny niezależnie od mockupu pod spodem */
+  .portfolio-card-overlay { display: none; }
+  .portfolio-card-content {
+    padding: 14px 22px 16px;
+    background: rgba(8,12,20,0.58);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
