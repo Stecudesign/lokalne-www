@@ -562,6 +562,8 @@ Grid: 6 kolumn, 3 rzędy (`minmax(160px, auto)` / `minmax(130px, auto)` / `auto`
 - tile-5: `1/4 × 3` — **Opieka nad stroną** — tekst góra + `.bento2-t5-visual` (panel dół, `height: 221px`) z `img/opiekawww.webp` (`width: 78%`). **`width` nie jest kosmetyką** — wraz z wysokością panelu decyduje, czy cała ilustracja mieści się w widocznym wycinku (patrz nota o kadrowaniu przy secie `bento-*`); 78% ustala, że górne 60% pliku trafia dokładnie w 221px panelu. Dawny `filter: drop-shadow` zdjęty 15.09.2026 — nowy render ma własny cień, a filtr rysował cień białego prostokąta bitmapy
 - tile-6: `4/7 × 3` — **Analityka Google** — tekst góra + `.bento2-t6-visual` (panel dół, `height: 283px`) z `img/googleanalytics.webp` (`width: 92%`)
 
+**Mobile ≤767 (15.11.2026):** kolejność Strony → SEO (`order: -1` na tile-2), grafiki wyśrodkowane, a od dołu TREŚCI ilustracji do dołu kafla zawsze `--bento-img-gap: 56px`. Pusty biały dół plików ucina ujemny `margin-bottom` w % (= 0.75 × szerokość obrazka × (1 − dół treści w pliku)); nowy obrazek = przelicz. Parallax i bazowe `yPercent` SEO są na mobile wyłączone w JS (rozjeżdżały odstęp).
+
 **Tablet 768–1023: 3 równe pary** (SEO | Strony, Design | Responsywność, Opieka | Analityka), SEO nie zajmuje już 2 rzędów (zostawało w nim 150–370px pustki), `.bento2-t1-visual { max-height: 260px }`, laptop `width: 100%`.
 
 ⚠️ **Luka 1px w konwencji breakpointów całego serwisu:** `max-width: 1023px` / `min-width: 1024px` nie łapią ułamkowej szerokości 1023.x (zdarza się przy skalowaniu ekranu 150% w Windows) — wtedy nie działa ani reguła tabletu, ani desktopu. Dotyczy wszystkich media queries, nie tylko bento.

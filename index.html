@@ -1091,9 +1091,13 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // --- 2) Subtelny parallax grafik (scrub) + hover scale na desktopie ---
+  // Mobile: bez parallaxu i bez bazowego yPercent SEO — odstęp grafiki od dołu
+  // kafla jest tam liczony w CSS i przesunięcie by go rozjeżdżało
+  const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
+
   tiles.forEach((tile) => {
     const img = tile.querySelector(imgSel);
-    if (!img) return;
+    if (!img || isMobile) return;
 
     // tile-1: bazowe przesunięcie CSS translateY(22%) odtwarzamy jako yPercent,
     // by parallax (y w px) i skala hover składały się z nim, zamiast go nadpisać.

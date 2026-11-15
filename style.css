@@ -1528,14 +1528,62 @@ html.hero-b .hero-compare-b {
     width: 220px;
   }
 
-  /* Tile 6 mobile */
-  .bento2-tile-6 {
-    flex-direction: column;
+  /* Kolejność na mobile: Strony internetowe przed SEO */
+  .bento2-tile-2 { order: -1; }
+
+  /* Grafiki na mobile (15.11.2026): wyśrodkowane, a od DOLNEJ KRAWĘDZI TREŚCI
+     ilustracji do dołu kafla zawsze --bento-img-gap (wzorzec: Responsywność).
+     Pliki mają pusty biały dół (patrz CLAUDE.md, kadrowanie setu bento-*), więc
+     ujemny margin-bottom w % (liczony od szerokości kontenera) ucina dokładnie
+     ten pusty pas: 0.75 (proporcja pliku) × szerokość obrazka × (1 − dół treści).
+     Nowy obrazek = przelicz dół treści (bbox pikseli ≠ biel) i ten margines. */
+  .bento2-grid { --bento-img-gap: 56px; }
+  .bento2-t1-text,
+  .bento2-tile-4 .bento2-copy,
+  .bento2-tile-5 .bento2-copy,
+  .bento2-tile-6 .bento2-copy { padding-bottom: 20px; }
+
+  .bento2-t1-visual,
+  .bento2-t4-visual,
+  .bento2-t5-visual,
+  .bento2-t6-visual {
+    flex: 0 0 auto;
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: auto -28px 0;
+    padding-bottom: var(--bento-img-gap);
+    overflow: hidden;
+    display: flex;
     align-items: flex-start;
-    gap: 0;
+    justify-content: center;
+    background: transparent;
   }
-  
-  
+  .bento2-t1-visual { margin: auto -24px 0; }
+  .bento2-t1-visual img,
+  .bento2-t4-visual img,
+  .bento2-t5-visual img,
+  .bento2-t6-visual img {
+    max-width: none;
+    transform: none;
+    background: transparent;
+  }
+  /* dół treści: SEO 94.8%, Responsywność / Opieka / Analityka ~59.4% */
+  .bento2-t1-visual img { width: 86%; margin-bottom: -3.4%; }
+  .bento2-t4-visual img { width: 88%; margin-bottom: -26.9%; }
+  .bento2-t5-visual img { width: 78%; margin-bottom: -23.7%; }
+  .bento2-t6-visual img { width: 92%; margin-bottom: -28.1%; }
+
+  /* Strony internetowe: obraz bez kontenera, w content-boxie kafla (padding 32px).
+     Dół treści 83.8%, treść przesunięta w pliku o 2.45% w prawo → left koryguje */
+  .bento2-tile2-deco {
+    position: relative;
+    left: -2.2%;
+    align-self: center;
+    width: 88%;
+    margin: 20px 0 calc(var(--bento-img-gap) - 32px - 10.7%);
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
