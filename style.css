@@ -397,6 +397,17 @@ body[class] #nav {
 #nav.nav--light .ham-line {
   background: #fff;
 }
+/* Kółko nad ciemnymi sekcjami: ciemne szkło, jasny hairline i światło u góry */
+#nav.nav--light .nav-hamburger {
+  --ham-fill: rgba(255,255,255,0.08);
+  --ham-dome: linear-gradient(to bottom, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.12) 100%);
+  --ham-shadow:
+    inset 0 1px 0 0 rgba(255,255,255,0.22),
+    inset 0 0 0 1px rgba(255,255,255,0.16),
+    0 2px 2px -1px rgba(0,0,0,0.2),
+    0 5px 8px -3px rgba(0,0,0,0.25);
+}
+#nav.nav--light .nav-hamburger:hover { --ham-fill: rgba(255,255,255,0.14); }
 
 .nav-links-pill {
   grid-column: 2;
@@ -758,31 +769,69 @@ body[class] #nav {
   text-decoration-thickness: 2px;
   text-underline-offset: 6px;
 }
+/* Wygląd kółka — patrz „Hamburger” niżej. Pozycja = miejsce hamburgera w pasku
+   (pasek 68px na mobile, 80px wyżej; prawy padding paska 16px / 22px). */
 #mobile-menu .close-btn {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text-secondary);
-  transition: color 0.15s;
+  top: 18px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
 }
-#mobile-menu .close-btn:hover { color: var(--color-text-primary); }
+#mobile-menu .close-btn svg { width: 20px; height: 20px; }
 
-/* ---- Hamburger ---- */
+/* ---- Hamburger: wypukłe kółko 3D (16.11.2026) ----
+   Efekt „kopuły” (wzór: przycisk menu na lovable.dev, odtworzony w palecie marki):
+   półprzezroczyste białe wypełnienie + gradient przyciemniający dół, jasne
+   światło wewnątrz górnej krawędzi, cienki grafitowy hairline i dwa krótkie,
+   miękkie cienie pod spodem. Ten sam styl ma przycisk zamknięcia w #mobile-menu,
+   więc kółko „zostaje” w tym samym miejscu po otwarciu menu. */
+.nav-hamburger,
+#mobile-menu .close-btn {
+  --ham-fill: rgba(255,255,255,0.86);
+  --ham-dome: linear-gradient(to bottom, rgba(15,23,42,0) 0%, rgba(15,23,42,0.07) 100%);
+  --ham-shadow:
+    inset 0 1px 0 0 #fff,
+    inset 0 -1px 0 0 rgba(255,255,255,0.7),
+    inset 0 0 0 1px rgba(15,23,42,0.12),
+    inset 0 -2px 3px 0 rgba(15,23,42,0.05),
+    0 2px 2px -1px rgba(15,23,42,0.10),
+    0 5px 8px -3px rgba(15,23,42,0.12);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--ham-fill);
+  background-image: var(--ham-dome);
+  box-shadow: var(--ham-shadow);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
 .nav-hamburger {
   display: none;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 10px 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+}
+.nav-hamburger:hover,
+#mobile-menu .close-btn:hover { --ham-fill: #fff; }
+/* Wciśnięcie: kopuła „siada” — cień zewnętrzny znika, dół przyciemnia się mocniej */
+.nav-hamburger:active,
+#mobile-menu .close-btn:active {
+  --ham-dome: linear-gradient(to bottom, rgba(15,23,42,0.06) 0%, rgba(15,23,42,0.03) 100%);
+  --ham-shadow:
+    inset 0 1px 2px 0 rgba(15,23,42,0.10),
+    inset 0 0 0 1px rgba(15,23,42,0.14);
+  transform: translateY(1px);
 }
 .ham-line {
   display: block;
-  width: 22px;
+  width: 18px;
   height: 2px;
   background: var(--color-text-primary);
   border-radius: 2px;
@@ -908,8 +957,15 @@ body[class] #nav {
   }
   .nav-hamburger {
     display: flex;
-    padding: 8px 6px;
   }
+  /* Kółko na pełnym pikselu: dolna linia paska (1px) przesuwała środek o pół
+     piksela, kreski 2px wypadały wtedy między pikselami ekranu i środkowa/dolna
+     wyglądały na cieńsze od górnej. Stałe 12px od góry = kreski na 26/33/40px. */
+  .nav-actions {
+    align-self: start;
+    margin-top: 12px;
+  }
+  #mobile-menu .close-btn { top: 12px; right: 16px; }
   .btn-nav-brand {
     font-size: 0.75rem;
     padding: 0 14px 0 6px;
