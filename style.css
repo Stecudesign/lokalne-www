@@ -3254,15 +3254,14 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
             mask-composite: intersect;
   }
   .svc-hero--photo > .max-w-container { position: relative; z-index: 1; }
-  /* proces/kontakt: brak przycisków, więc laptop leży pod leadem. Czytelność robi delikatny
-     overlay w kolorze tła sekcji (--hero-rgb), równy na całe hero (decyzja Pawła 15.11.2026) —
-     plus lekki cień pod literami leadu */
+  /* Czytelność: overlay w kolorze tła sekcji (--hero-rgb), równy na całe hero — najpierw
+     proces/kontakt (15.11.2026), od 16.11.2026 też oferta i O mnie (decyzje Pawła) —
+     plus lekki cień pod literami leadu na proces/kontakt (bez przycisków lead leży na ekranie) */
+  .svc-hero--photo { --hero-rgb: 16,88,222; }
   .svc-hero--proces { --hero-rgb: 21,94,231; }
   .svc-hero--kontakt { --hero-rgb: 27,99,242; }
-  .svc-hero--proces,
-  .svc-hero--kontakt { padding-bottom: calc(var(--oh-w) * 0.34); }
-  .svc-hero--proces .svc-hero-photo::after,
-  .svc-hero--kontakt .svc-hero-photo::after {
+  .aboutme-page .svc-hero--omnie { --hero-rgb: 15,89,227; }
+  .svc-hero--photo .svc-hero-photo::after {
     content: "";
     position: absolute;
     inset: 0;
