@@ -977,15 +977,23 @@ body[class] #nav {
     padding-top: 7rem; /* 5rem = dokładnie wysokość nav (80px) → H1 stał przy pasku */
     padding-bottom: 2rem;
   }
+  /* Mobile (15.11.2026): osobne białe karty jak kafle bento w #uslugi
+     (radius 24px, delikatny obrys + cień), zamiast jednego bloku z liniami.
+     Tło sekcji zostaje #F0F4FF. */
   .benefit-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
   }
-  .benefit-card {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
+  .benefit-card,
   .benefit-card:last-child {
-    border-bottom: none;
+    background: #fff;
+    border: 1px solid rgba(226,232,240,0.6);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 2px 14px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.04);
   }
 }
 
@@ -2470,8 +2478,9 @@ html.hero-b .hero-compare-b {
   margin: 0;
 }
 
-/* Hover — tylko urządzenia z prawdziwym wskaźnikiem (bez „lepkiego" stanu na dotyku) */
-@media (hover: hover) and (pointer: fine) {
+/* Hover — tylko urządzenia z prawdziwym wskaźnikiem (bez „lepkiego" stanu na dotyku)
+   i tylko od 768px: na mobile karty nie mają żadnego zoomu ani liftu */
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
   .portfolio-card-inner:hover {
     transform: translateY(-8px);
     box-shadow: 0 30px 55px -28px rgba(0,0,0,0.85);

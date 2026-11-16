@@ -1177,14 +1177,16 @@ document.addEventListener('DOMContentLoaded', function () {
   // strzałki/autoplaya podświetla dokładnie następną kartę — również drugą i ostatnią,
   // których nie da się wyśrodkować, bo track dobija wtedy do krańca (clamp).
   let activeIdx = -1;
+  const mqMobile = window.matchMedia('(max-width: 767.98px)');
   function setActive(i) {
     i = Math.max(0, Math.min(last, i));
     if (i === activeIdx) return;
     activeIdx = i;
+    const mobile = mqMobile.matches;   // na mobile bez skalowania kart — tylko przygaszenie
     cards.forEach((c, idx) => {
       const on = idx === i;
       c.classList.toggle('is-active', on);
-      gsap.to(c, { scale: on ? 1 : 0.96, opacity: on ? 1 : 0.62,
+      gsap.to(c, { scale: on || mobile ? 1 : 0.96, opacity: on ? 1 : 0.62,
         duration: 0.5, ease: 'power2.out', overwrite: 'auto' });
     });
     updateButtons();
