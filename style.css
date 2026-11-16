@@ -941,10 +941,9 @@ body[class] #nav {
   }
   #hero::before,
   #hero-test::before {
-    /* tekst po lewej na bieli. Pionowy biały welon nad górą telefonu usunięty 16.11.2026
-       na życzenie Pawła — telefon pod leadem jest w pełnych kolorach */
-    background:
-      linear-gradient(100deg, #fff 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 72%);
+    /* 16.11.2026 (na życzenie Pawła): zamiast gradientów jeden równy biały overlay na całe
+       hero — telefon pod tekstem przygaszony jednakowo, lead czytelny także na jego ekranie */
+    background: rgba(255,255,255,0.6);
   }
   .hero-desktop-visual {
     display: none;
