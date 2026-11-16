@@ -132,7 +132,7 @@
         </p>
         <div class="svc-hero-cta">
           <a href="kontakt.html" class="svc-hero-btn svc-hero-btn--yellow">
-            Porozmawiajmy o&nbsp;Twojej stronie
+            <span>Porozmawiajmy<span class="svc-hero-btn-more"> o&nbsp;Twojej stronie</span></span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
           <a href="#realizacje" class="svc-hero-btn svc-hero-btn--outline">Zobacz realizacje</a>
@@ -142,8 +142,8 @@
   </div>
 </section>
 
-<!-- 01 — Strony internetowe (pas ciemny, obraz prawo) -->
-<section id="svc-strony" class="svc-band svc-band--dark">
+<!-- 01 — Strony internetowe (pas jasny, obraz prawo) -->
+<section id="svc-strony" class="svc-band svc-band--light">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block fade-up">
       <div class="svc-block-text">
@@ -171,8 +171,8 @@
   </div>
 </section>
 
-<!-- 02 — SEO (pas jasny, obraz lewo) -->
-<section id="svc-seo" class="svc-band svc-band--light">
+<!-- 02 — SEO (pas ciemny, obraz lewo) -->
+<section id="svc-seo" class="svc-band svc-band--dark">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block svc-block--rev fade-up">
       <div class="svc-block-text">
@@ -200,8 +200,8 @@
   </div>
 </section>
 
-<!-- 03 — Indywidualny design (pas ciemny, obraz prawo) -->
-<section id="svc-design" class="svc-band svc-band--dark">
+<!-- 03 — Indywidualny design (pas jasny, obraz prawo) -->
+<section id="svc-design" class="svc-band svc-band--light">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block fade-up">
       <div class="svc-block-text">
@@ -229,8 +229,8 @@
   </div>
 </section>
 
-<!-- 04 — Responsywność (pas jasny, obraz lewo) -->
-<section id="svc-responsywnosc" class="svc-band svc-band--light">
+<!-- 04 — Responsywność (pas ciemny, obraz lewo) -->
+<section id="svc-responsywnosc" class="svc-band svc-band--dark">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block svc-block--rev fade-up">
       <div class="svc-block-text">
@@ -258,8 +258,8 @@
   </div>
 </section>
 
-<!-- 05 — Opieka nad stroną (pas ciemny, obraz prawo) -->
-<section id="svc-opieka" class="svc-band svc-band--dark">
+<!-- 05 — Opieka nad stroną (pas jasny, obraz prawo) -->
+<section id="svc-opieka" class="svc-band svc-band--light">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block fade-up">
       <div class="svc-block-text">
@@ -287,8 +287,8 @@
   </div>
 </section>
 
-<!-- 06 — Analityka Google (pas jasny, obraz lewo) -->
-<section id="svc-analityka" class="svc-band svc-band--light">
+<!-- 06 — Analityka Google (pas ciemny, obraz lewo) -->
+<section id="svc-analityka" class="svc-band svc-band--dark">
   <div class="max-w-container mx-auto px-6">
     <div class="svc-block svc-block--rev fade-up">
       <div class="svc-block-text">
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Navigation — sticky + jasny tekst nad ciemnymi pasami
   const nav = document.getElementById('nav');
-  const darkSectionIds = ['svc-strony', 'svc-design', 'svc-opieka'];
+  const darkSectionIds = ['svc-seo', 'svc-responsywnosc', 'svc-analityka'];
 
   // Aktywna strona — podświetla pozycję menu odpowiadającą bieżącemu URL-owi
   // (działa i dla „/oferta", i dla „/oferta.html"). Blok wspólny dla wszystkich stron.

@@ -3265,12 +3265,22 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero--photo .svc-hero-b-main { max-width: none; }
   .svc-hero--photo .svc-hero-h1 { font-size: clamp(1.5rem, 7.6vw, 3rem); }
   .svc-hero-cta { gap: 0.875rem 1rem; margin-top: 2rem; }
-  /* „Porozmawiajmy o Twojej stronie” + strzałka ma ~322px przy tym paddingu — mieści się
-     w jednej linii od 375px; węższe telefony tracą strzałkę zamiast łamać tekst */
-  .svc-hero-btn { padding: 0 1.25rem; line-height: 1.25; }
-}
-@media (max-width: 374px) {
-  .svc-hero-btn svg { display: none; }
+  /* Szerokość 1:1 jak przyciski hero na index.html na telefonie (16.11.2026):
+     .btn-hero-brand ma 204px, .btn-hero-ghost 188px (szerokość wg treści, zmierzone na 375).
+     Zmiana tekstu/paddingu przycisków na index.html => przelicz te wartości.
+     Pełne „Porozmawiajmy o Twojej stronie” nie mieści się w 204px, więc dopisek jest
+     ukryty wizualnie, ale zostaje w nazwie dostępnej linku (czytnik czyta całość). */
+  .svc-hero-btn { justify-content: center; padding: 0 1.25rem; line-height: 1.25; }
+  .svc-hero-btn--yellow { width: 204px; }
+  .svc-hero-btn--outline { width: 188px; }
+  .svc-hero-btn-more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 }
 
 /* Podstrony ze zdjęciem w hero (oferta, O mnie, proces, kontakt), mobile (15.11.2026): obraz hero nie stoi pod
