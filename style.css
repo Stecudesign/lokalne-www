@@ -3210,6 +3210,61 @@ html.js .svc-acc-item:not(.is-open) .svc-acc-panel {
   .svc-hero-btn svg { display: none; }
 }
 
+/* Podstrony ze zdjęciem w hero (oferta, O mnie, proces, kontakt), mobile (15.11.2026): obraz hero nie stoi pod
+   tekstem, tylko leży W TLE — zakotwiczony do dołu sekcji i wysunięty zza prawej krawędzi
+   (jak telefon w hero index.html). Bez welonu nad tekstem: obiekt zaczyna się tuż pod
+   leadem, za przyciskami. --oh-w = szerokość kadru (7:5 → wysokość 0.714 × w); dolny
+   padding sekcji = ile kadru wystaje pod przyciski (omnie ma własny padding niżej, w sekcji
+   „PODSTRONA O MNIE”). --hero-bg = tło sekcji danej strony: pełne tło przycisku z obrysem,
+   który bez wypełnienia ginie na jasnym ekranie. */
+@media (max-width: 767px) {
+  .svc-hero--photo {
+    --oh-w: min(150vw, 640px);
+    --hero-bg: #1058DE;
+    padding-bottom: calc(var(--oh-w) * 0.34);
+  }
+  .aboutme-page .svc-hero--omnie { --hero-bg: #0F59E3; }
+  .svc-hero--photo .svc-hero-btn--outline { background: var(--hero-bg); }
+  .svc-hero--photo .svc-hero-photo {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+  .svc-hero--photo .svc-hero-photo img {
+    position: absolute;
+    width: var(--oh-w);
+    height: auto;
+    top: auto;
+    right: calc(var(--oh-w) * -0.2);
+    bottom: 0;
+    /* od ~430px kadr (max 640px) nie sięga lewej krawędzi ekranu — rozmyty lewy brzeg */
+    /* + górna krawędź kadru wygaszona, bez tego widać poziomą linię obrazka */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16%),
+                        linear-gradient(to bottom, transparent 0, #000 14%);
+    -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(to right, transparent 0, #000 16%),
+                        linear-gradient(to bottom, transparent 0, #000 14%);
+            mask-composite: intersect;
+  }
+  .svc-hero--photo > .max-w-container { position: relative; z-index: 1; }
+  /* proces/kontakt: brak przycisków, więc laptop leży pod leadem. Czytelność robi delikatny
+     overlay w kolorze tła sekcji (--hero-rgb), równy na całe hero (decyzja Pawła 15.11.2026) —
+     plus lekki cień pod literami leadu */
+  .svc-hero--proces { --hero-rgb: 21,94,231; }
+  .svc-hero--kontakt { --hero-rgb: 27,99,242; }
+  .svc-hero--proces,
+  .svc-hero--kontakt { padding-bottom: calc(var(--oh-w) * 0.34); }
+  .svc-hero--proces .svc-hero-photo::after,
+  .svc-hero--kontakt .svc-hero-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--hero-rgb), 0.7);
+  }
+  .svc-hero--proces .svc-hero-b-lead,
+  .svc-hero--kontakt .svc-hero-b-lead { text-shadow: 0 1px 3px rgba(6,17,45,0.35); }
+}
+
 /* ---- HERO na ekranach >=2400px (np. 3440x1440, 07.11.2026) ----
    <picture> podaje tu szeroki baner img/*-hero-ultrawide.webp (3000x1250, 2.4:1): scena
    z obiektem w środku i pustym niebieskim po obu stronach. Obraz ma pełną wysokość
@@ -3615,7 +3670,12 @@ body.aboutme-page .svc-hero--omnie { background: #0F59E3; padding: 9.5rem 0 4.5r
   body.aboutme-page .svc-hero--omnie { padding: 10rem 0 0; }
 }
 @media (max-width: 767px) {
-  body.aboutme-page .svc-hero--omnie { padding: 7.5rem 0 0; }
+  /* mobile (15.11.2026): zdjęcie w tle (wspólny blok „Podstrony … mobile” przy .svc-hero--photo).
+     Postać wypełnia cały kadr, więc sekcja musi być na tyle wysoka, żeby głowa nie chowała się
+     pod navem, a kadr przesunięty w prawo — lead leży na niebieskim i ciemnej bluzie, nie na iPadzie */
+  /* .svc-hero--case w selektorze: reguła body.aboutme-page .svc-hero--case dalej w pliku zeruje dół */
+  body.aboutme-page .svc-hero--case.svc-hero--omnie { padding: 7.5rem 0 calc(var(--oh-w) * 0.3); }
+  body.aboutme-page .svc-hero--omnie .svc-hero-photo img { right: calc(var(--oh-w) * -0.34); }
 }
 
 /* ---- Misja: akapit + (karta statystyki | zdjęcie) ---- */
