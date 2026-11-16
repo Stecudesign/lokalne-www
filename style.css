@@ -941,10 +941,9 @@ body[class] #nav {
   }
   #hero::before,
   #hero-test::before {
-    /* poziomy: tekst po lewej na bieli; pionowy: welon nad górą telefonu, która
-       od 15.11.2026 leży pod leadem — kończy się mniej więcej na przyciskach */
+    /* tekst po lewej na bieli. Pionowy biały welon nad górą telefonu usunięty 16.11.2026
+       na życzenie Pawła — telefon pod leadem jest w pełnych kolorach */
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.75) 0, rgba(255,255,255,0.75) 380px, rgba(255,255,255,0) 470px),
       linear-gradient(100deg, #fff 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 72%);
   }
   .hero-desktop-visual {
